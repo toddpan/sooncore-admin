@@ -1,0 +1,256 @@
+@charset "utf-8";
+.ldapText{
+	padding-top:30px;
+	text-align:center;
+}
+.ldapText .text01{
+	display:inline-block;
+	font-size:16px;
+	color:#4f4f4f;
+	line-height:28px;
+	margin-bottom:10px;
+}
+.ldapText .tips {
+	display: inline-block;
+	line-height: 18px;
+	font-size: 14px;
+	color: #83868b;
+	padding-left: 20px;
+	background: url(../images/tip_icon.png) 0 1px no-repeat;
+	text-align:left;
+}
+.ldapText .btn_icon .iconR{
+	padding:0 50px 0 40px;
+	font-size:18px;
+}
+.ldapSetBox .infoTable td{
+	color:#2e444a;
+	font-size:14px;
+	line-height: 28px;
+	padding: 5px 10px;
+	vertical-align:  top;
+}
+.w318 {
+	width: 318px;
+}
+.w318 .input {
+	width: 310px;
+}
+.w140 {
+	width: 140px;
+}
+.w140 .input {
+	width: 132px;
+}
+.ldapSetStep{
+	height:55px;
+	position:relative;
+	top:-20px;
+	margin-bottom:28px;
+	font-size:0;
+}
+.ldapSetStep .bar{
+	height:15px;
+	position:relative;
+	z-index:1;
+	background:url(../images/ldap_setBar_bg.png) 0 -15px repeat-x;
+}
+.ldapSetStep .bar .bgL,
+.ldapSetStep .bar .bgR{
+	display:block;
+	height:15px;
+	width:5px;
+	position:absolute;
+	top:0;
+	z-index:1;
+}
+.ldapSetStep .bar .bgL{
+	left:0;
+	background:url(../images/ldap_setBar_bg.png) 0 0 no-repeat;
+}
+.ldapSetStep .bar .bgR{
+	right:0;
+	background:url(../images/ldap_setBar_bg.png) 0 -30px no-repeat;
+}
+.ldapSetStep .innerBar{
+	height:11px;
+	position:absolute;
+	top:2px;
+	left: 0;
+	z-index:2;
+	background:url(../images/ldap_setBar_bar.png) 0 -11px repeat-x;
+}
+.ldapSetStep .innerBar .ibgL,
+.ldapSetStep .innerBar .ibgR{
+	display:block;
+	height:11px;
+	width:6px;
+	position:absolute;
+	top:0;
+	z-index:1;
+}
+.ldapSetStep .innerBar .ibgL{
+	left: 0;
+	background:url(../images/ldap_setBar_bar.png) 0 0 no-repeat;
+}
+.ldapSetStep .innerBar .ibgR{
+	right: 0;
+	background:url(../images/ldap_setBar_bar.png) 0 -22px no-repeat;
+}
+.ldapSetStep a{
+	display:inline-block;
+	height:34px;
+	width:20%;
+	padding:0 0 8px 0;
+	margin:0 0 -2px 0;
+	position:relative;
+	z-index:10;
+	color:#848484;
+	line-height:34px;
+	font-size:12px;
+	letter-spacing:normal;
+	text-align: center;
+	text-decoration: none;
+	_width: 19.5%;
+}
+*+html .ldapSetStep a {
+	width: 19.5%;
+}
+.qystStep a {
+	width: 25%;
+	_width: 24.5%;
+}
+*+html .qystStep a {
+	width: 24.5%;
+}
+.ldapSetStep a .arrow{
+	display:block;
+	width:14px;
+	height:8px;
+	position:absolute;
+	top: 34px;
+	left: 50%;
+	margin-left: -7px;
+	background:url(../images/ldap_setBar_arrowBg.png) 0 0 no-repeat;
+}
+.ldapSetStep a.current{
+	color:#29b1b4;
+}
+.ldapSetStep a.selected .arrow{
+	background:url(../images/ldap_setBar_arrow.png) 0 0 no-repeat;
+}
+.ldapSetBox .toolBar2{
+	margin:80px 0 30px;
+	padding: 10px 20px 0 0;
+	border-top: 1px solid #ddd;
+}
+.ldapSetCont .setTitle{
+	font-size: 16px;
+	color: #4f4f4f;
+	margin: 0 0 18px;
+	line-height: 20px;
+}
+
+.ldapSetCont dd{
+	background: #eff5f6;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+	line-height: 26px;
+}
+.ldapSetCont dd table {
+	border: none;
+	border-collapse: collapse;
+	
+}
+.ldapSetCont dd td {
+	border-bottom: 1px solid #e5e5e5;
+	padding: 5px 10px;
+}
+.ldapSetCont dd .table1 td {
+	border: none;
+}
+.ldapSetCont .infoTable .checkbox{
+	margin-bottom: 0;
+}
+.ldapText2{
+	padding-top:140px;
+	text-align:center;
+}
+.ldapText2 .text01{
+	display: inline-block;
+	line-height: 36px;
+	font-size: 22px;
+	color: #29b1b4;
+	padding-left: 50px;
+	background: url(../images/submitRight2.png) 0 0 no-repeat;
+	text-align:left;
+	font-weight:bold;
+}
+.ldapText2 .text02{
+	display: inline-block;
+	line-height: 46px;
+	font-size: 18px;
+	color: #29b1b4;
+	font-weight:bold;
+}
+.ldapSetBox .link,
+.ldapText2 .link {
+	display: inline-block;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #52a9b3;
+	text-decoration: underline;
+}
+.ldapSetBox .treeBox {
+
+}
+.ldapSetBox .treeBox .checkbox {
+	vertical-align: middle;
+	margin-right: 4px;
+	margin-bottom:0;
+	display:inline-block;
+}
+.ldapSetBox .treeBox .treeNodeName{
+	color:#2e444a;
+	font-size:14px;
+}
+.ldapSetBox .infoTable .noOrder td {
+	line-height:30px;
+	font-size:13px;
+	color:#c4c5c6;
+}
+.ldapSetBox .infoTable .noOrder td span {
+	display: block;
+}
+.ldapSetBox .treeNode:hover, .ldapSetBox .treeNode.selected {
+	background:none;
+	color:#2E444A;
+}
+
+.mapping_area dd td{
+	padding: 0;
+	border-bottom: 0 none;
+}
+.mappingInputBox {
+    position: relative;
+    _float: left;
+    _margin-right: 5px;
+}
+.mappingInputBox .input_area {
+    height: 20px;
+    background: url(../images/loginInputBg.png) 0 0 repeat-x #fbfdff;
+    padding: 4px;
+    border: 1px solid #b2bdcd;
+    line-height: 18px;
+    font-size: 14px;
+    color: #4f4f4f;
+    width: 310px;
+}
+.wid200{
+	width: 150px;
+}
+.mar10{
+	margin-top: 10px;	
+}
+
