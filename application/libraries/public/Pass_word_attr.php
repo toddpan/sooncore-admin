@@ -66,20 +66,19 @@ class Pass_word_attr{
         array(
             'id' => 1,
             'title' => '8-30位字符（不限制类型）组成',
-            'regexptxt' => "/^[\s\S]{8,30}$/",
+            'regexptxt' => '/^[\s\S]{8,30}$/' ,
             'isdefaultvalue' => 0
         ),
         array(
             'id' => 2,
             'title' => '8-30位数字与字母组合而成',
-            'regexptxt' => "/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/",
+            'regexptxt' => '/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/' ,
             'isdefaultvalue' => 1
         ),
         array(
             'id' => 3,
             'title' => '8-30位数字、符号与字母组合而成',
             'regexptxt' => '/^(?![0-9]+$)(?![a-zA-Z]+$)(?![0-9a-zA-Z]+$)[\S]{8,30}$/' ,
-        	//	'regexptxt' => "/^(?![0-9]+$)(?![a-zA-Z]+$)(?![0-9a-zA-Z]+$)(?![\S]+$){8,30}$/",
             'isdefaultvalue' => 0
         )
     );

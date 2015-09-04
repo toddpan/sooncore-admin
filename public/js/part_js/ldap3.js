@@ -35,7 +35,6 @@ function selected_value(t,event) {
         $(t).parent().find("dd.selected").removeClass("selected");
         $(t).addClass("selected");
         $(t).parent().parent().prev().text($(t).text()).addClass("selected");
-        $(t).parent().parent().prev().attr('value', $(t).text()).addClass("selected");
     }
 	$(t).parent().parent().hide();
 	 event.cancelBubble = true;
@@ -47,7 +46,7 @@ function data3() {
     var Re_context = [];
     var i = 0;
     $('.ldapSetBox3 label').each(function() {
-        if ($(this).attr('class') == "checkbox checked") {
+        if ($(this).attr('class') == "checkbox checked" && $(this).find('input').attr('checked') == "checked") {
             //Re_id[i]=$(this).text();
             Re_context[i] = $(this).text();
             i = i + 1;
@@ -95,7 +94,7 @@ function nextStep3() {
         //"select_context":count,
         $.ajax({
             url: path,
-            timeout: 80000,
+            timeout: 8000,
             type: "POST",
             data: obj,
             success: function(data) {

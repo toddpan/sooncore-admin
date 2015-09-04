@@ -62,33 +62,6 @@ class AccountUpdateProcessImpl extends AccountProcessInterface{
 		$this->uc					= 		 $uc;
 		log_message('info', 'seting global variable finished.');
 		
-		#检查用户，如果用户ums中只有用户信息，但未开通过uc产品，则将用户写入到帐号create task里
-		/*
-		log_message('info', 'check users,if need save to create process.');
-		$users_create = array();
-		foreach($uc['users'] as $k=>$user){
-			$user_product = $this->ci->ums->getUserProduct($user['id'], UC_PRODUCT_ID);
-			if(!$user_product){
-				$users_create[] = $user;
-				unset($uc['users'][$k]);
-			}
-		}
-		
-		if(count($users_create)>0){
-			log_message('info', "found {count($users_create)} users,need to save to create process");
-			$value_create = $value;
-			$value_create['customer']['users'] = $users_create;
-			$value_create['type'] = 'create';
-			//将数据添加到任务表，等待后台进程处理
-			$this->ci->load->model('account_process_task_model', 'task');
-			if(!$this->task->saveTask('create', json_encode($value_create))){
-				throw new Exception('save users to create process task failed.');
-			}
-		}
-		log_message('info', 'not found users,need save to create process.');
-		*/
-		
-		
 		#依次去更新用户
 		log_message('info', 'start to update account.');
 		foreach($uc['users'] as $user){
@@ -142,7 +115,10 @@ class AccountUpdateProcessImpl extends AccountProcessInterface{
 	 * @param array $user
 	 */
 	private function _updateAccount($user){
-		#uc站点迁移 TODO
+		#更新同事关系
+		$is_admin = $this->ci->account->isOrganizationAdmin($user['id']) ? 1 : 0;//判断用户是否为组织管理者 0-否 1-是
+		$org_info = $this->ci->ums->getOrganizationByUserId($user['id']);//获取用户的组织信息
+		$this->ci->ucc->createColleague($user['id'], $org_info['id'], $org_info['parentId'], $is_admin);
 		
 		#向uniform开通会议
 		#-uniform接口数据xml格式，这里需要将数据准备好后，由array转xml

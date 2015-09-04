@@ -7,4 +7,4 @@ $lang['resetpwd_wrong_new_complexity'] = '新密码复杂性不正确';
 $lang['resetpwd_empty_confirm_newpwd'] = '请再输入一次新密码';
 $lang['resetpwd_newpwd_not_equal_confirm_newpwd'] = '两次输入的新密码不一致';
 $lang['resetpwd_success'] = '修改密码成功';
-$lang['resetpwd_failed'] = '旧密码不正确';
+$lang['resetpwd_failed'] = '修改密码失败';

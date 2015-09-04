@@ -15,6 +15,8 @@ class Staff extends Admin_Controller {
 		$this->load->helper('my_publicfun');
 		$this->load->helper('my_httpcurl');
 		$this->load->library('API', '', 'API');
+		$this->load->library('UmsLib', '', 'ums');
+		$this->load->library('UccLib', '', 'ucc');
 		// 加载员工相关操作的中文提示信息类
 		$this->lang->load('staff', 'chinese');
 	}
@@ -128,7 +130,7 @@ class Staff extends Admin_Controller {
 	 */
 	public function add_modify_staff_page($is_modify = 0, $user_id = 0, $page_type_arr = array()){
 		log_message('info', __FUNCTION__." input->\n".var_export(array('is_modify' => $is_modify, 'user_id' => $user_id, 'page_type_arr' => $page_type_arr), true));
-
+                
 		// 验证是否是添加或修改员工
 		if(!preg_match("/^[01]{1}$/", $is_modify)){
 			form_json_msg('1', '', 'The operate type is wrong!');
@@ -194,16 +196,17 @@ class Staff extends Admin_Controller {
             'site_id'  => $this->p_site_id,	// 当前站点id 
 		);
 		// 获得当前用户标签及标签值
-// 		$user_tag_arr = $this->StaffLib->get_user_tag_arr($in_arr, $user_auto_arr);
-		$user_tag_arr = $this->StaffLib->get_user_tag2_arr($in_arr, $user_auto_arr);
+		$user_tag_arr = $this->StaffLib->get_user_tag_arr($in_arr, $user_auto_arr);
+		//print_r($user_tag_arr);
 
 		$user_info_arr            = arr_unbound_value($user_tag_arr, 'user_info_arr', 1, array());			// 用户详情信息
-// 		$system_must_tag_names    = arr_unbound_value($user_tag_arr, 'system_must_tag_names', 2, '');		// 系统标签名称，多个用,号分隔
+		$system_must_tag_names    = arr_unbound_value($user_tag_arr, 'system_must_tag_names', 2, '');		// 系统标签名称，多个用,号分隔
 		$system_must_tag_arr      = arr_unbound_value($user_tag_arr, 'system_must_tag_arr', 1, array());	// 系统标签及其值数组
-// 		$seled_not_must_tag_names = arr_unbound_value($user_tag_arr, 'seled_not_must_tag_names', 2, '');	// 可选标签名称，多个用,号分隔
+		$seled_not_must_tag_names = arr_unbound_value($user_tag_arr, 'seled_not_must_tag_names', 2, '');	// 可选标签名称，多个用,号分隔
 		$seled_not_must_tag_arr   = arr_unbound_value($user_tag_arr, 'seled_not_must_tag_arr', 1, array());	// 可选标签及其值数组
-// 		$user_defined_tag_names   = arr_unbound_value($user_tag_arr, 'user_defined_tag_names', 2, '');		// 自定义标签名称，多个用,号分隔
+		$user_defined_tag_names   = arr_unbound_value($user_tag_arr, 'user_defined_tag_names', 2, '');		// 自定义标签名称，多个用,号分隔
 		$user_defined_tag_arr     = arr_unbound_value($user_tag_arr, 'user_defined_tag_arr', 1, array());	// 自定义标签及其值数组
+
 		// 获得手机号
 		$user_mobile = arr_unbound_value($user_info_arr, 'mobileNumber', 2, '');
 
@@ -226,11 +229,11 @@ class Staff extends Admin_Controller {
 		$data['country_arr'] 			  = $country_arr;				// 国码信息
 		$data['country_mobile']           = $country_mobile;			// 手机号
 		$data['user_info_arr']            = $user_info_arr ;			// 用户详情信息
-// 		$data['system_must_tag_names']    = $system_must_tag_names;		// 系统标签名称，多个用,号分隔
+		$data['system_must_tag_names']    = $system_must_tag_names;		// 系统标签名称，多个用,号分隔
 		$data['system_must_tag_arr']      = $system_must_tag_arr;		// 系统标签及其值数组
-// 		$data['seled_not_must_tag_names'] = $seled_not_must_tag_names;	// 可选标签名称，多个用,号分隔
+		$data['seled_not_must_tag_names'] = $seled_not_must_tag_names;	// 可选标签名称，多个用,号分隔
 		$data['seled_not_must_tag_arr']   = $seled_not_must_tag_arr;	// 可选标签及其值数组
-// 		$data['user_defined_tag_names']   = $user_defined_tag_names;	// 自定义标签名称，多个用,号分隔
+		$data['user_defined_tag_names']   = $user_defined_tag_names;	// 自定义标签名称，多个用,号分隔
 		$data['user_defined_tag_arr']     = $user_defined_tag_arr;		// 自定义标签及其值数组
 		
 		$this->load->library('OrganizeLib','','OrganizeLib');
@@ -242,36 +245,44 @@ class Staff extends Admin_Controller {
 		// 首级及下一级组织数组
 		$first_next_org_arr = $this->OrganizeLib->get_first_next_org_arr($customer_code, '1,3,5');
 
-		// 首级及下一级组织json串
-		$in_arr = array(
-            'is_first' => 1 // 是否第一级0不是1是       
-		);
-		$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr, 1, $in_arr);
-
-		$org_json = '[]';
-		if(is_array($org_arr)){// 如果是数组
-			$org_json = json_encode($org_arr);
+		if(is_array($first_next_org_arr)){// 如果是数组
+			$org_json = json_encode($first_next_org_arr);
 		}
 
 		$data['org_list_json']  = $org_json;
+
+		// 加载uc_account模型
+		$this->load->model('uc_account_model');
+
+		// 组装查询条件
+		$db_arr = array(
+			'where' => array(
+				'customercode' => $customer_code
+			)
+		);
+		// 根据customercode查询uc_account表，返回单条记录
+		$re_arr = $this->uc_account_model->operateDB(1, $db_arr);
+		// 获取account_name
+		$account_name = arr_unbound_value($re_arr, 'account_name', 2, '');
 	  	
-		//add by caohongliang
-		$this->load->library('BossLib', '', 'boss');
-		$data['account_names'] = $this->boss->getAccountInfo($this->p_customer_code, $this->p_contract_id);
+		//根据user id从uc_user表里获取到账户id,然后调用boss接口，获取相应的账户名称
+		
+	  	$data['account_name']   = $account_name;
+		
+                $data['account_names'] = array(array('name'=> $account_name,'accountId'=>  $this->p_account_id));
 		
 		
- 		//单个用户展示或者是修改用户信息是需要得到账户名称
-		if($user_id > 0){
-			$this->load->model('uc_user_model', 'user_model');
-	 		$_account_tmp = array_column($data['account_names'], 'name', 'accountId');
-	 		$user_account_id = $this->user_model->getAccountIdByUserId($user_id);
-	 		$data['account_id'] = $user_account_id;
-	 		$data['account_name'] = isset($_account_tmp[$user_account_id]) ? $_account_tmp[$user_account_id] : '';
-		}
+		//$this->load->model('uc_user_model', 'user_model');
+ 		//$_account_tmp = array_column($data['account_names'], 'name', 'accountId');
+// 		$user_account_id = $this->user_model->getAccountIdByUserId($user_id);
+ 		//$data['account_name'] = isset($_account_tmp[$user_account_id]) ? $_account_tmp[$user_account_id] : '';
 		
 		$data['add_type']       = $add_type;
 		$data['page_type_json'] = json_encode($page_type_arr);
 
+                
+                
+                
 		// 获取办公地址并显示在页面上
 		$this->load->model('uc_area_model');
 		$db_address_arr = array(
@@ -289,6 +300,8 @@ class Staff extends Admin_Controller {
 		//echo $address_str;
 		$data['address'] = $address_str;
 		
+                
+                
 
 		// 当前组织id
 		$user_organizationId = 0;
@@ -311,72 +324,123 @@ class Staff extends Admin_Controller {
 			// 如果是修改
 			$user_organizationId = arr_unbound_value($user_info_arr, 'organizationId', 2, '');
 			$ns_org_arr          = $this->OrganizeLib->get_orgup_arr($user_organizationId, array());
-			if(!empty($type_arr)){
-				$ns_org_arr[0]['flag'] = $type_arr['flag'];
-			}
-			
-			// 判断当前账号是不是管理员账号并且是否被停用
-			$condition_arr = array(
-					'user_id' 	=> $user_id,
-					'state' 	=> 1
-			);
-			$this->load->model('UC_User_Admin_Role_Model'); // 管理员角色
-			$uc_admin_arr = $this->UC_User_Admin_Role_Model->getAdminByUseridAndState($condition_arr);
-			$ns_org_arr = empty($uc_admin_arr) ? $ns_org_arr : array_merge($ns_org_arr, array('admin_arr' => $uc_admin_arr));
-			log_message('debug', '$uc_admin_arr=' . json_encode($uc_admin_arr));
+			$ns_org_arr = empty($type_arr) ? $ns_org_arr : array_merge($ns_org_arr, $type_arr);
 				
 			// 根据部门串，获得部门串数组
 			$data['org_json']    = json_encode($ns_org_arr);
 
 			log_message('info', __FUNCTION__." output->\n".var_export($data, true));
-			
-			$this->setFunctions();
-			
+			//print_r($user_info_arr);
 			$this->load->view('staff/staffInfoPower.php',$data);
 		}
 	}
 	
-	private function setFunctions(){
-		$roleFunctions = $this->setFunctionsByRole();
-		$customFunctions = $this->setFunctionsBySite();
-		
-		$functions = array_merge($customFunctions, $roleFunctions);
-		
-		foreach ($customFunctions as $key=>$value){
-			$functions[$key] = $functions[$key] && $value;
-		}
-		
-		$this->functions = $functions;
+        /**
+	 * 判断用户是否存在
+	 * @param unknown $login_names
+	 */
+	public function _existUser($login_name){
+		$user_info = $this->ums->getUserByLoginName($login_name);
+                
+                if(!$user_info['id']){//如果用户不存在直接返回false
+                    return false;
+                }
+                
+                $user_product = $this->ums->getUserProduct($user_info['id'], UC_PRODUCT_ID);
+		if($user_info && $user_product){
+                    //用户已存在并且已开通产品
+                    return true;
+		}elseif($user_info && !$user_product){
+                    //用户已存在但未开通产品
+                    return $user_info;
+                }
 	}
-	
-	private function setFunctionsBySite(){
-		$functions = array();
-		
-		$functions['changePassword'] = $this->siteConfig['siteType'] == 0;
-		$functions['employeeEdit'] = $this->siteConfig['importType'] != 2;
-		
-		return $functions;
-	}
-	
-	private function setFunctionsByRole(){
-		$functions = array();
-		
-		$functions['AccountOperation'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER;
-		$functions['changePassword'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER;
-		$functions['employeeAuthority'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER;
-		$functions['employeeEdit'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
+        
+        /**
+	 * @abstract 添加员工并开通产品
+	 */
+        public function add_staff_open_product(){
+            
+            // 获取从表单提交的数据
+            $user_id        = $this->input->post('user_id', true);
+            $add_type       = $this->input->post('add_type', true);
+            $page_type_json = $this->input->post('page_type_json', true);
+            $user_json      = $this->input->post('user_json', true);
+            log_message('info', __FUNCTION__." input->\n".var_export(array('user_id' => $user_id, 'add_type'=> $add_type, 'page_type_json' => $page_type_json, 'user_json' => $user_json), true));
 
-		return $functions;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 
+            //获取参数
+            $tagValue = array();
+            if(empty($user_json) OR is_null($tagValue = json_decode($user_json, true))){
+                    form_json_msg('1', '', 'The parammeter named user_json is null');
+            }
+            
+            //如果组织的数组数量小于2个 说明没有下级部门 则不能在根部门添加员工
+            if(count($tagValue['org_tag'])<2){
+                log_message('error', __FUNCTION__.'不能选择一级组织！');
+                form_json_msg(COMMON_FAILURE,'', '不能选择一级组织！!');
+            }
+            
+            $tags_tmp = array_column($tagValue['sys_tag'], 'value', 'umsapifield');//取出数组中指定的列
+
+            $org_tag = end($tagValue['org_tag']);//取组织结构的数组最后一个值
+            
+            
+            
+            //判断新加的用户是否已存在于数据库
+            $existUser = $this->_existUser($tags_tmp['loginName']);
+            //print_r($existUser);
+            if(is_bool($existUser) && $existUser==true){
+            //用户存在且已开通产品
+                
+                form_json_msg('1','', '此用户已经开通了相应产品!');
+
+            }elseif(is_array($existUser) && count($existUser)>0){
+            //用户存在但未开通产品
+                log_message('info', __FUNCTION__.'：用户'.$tags_tmp['loginName'].'已存在于数据库中');
+                
+                $result = $this->ums->addUserToOrg($existUser['id'], $org_tag['id']);//将已有用户添加到组织下
+                if($result==false){
+                    log_message('error', __FUNCTION__.'将员工'.$tags_tmp['loginName'].'添加到组织失败');
+                }
+                $res_user_id = $existUser['id'];
+            }else{
+                //新用户不存在于UMS表中 则创建用户再添加进组织
+                //组织用户信息
+                $user_info     = array();
+                $user_info['loginName']  	=       $tags_tmp['loginName'];
+                $user_info['lastName'] 		= 	$tags_tmp['lastName'];
+                $user_info['displayName']       = 	$tags_tmp['lastName'];
+                $user_info['firstName']		=	'';
+                $user_info['sex']		=	$tags_tmp['sex'];//1-男 2-女
+                $user_info['userstatus']	=       1;//用户当前的状态，0未激活1已激活2已关闭，3删除
+                $user_info['account']		=	$tags_tmp['accountId'];//TODO
+                $user_info['register']		=	false;//TODO
+                $user_info['position']   	=	$tags_tmp['position'];
+                $user_info['email']             =	$tags_tmp['email'] ? $tags_tmp['email'] : $tags_tmp['loginName'];
+                $user_info['mobileNumber']      =       $tags_tmp['mobileNumber'];
+                $user_info['password']		=	md5('111111');//初始化密码为111111
+                $user_info['passType']          =       1;
+
+
+                $res_user_id = $this->ums->addNewUserToOrg($user_info,$org_tag['id']);//创建用户并添加到指定组织
+                //print_r($res_user);
+                
+                if(!$res_user_id){//添加失败
+                    log_message('error', __FUNCTION__.'createUser'." input->\n".var_export($user_info,true).' org_id->'.$org_tag['id'].' site_id->'.$this->p_site_id.' customer code->'.$this->p_customer_code);
+                }
+            }
+                
+            
+            $res_user_product = $this->ums->setUserProduct($this->p_site_id, $res_user_id, UC_PRODUCT_ID, UC_PRODUCT_OPEN_STATUS);//开通用户产品
+            if(!$res_user_product){//开通失败
+                log_message('error', __FUNCTION__.'添加员工失败');
+                form_json_msg(COMMON_FAILURE,'','添加员工失败！',array('user_id' => $res_user_id));//返回信息json格式
+            }
+            //返回成功提示和被添加员工的部门ID
+	    form_json_msg('0','', 'successfully!',$org_tag['id']);
+        }
+        
 	/**
 	 * @abstract 保存用户信息
 	 */
@@ -404,37 +468,31 @@ class Staff extends Admin_Controller {
 		$task_value['site_id']		 = $this->p_site_id;
 		$task_value['org_id']		 = $this->p_org_id;
 		
-		$tags_tmp = array_column($tagValue['sys_tag'], 'value', 'umsapifield');
+		$tags_tmp = array_column($tagValue['sys_tag'], 'value', 'umsapifield');//返回数组中指定的一列
 		$tags     = array();
 		$tags['lastname'] 		= 	$tags_tmp['lastName'];
 		$tags['firstname']		=	'';
 		$tags['loginname']  	=   $tags_tmp['loginName'];
 		$tags['open']			=	$tags_tmp['isopen'] == 1 ? true : false;
-// 		$tags['sex']			=	$tags_tmp['sex'];//1-男 2-女
+		$tags['sex']			=	$tags_tmp['sex'];//1-男 2-女
 		$tags['account']		=	$tags_tmp['accountId'];//TODO
 		$tags['position']   	=	$tags_tmp['position'];
 		$tags['mobile']			=	$tags_tmp['mobileNumber'];
-		$tags['email']			=	$tags_tmp['email'];
-		$tags['country']		=	$tags_tmp['countryCode'];
 		$tags['officeaddress']	=	$tags_tmp['officeaddress'];
+		$tags['country']		=	'';
 		
 		$dept_tmp = array_column($tagValue['org_tag'], 'value');
-		array_shift($dept_tmp);//将第一个公司组织去掉
+		array_shift($dept_tmp);//将第一个公司组织去掉 {所以需要手动选择非一级部门}
 		$dept     = array();
 		foreach($dept_tmp as $k=>$v){
 			$dept['department'.($k+1)] = $v;
 		}
 		
-		$task_value['users'][] = array_merge($tags, $dept);
+		$task_value['users'][] = array_merge($tags, $dept); //把两个或多个数组合并为一个数组
 		
 		//将要添加的用户信息添加到任务表里
 		$this->load->model('account_upload_task_model', 'upload_task');
 		$this->upload_task->saveTask(ACCOUNT_CREATE_UPLOAD, json_encode($task_value));
-		
-		// 写操作日志
-		$this->load->library('LogLib','','LogLib');
-		$log_in_arr = $this->p_sys_arr;
-		$re_id      = $this->LogLib->set_log(array('5','4'),$log_in_arr);
 		
 		//返回成功
 		form_json_msg('0','', 'Save successfully!');
@@ -600,7 +658,7 @@ class Staff extends Admin_Controller {
 		
 		$sys_arr = $this->p_sys_arr;
 
-// 		$re_boolean = $this->StaffLib->del_staff($user_id, $sys_arr);
+		$re_boolean = $this->StaffLib->del_staff($user_id, $sys_arr);
 		if($re_boolean){
 			form_json_msg('0', '', 'Delete staff successfully!');
 		}else{
@@ -614,7 +672,19 @@ class Staff extends Admin_Controller {
 	 * -# 弹窗显示员工调岗页面
 	 */
 	public function moveStaff(){
-		$this->load->view('public/popup/movestaff.php');
+                $user_id = $this->p_user_id;//获得用户ID（管理员）
+                $session_id = $this->p_session_id;//获得 SESSION_ID
+                $org_id = $this->p_org_id;//获得组织ID
+                $customer_code = $this->p_customer_code;//客户编码
+
+                $ret = $this->ucc->getOrgList($user_id, $session_id, $org_id, $customer_code);
+                if(!$ret){
+                    log_message('error', __FUNCTION__ . " input->\n" . var_export($ret, true));
+                    form_json_msg('1','', '未能获得数据');
+                }
+                $data['org_json'] = $ret['data'][0];
+                //print_r($data['org_json']);
+		$this->load->view('public/popup/movestaff.php',$data);
 	}
 
 	/**
@@ -663,43 +733,72 @@ class Staff extends Admin_Controller {
 	 * @abstract 员工调岗保存
 	 */
 	public function save_move_staff(){
-		$search_flag = $this->input->post('search_flag', true);
-		$org_id 	= $this->input->post('orgid', true);		// 旧的组织id
-		//$orgname 	= $this->input->post('orgname', true);		// 旧的组织名称
-		$user_id 	= $this->input->post('user_id', true);		// 当前用户id
-		$new_org_id = $this->input->post('neworgid', true);		// 新的组织id
-		//$neworgname = $this->input->post('neworgname', true);	// 新的组织名称
-		//$org_pid 	= $this->input->post('parent_orgid', true);	// 新的父组织id
-		log_message('info', 'Into method save_move_staff');
-		// 判断是否为json串
-		if(is_not_json($user_id)){
-			form_json_msg('2', '', '$user_id ' . $user_id . ' not is json');
-		}
-		$user_arr = json_decode($user_id, true);
+		//以前组织id
+		$org_id = $this->input->post('orgid' , true);
+		$org_id = empty_to_value($org_id,'');
+		//旧组织名称
+		$orgname = $this->input->post('orgname' , true);
+		$orgname = empty_to_value($orgname,'');
+		//当前用户id
+		$user_id = $this->input->post('user_id' , true);
+		$user_id = empty_to_value($user_id,'');
 
-		if($search_flag == 'search'){	//如果是搜索页面过来的调岗需求，则需要逐个对应上组织
-			foreach($user_arr as $u_k => $u_v){
-				$user_arr[$u_k]['orgid'] 	= $org_id[$u_k]; 	// 用户以前所属的组织id
-			}
-		}else {
-			foreach($user_arr as $u_k => $u_v){
-				$user_arr[$u_k]['orgid'] 	= $org_id; 	// 用户以前所属的组织id
-				//$user_arr[$u_k]['org_name'] = $orgname; // 用户以前所属的组织名称
-			}
+		$new_org_id = $this->input->post('neworgid' , true);
+		$new_org_id = empty_to_value($new_org_id,'');
+
+		$neworgname = $this->input->post('neworgname' , true);
+		$neworgname = empty_to_value($neworgname,'');
+
+		//新的父组织id
+		$org_pid = $this->input->post('parent_orgid' , true);
+		$org_pid = empty_to_value($org_pid,0);
+		//echo '$org_pid=' . $org_pid . '<br/>';
+		//die();
+		if( bn_is_empty($org_id) || bn_is_empty($orgname) || bn_is_empty($user_id)  || bn_is_empty($new_org_id)  || bn_is_empty($neworgname)){//为空
+			form_json_msg('1','', '参数有误');//
 		}
-		
+
+		if(is_not_json($user_id)){//不是json串
+			form_json_msg('2','', '$user_id ' . $user_id . ' not is json');//
+		}
+		$user_arr = json_decode($user_id,true);
+		foreach($user_arr as $u_k => $u_v){
+			$user_arr[$u_k]['orgid'] = $org_id;//用户以前所属的组织id
+			$user_arr[$u_k]['org_name'] = $orgname;//用户以前所属的组织名称
+		}
 		$this->load->library('StaffLib','','StaffLib');
 		$other_arr = array(
-            'site_id' 	=> $this->p_site_id,
-            'obj' 		=> array(
-                		'sys' => $this->p_sys_arr
-				)
+            'site_id' => $this->p_site_id,//站点id 
+            'obj' => array(
+                'sys' => $this->p_sys_arr
+		)
 		);
-		$move_boolean = $this->StaffLib->neworg_get_user($user_arr, $new_org_id, $other_arr);
-		if($move_boolean){
-			form_json_msg('0', '', '调岗成功');
+		$move_boolean = $this->StaffLib->neworg_get_user($user_arr,$new_org_id,$other_arr);
+		if($move_boolean){//成功
+			           //发送员工部门调动消息
+			           $info_other_arr = array(
+// 			               'org_id'		=> $org_id,//以前的部门id
+			               'new_org_id' => $new_org_id,//新的部门id
+			               'new_org_name' => $neworgname,//新的部门名称
+			               'old_org_name' => $orgname,//旧的部门名称//可以为空;如果用户数组有的话，用用户数组的
+			           );
+			           $this->staff_change_org_info($user_arr,$info_other_arr);
+			           //日志
+			           $this->load->library('LogLib','','LogLib');
+			           $log_in_arr = $this->p_sys_arr;
+			           array(
+			                 'Org_id' => $this->p_org_id ,//组织ID
+			                 'site_id' => $this->p_site_id ,//站点ID
+			                 'operate_id' => $this->p_user_id,//操作会员ID
+			                 'login_name' => $this->p_account ,//操作账号[可以为空，没有，则重新获取]
+			                 'display_name' => $this->p_display_name,//操作姓名[可以为空，没有，则重新获取]
+			                 'client_ip' => $this->p_client_ip ,//客户端ip
+			             );
+			          $re_id = $this->LogLib ->set_log(array('5','6'),$log_in_arr);
+			          
+			form_json_msg('0','', '调岗成功');
 		}else{
-			form_json_msg('1', '', '调岗失败');
+			form_json_msg('1','', '调岗失败');
 		}
 	}
 
@@ -718,117 +817,72 @@ class Staff extends Admin_Controller {
 	 'old_org_name' => $aaa,//旧的部门名称//可以为空;如果用户数组有的话，用用户数组的
 	 );
 	 */
-	public function staff_change_org_info($user_arr = array(), $other_arr = array()){
-		$this->load->library('Informationlib', '', 'Informationlib');
-		
-		// 员工部门调动
- 		$ns_allold_org_id 	= arr_unbound_value($other_arr, 'org_id', 2, '');		// 旧的部门id
-		$ns_new_org_id 		= arr_unbound_value($other_arr, 'new_org_id', 2, '');	// 新的部门id
-		$ns_new_org_name 	= arr_unbound_value($other_arr, 'new_org_name', 2, '');	// 新的部门名称
-		$ns_allold_org_name = arr_unbound_value($other_arr, 'old_org_name', 2, '');	// 旧部门名称
-		
+	public function staff_change_org_info($user_arr = array(),$other_arr = array()){
+		//13.1.2.员工部门调动
+		$this->load->library('Informationlib','','Informationlib');
+// 		$ns_allold_org_id = arr_unbound_value($other_arr,'org_id',2,'');//新的部门id
+		$ns_new_org_id = arr_unbound_value($other_arr,'new_org_id',2,'');//新的部门id
+		$ns_new_org_name = arr_unbound_value($other_arr,'new_org_name',2,'');//新的部门名称
+		$ns_allold_org_name = arr_unbound_value($other_arr,'old_org_name',2,'');//旧部门名称
 		//根据组织id分别获取就部门和现在部门的管理员信息
-		$this->load->model('uc_org_manager_model', 'org_m');
-		$old_manager_id = $this->org_m->get_org_manager_userid($ns_allold_org_id, $this->p_site_id);
-		$new_manager_id = $this->org_m->get_org_manager_userid($ns_new_org_id, $this->p_site_id);
+// 		$this->load->model('uc_org_manager_model', 'org_m');
+// 		$old_manager_id = $this->org_m->get_org_manager_userid($ns_allold_org_id, $this->p_site_id);
+// 		$new_manager_id = $this->org_m->get_org_manager_userid($ns_new_org_id, $this->p_site_id);
 		
 		foreach($user_arr as $u_k => $u_v){
-			//echo 1;
-			$ns_user_id 		= arr_unbound_value($u_v, 'userid', 2, '');		// 用户id
-			$ns_user_name 		= arr_unbound_value($u_v, 'user_name', 2, '');	// 用户姓名
-			$ns_old_org_name 	= arr_unbound_value($u_v, 'org_name', 2, '');	// 旧部门名称
-			
-			if(bn_is_empty($ns_old_org_name)){ //为空,则用其它参数中的
+			$ns_user_id = arr_unbound_value($u_v,'userid',2,'');//用户id
+			$ns_user_name = arr_unbound_value($u_v,'user_name',2,'');//用户姓名
+			$ns_old_org_name = arr_unbound_value($u_v,'org_name',2,'');//旧部门名称
+			if(bn_is_empty($ns_old_org_name)){//为空,则用其它参数中的
 				$ns_old_org_name = $ns_allold_org_name;
 			}
-			
 			//获得用户信息
 			if($ns_user_id > 0 ){
 				/***************发送消息给个人_start************/
 				$info_pre_arr = array(
-                    'from_user_id' 	=> $this->p_user_id,	// 消息发送者用户id
-                    'from_site_id' 	=> $this->p_site_id,	// 消息发送者站点id
-                    'to_user_id' 	=> $ns_user_id,			// $ns_new_org_id,//消息接受者id[是组织时为组织id,是用户时，是用户id]
-                    'to_site_id' 	=> $this->p_site_id,	// 消息接受者站点id
-                    'is_group' 		=> 0,					// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]   
-                    'msg_type' 		=> 1,					// 消息类型  1 - 组织变动
-                    'msg_id' 		=> 2,					// 1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职   10 - 部门删除  11 - 员工入职确认 12 - 员工离职确认 13 - 员工部门调动确认 14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息 
+                    'from_user_id' => $this->p_user_id,//消息发送者用户id
+                    'from_site_id' => $this->p_site_id,//消息发送者站点id
+                    'to_user_id' => $ns_user_id,//$ns_new_org_id,//消息接受者id[是组织时为组织id,是用户时，是用户id]
+                    'to_site_id' => $this->p_site_id,//消息接受者站点id
+                    'is_group' => 0,//是否为讨论组聊天1是[是组织] 0 否[是单个用户]   
+                    'msg_type' => 1,//消息类型  1 - 组织变动
+                    'msg_id' => 2,//1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职   10 - 部门删除  11 - 员工入职确认 12 - 员工离职确认 13 - 员工部门调动确认 14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息 
 				);
 				$info_body = array(
-                    'operator_id' 	=> $this->p_user_id,	// 操作发起人用户ID
-                    'user_id' 		=> $ns_user_id,			// 用户ID
-                    'user_name' 	=> $ns_user_name ,		// 用户姓名
-                    'dept_id' 		=> $ns_new_org_id,		// 新部门ID
-                    'old_dept_name' => $ns_old_org_name,	// 旧部门名称
-                    'dept_name' 	=> $ns_new_org_name,	// 新部门名称
-                    'desc' 			=> '',					// 消息描述
+                    'operator_id' => $this->p_user_id,//操作发起人用户ID
+                    'user_id' => $ns_user_id,//用户ID
+                    'user_name' => $ns_user_name ,//用户姓名
+                    'dept_id' => $ns_new_org_id,//新部门ID
+                    'old_dept_name' => $ns_old_org_name,//旧部门名称
+                    'dept_name' => $ns_new_org_name,//新部门名称
+                    'desc' => '',//消息描述
 				);
-				
 				log_message('info', 'into class ' . json_encode($info_pre_arr) . json_encode($info_body) . '.');
-				
 				$this->Informationlib->send_info($info_pre_arr,$info_body);
-				
 				log_message('info', 'send msg orgchange userid = ' . $ns_user_id . '.');
 				/***************发送消息给个人_end************/
 				
-				
 				/***************发送消息给原部门管理员_start************/
-				if($old_manager_id > 0){
-					$old_manager_info_pre_arr = array(
-							'from_user_id' 	=> $this->p_user_id,// 消息发送者用户id
-							'from_site_id' 	=> $this->p_site_id,// 消息发送者站点id
-							'to_user_id' 	=> $old_manager_id,	// $ns_new_org_id,//消息接受者id[是组织时为组织id,是用户时，是用户id]
-							'to_site_id' 	=> $this->p_site_id,// 消息接受者站点id
-							'is_group' 		=> 0,				// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]
-							'msg_type' 		=> 1,				// 消息类型  1 - 组织变动
-							'msg_id' 		=> 2,				// 1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职   10 - 部门删除  11 - 员工入职确认 12 - 员工离职确认 13 - 员工部门调动确认 14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息
-					);
-					$old_manager_info_body = array(
-							'operator_id' 	=> $this->p_user_id,// 操作发起人用户ID
-							'user_id' 		=> $ns_user_id,		// 用户ID
-							'user_name' 	=> $ns_user_name ,	// 用户姓名
-							'dept_id' 		=> $ns_new_org_id,	// 新部门ID
-							'old_dept_name' => $ns_old_org_name,// 旧部门名称
-							'dept_name' 	=> $ns_new_org_name,// 新部门名称
-							'desc' 			=> '',				// 消息描述
-					);
-					
-					log_message('info', 'into class ' . json_encode($old_manager_info_pre_arr) . json_encode($old_manager_info_body) . '.');
-					
-					$this->Informationlib->send_info($old_manager_info_pre_arr,$old_manager_info_body);
-					
-					log_message('info', 'send msg orgchange to_user_id = ' . $old_manager_id . '.');
-				}
+// 				$info_pre_arr = array(
+// 						'from_user_id' => $this->p_user_id,//消息发送者用户id
+// 						'from_site_id' => $this->p_site_id,//消息发送者站点id
+// 						'to_user_id' => $ns_user_id,//$ns_new_org_id,//消息接受者id[是组织时为组织id,是用户时，是用户id]
+// 						'to_site_id' => $this->p_site_id,//消息接受者站点id
+// 						'is_group' => 0,//是否为讨论组聊天1是[是组织] 0 否[是单个用户]
+// 						'msg_type' => 1,//消息类型  1 - 组织变动
+// 						'msg_id' => 2,//1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职   10 - 部门删除  11 - 员工入职确认 12 - 员工离职确认 13 - 员工部门调动确认 14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息
+// 				);
+// 				$info_body = array(
+// 						'operator_id' => $this->p_user_id,//操作发起人用户ID
+// 						'user_id' => $ns_user_id,//用户ID
+// 						'user_name' => $ns_user_name ,//用户姓名
+// 						'dept_id' => $ns_new_org_id,//新部门ID
+// 						'old_dept_name' => $ns_old_org_name,//旧部门名称
+// 						'dept_name' => $ns_new_org_name,//新部门名称
+// 						'desc' => '',//消息描述
+// 				);
 				/***************发送消息给原部门管理员_end************/
 				
-				/***************发送消息给新部门管理员_start************/
-				if($new_manager_id > 0){
-					$new_manager_info_pre_arr = array(
-							'from_user_id' 	=> $this->p_user_id,// 消息发送者用户id
-							'from_site_id' 	=> $this->p_site_id,// 消息发送者站点id
-							'to_user_id' 	=> $new_manager_id,	// $ns_new_org_id,//消息接受者id[是组织时为组织id,是用户时，是用户id]
-							'to_site_id' 	=> $this->p_site_id,// 消息接受者站点id
-							'is_group' 		=> 0,				// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]
-							'msg_type' 		=> 1,				// 消息类型  1 - 组织变动
-							'msg_id' 		=> 2,				// 1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职   10 - 部门删除  11 - 员工入职确认 12 - 员工离职确认 13 - 员工部门调动确认 14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息
-					);
-					$new_manager_info_body = array(
-							'operator_id' 	=> $this->p_user_id,// 操作发起人用户ID
-							'user_id' 		=> $ns_user_id,		// 用户ID
-							'user_name' 	=> $ns_user_name ,	// 用户姓名
-							'dept_id' 		=> $ns_new_org_id,	// 新部门ID
-							'old_dept_name' => $ns_old_org_name,// 旧部门名称
-							'dept_name' 	=> $ns_new_org_name,// 新部门名称
-							'desc' 			=> '',				// 消息描述
-					);
-						
-					log_message('info', 'into class ' . json_encode($new_manager_info_pre_arr) . json_encode($new_manager_info_body) . '.');
-						
-					$this->Informationlib->send_info($new_manager_info_pre_arr, $new_manager_info_body);
-						
-					log_message('info', 'send msg orgchange to_user_id = ' . $new_manager_id . '.');
-				}
-				/***************发送消息给新部门管理员_end************/
 			}
 		}
 	}
@@ -836,7 +890,7 @@ class Staff extends Admin_Controller {
 	/**
 	 * @abstract 生态企业企业信息页面
 	 * @details
-	 * -# 关闭蜜蜂账号
+	 * -# 关闭云企账号
 	 */
 	public function closeAccount(){
 		$this->load->library('StaffLib','','StaffLib');
@@ -873,6 +927,16 @@ class Staff extends Admin_Controller {
 			form_json_msg(COMMON_PARAM_ERROR,'','can not get org info from ums',array('user_id' => $user_id));//返回信息json格式
 		}
 		
+                $res_user_product = $this->ums->setUserProduct($this->p_site_id, $user_id, UC_PRODUCT_ID, 0);//禁用用户产品
+                if(!$res_user_product){//禁用失败
+                    log_message('error', __FUNCTION__.'禁用员工失败');
+                    form_json_msg(COMMON_FAILURE,'','员工禁用失败！',array('user_id' => $user_id));//返回信息json格式
+                }
+                
+		//返回成功信息
+		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
+                
+                /*这是原来的
 		//写任务
 		$data = array(
 			'customer_code'=>$this->p_customer_code,
@@ -882,9 +946,7 @@ class Staff extends Admin_Controller {
 		);
 		$this->load->model('account_upload_task_model', 'upload_task');
 		$this->upload_task->saveTask(ACCOUNT_DISABLE_UPLOAD, json_encode($data));
-		
-		//返回成功信息
-		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
+		*/
 		
 		/*
 		if(!preg_match('/^[\d]+$/',$user_id)){
@@ -918,8 +980,6 @@ class Staff extends Admin_Controller {
 	 *  开通单个用户
 	 */
 	public function open_user(){
-		$user_id=$this->input->post('user_id', true);
-		
 		//获取参数
 		$user_id=$this->input->post('user_id', true);
 		
@@ -934,6 +994,18 @@ class Staff extends Admin_Controller {
 			form_json_msg(COMMON_PARAM_ERROR,'','can not get org info from ums',array('user_id' => $user_id));//返回信息json格式
 		}
 		
+                $res_user_product = $this->ums->setUserProduct($this->p_site_id, $user_id, UC_PRODUCT_ID, UC_PRODUCT_OPEN_STATUS);//开通用户产品
+                if(!$res_user_product){//开通失败
+                    log_message('error', __FUNCTION__.'启用员工失败');
+                    form_json_msg(COMMON_FAILURE,'','启用员工失败！',array('user_id' => $user_id));//返回信息json格式
+                }
+                
+		//返回成功信息
+		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
+               
+                
+                
+		/*
 		//写任务
 		$data = array(
 				'customer_code'=>$this->p_customer_code,
@@ -944,11 +1016,6 @@ class Staff extends Admin_Controller {
 		$this->load->model('account_upload_task_model', 'upload_task');
 		$this->upload_task->saveTask(ACCOUNT_ENABLE_UPLOAD, json_encode($data));
 		
-		//返回成功信息
-		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
-		
-		
-		/*
 		$user_id = empty_to_value($user_id,0);
 		if(!preg_match('/^[\d]+$/',$user_id)){
 			form_json_msg('1','','参数有误！');//返回错误信息json格式
@@ -985,7 +1052,6 @@ class Staff extends Admin_Controller {
 	public function get_user_power(){
 		$user_id = $this->input->post('user_id', true);
 		log_message('info', 'Into method get_user_power input----> userid = ' . $user_id);
-		
 		// 载入UmsLib类库
 		$this->load->library('UmsLib', '', 'ums');
 		
@@ -1000,6 +1066,7 @@ class Staff extends Admin_Controller {
 		
 		// 根据userId获取用户个性化权限
 		$re_data = $this->RightsLib->get_right_from_user($user_id);
+		
 		
 		// 如果用户没有个性化权限，则从UMS取出用户所在的部门串，然后根据部门串获取部门权限
 		if(isemptyArray($re_data)){
@@ -1093,9 +1160,8 @@ class Staff extends Admin_Controller {
 		}
 		
 		// 取出旧权限和权限获得的位置
-		$old_power_arr 		= isset($re_data['right_arr']) ? $re_data['right_arr'] : array();
-		$from_where 		= isset($re_data['from_where'])?$re_data['from_where']:POWER_FROM_USER;
-		$from_where_data 	= isset($re_data['from_where_data'])?$re_data['from_where_data']:'';
+		$old_power_arr = isset($re_data['right_arr']) ? $re_data['right_arr'] : array();
+		$from_where 	= isset($re_data['from_where'])?$re_data['from_where']:POWER_FROM_USER;
 		
 		// 对比新旧权限数组，判断权限是否发生变化
 		$res_arr 			= $this->RightsLib->compare_rights($old_power_arr, $new_power_arr);
@@ -1125,7 +1191,7 @@ class Staff extends Admin_Controller {
 			
 			// 如果会议权限发生变化，则保存线程
 			if($is_confSet_change == CONF_POWER_IS_CHANGE){
-				$boss_totle_template = $this->boss->getSellingProductTemplates($this->p_contract_id);
+				$boss_totle_template = $this->boss->getSellingProductTemplates($this->p_contract_id, $from_where);
 				//log_message('info', '$boss_totle_template='.var_export($boss_totle_template,true));
 				$new_template_arr = $this->RightsLib->combine_boss_template_data($boss_totle_template, $new_power_arr);
 				$update_value = array(
@@ -1154,7 +1220,7 @@ class Staff extends Admin_Controller {
 			}
 				
 			// 保存线程
-			$boss_totle_template = $this->boss->getSellingProductTemplates($this->p_contract_id, $from_where_data);
+			$boss_totle_template = $this->boss->getSellingProductTemplates($this->p_contract_id, $from_where);
 			
 			$new_template_arr = $this->RightsLib->combine_boss_template_data($boss_totle_template, $new_power_arr);
 			$update_value = array(
@@ -1186,56 +1252,4 @@ class Staff extends Admin_Controller {
 	public function batchModifyStaff() {
 		$this->load->view('staff/batchModifyStaff.php');
 	}
-	
-	/**
-	 * @brief 修改用户信息
-	 */
-	public function updateUserInfo(){
-		// 获取从表单提交的数据
-		$post_json	= $this->input->post('post_json', true);
-		$update_user_info = json_decode($post_json,true);
-		log_message('info', __FUNCTION__." input->\n".var_export($update_user_info, true));
-		//如果用户修改了账户，则需要在本地uc_user数据表中进行同步更新
-		if($update_user_info['accountId'] != null){
-			$data = array(
-				'userID'		=> $update_user_info['user_id'],
-				'accountId'		=> $update_user_info['accountId']
-			);
-			$this->load->model('uc_user_model', 'user_model');
-			$ret = $this->user_model->updateUserAccountId($data);
-			$update_message = $ret ? 'update accountID OK' : 'update accountID false';
-			unset($update_user_info['accountId']);
-			log_message('info', $update_message);
-		}
-		//如果是其他项进行修改则需调用UMS修改接口
-		$update_arr = array();
-		foreach ($update_user_info as $k=>$val){
-			if($k == 'user_id'){
-				$update_arr['id'] = $val;
-				continue;
-			}
-			//如果是国家，则需要转义成国码
-			if($k == 'countryCode'){
-				include_once APPPATH . 'libraries/public/Country_code.php';
-				$country_code_obj   = new Country_code();
-				$country_arr    = $country_code_obj->get_country_code();
-				foreach ($country_arr as $c_key => $c_val){
-					if($val == $c_val['ch_name']){
-						$update_arr['countryCode'] = substr($c_val['country_code'], 1);
-						break;
-					}
-				}
-			}else {
-				$update_arr[$k] = $val;
-			}
-		}
-		$this->load->library('UmsLib', '', 'ums');
-		$result = $this->ums->updateUserInfo($update_arr);
-		if($result){
-			form_json_msg(0,'',$result);
-		}else{
-			form_json_msg(-1 , '', '');
-		}
-	}
-	
 }

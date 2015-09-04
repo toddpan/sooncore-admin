@@ -1,31 +1,32 @@
 <div class="contRight" style="">
 	<div id="part01" style="">
-	<?php if($this->functions['orgAuthority']){?>
-		<a class="link_limitSet"  onclick="toggleGroupLimit(this,event)" title="部门权限">部门权限</a>
-	<?php }?>
-		<div class="bread"></div>
+            <div class="p1" style=" height: 45px;">
+            <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+                    <a class="link_limitSet"  onclick="toggleGroupLimit(this,event)" title="部门权限">部门权限</a>
+            <?php }?>
+                    <div class="bread">
+                        <span><?php echo $org_json['dept_list']['org_name'];?></span>
+                    </div>
+                </div>
 		<div class="tabToolBar">
-			<?php if($this->functions['employeeAdd']){?>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
 			<a class="btnBlue yes btnAddUser">
 				<span class="text" onclick="addNewMember_one()">添加员工</span>
 				<span id="add_up" class="more">&nbsp;</span>
 				<b class="bgR"></b>
 			</a>
-			<?php }?>
 			<div class="tabToolBox" style="display:none;">
-				<?php if($this->functions['employeeChange']){ ?>
+			
 				<a class="btnGray btn btnChangeUser_O" >
 					<span class="text">员工调岗</span>
 					<b class="bgR"></b>
 				</a>
-				<!--a class="btnGray btn btnDeleUser">
+				<a class="btnGray btn btnDeleUser">
 					<span class="text">删除员工</span>
 					<b class="bgR"></b>
-				</a-->
-				<?php 
-				}
-				if($this->functions['employeeAsManager']){ 
-				?>
+				</a>
+				<?php }?>
+				<?php if($this->p_role_id == SYSTEM_MANAGER){?>
 				<a class="btnGray btn btnBeManage" onclick="showSetManager()">
 					<span class="text">指定为部门管理者</span>
 					<b class="bgR"></b>
@@ -34,15 +35,17 @@
 					<span class="text">取消管理者身份</span>
 					<b class="bgR"></b>
 				</a>
-				<?php } ?>
+				<?php }?>
 			</div>
+			<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
 			<ul class="menu" id="menu3" style="display: none;">
-				<?php if($this->functions['employeeAdd']){?>
+				<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
 				<li>
-					<a onclick="addNewMember_one();">添加员工</a>
+					<a>
+						<span onclick="addNewMember_one();" style="cursor: pointer">添加员工</span>
+					</a>
 				</li>
 				<?php }?>
-				<?php if($this->functions['employeeBatch']){?>
 				<li>
 					<a onclick="loadCont('staff/batchAddStaffPage');">批量添加</a>
 				</li>
@@ -50,36 +53,52 @@
 				<li>
 					<a  onclick="loadCont('staff/batchModifyStaff');">批量修改</a>
 				</li>
-				<?php }?>
+				
 			</ul>
+			<?php }?>
 		</div>
-	</div>
-	<div id="part02" style="display:none;">
-		<div class="bread">
-			<span>成本中心</span>&nbsp;&gt;&nbsp;<span>未指定成本中心</span>
-		</div>
-		<div id="test"></div>
-		<div class="tabToolBar">
-		   <div class="tabToolBar-right" style="padding: 0;">
-				<a class="right_btn btnBlue" style="float: left; margin-right: 5px;">
-					<span class="text">调入员工</span><span class="more">&nbsp;</span>
-					<b class="bgR"></b>
-				</a>
-				<div class="select selectGroup" style="margin-top: 5px;">
-					<span>全部组织</span>
-				</div>
-			</div>
-			<div class="tabToolBox" style="display: none">
-				<a class="btnGray btn btnMoveUserTo"  onclick="showDialog('costcenter/move_staff')">
-					<span class="text">移动到</span>
-					<b class="bgR"></b>
-				</a>
-				<a class="btnGray btn btnMoveUser"  onclick="showDialog('costcenter/del_staff')">
-					<span class="text">移除员工</span>
-					<b class="bgR"></b>
-				</a>
-			</div>
-		</div>
+            
+                <!--员工列表位-->
+                <table class="table table_org">
+                    <thead>
+                    <tr>
+                        <th width="6%"><label class="checkbox"><input type="checkbox" /></label></th>
+                        <th style="text-align: left; text-indent: 24px">姓名</th>
+                        <th>帐号</th>
+                        <th>手机</th>
+                        <th>上次登录</th>
+                        <th>帐号操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $user_arr = $org_json['dept_list']['member_list'];
+                       //var_dump($user_arr);
+                    foreach($user_arr as $k => $v):
+                        $productStatus = arr_unbound_value($v,'status',2,'0');
+                        ?>
+                        <tr>
+                            <td><label class="checkbox"><input type="checkbox" value="<?php echo $v['user_id'];?>" /></label></td>
+                            <td class="tl"><a style="cursor: pointer" class="userName <?php if($v['is_admin'] == 1): ?> manage <?php endif;?>  ellipsis"  onclick="staff_information1(this,<?php echo $v['user_id'];?>)"><?php echo $v['display_name'];?></a></td>
+                            <td class="tl"><span class="userCount ellipsis"><?php echo $v['user_account'];?></span></td>
+                            <td class="telephone"><?php echo $v['mobile'];?></td>
+                            <td class="logintime">
+                                <?php
+                                if(!bn_is_empty($v['last_login_time'])){
+                                    echo dgmdate($v['last_login_time'], 'dt');
+                                }else{
+                                        echo '未登录';
+                                }
+                                ?>
+                            </td>
+                            <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
+                            <td><a  class="countType <?php if($productStatus == 5): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"></a></td>
+                            <?php }?>
+                        </tr>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+                
 	</div>
 	<div class="groupLimit" id="org_power" style="display: none">
 		<b class="arrow"></b>
@@ -97,3 +116,97 @@
 		 </div>      
 	</div>
 </div>
+<script type="text/javascript">
+$(function() {
+    var path_mag = "organize/get_manager_user_id";
+    //批量选中员工，显示对员工的操作
+    $('#part01 table:first thead label.checkbox').live("click",function(){
+        var obj = getSelectNode(); 
+        var org_ID = obj.oid; //获得当前组织id
+           if ($(this).hasClass("checked")) {
+               $(this).removeClass("checked");
+               $(this).parents("thead").next().find("label.checkbox").removeClass("checked");
+               $('#part01 .tabToolBox').hide();
+           } else {
+               $(this).addClass("checked");
+               $(this).parents("thead").next().find("label.checkbox").addClass("checked");//选中所有
+               $('#part01 .tabToolBox').show();
+               if ($(this).parents("thead").next().find("label.checked").length == 1) {
+                   //alert(111)
+                   var user_id = $(this).parents("thead").next().find("input").val(); //
+                   var staff_mag = {
+                       "orgid": org_ID,
+                       "user_id": user_id
+                   }
+                   //alert(staff_mag)
+                   set_mange(staff_mag, path_mag);
+               } else {
+                   $('#part01 .btnBeManage').hide();
+                   $('#part01 .btnMoveManage').hide();
+               }
+           }
+       }
+    );
+        
+        //单个选择员工的操作
+    $('#part01 table.table_org tbody label.checkbox').live("click",function() {
+        var obj = getSelectNode(); 
+        var org_ID = obj.oid; //获得当前组织id
+        
+        if ($(this).hasClass("checked")) {
+            //alert(99);
+            $(this).removeClass("checked");//去掉选中状态
+            if ($(this).parents("tbody").prev().find("label.checkbox").hasClass("checked")) {
+                $(this).parents("tbody").prev().find("label.checkbox").removeClass("checked");//去掉全部选中状态
+            }
+            if ($(this).parents("tbody").find("label.checked").length > 0) {
+                $('#part01 .tabToolBox ').show();
+                $('#part01 .btnBeManage').hide();
+                $('#part01 .btnMoveManage').hide();
+            } else {
+                $('#part01 .tabToolBox ').hide();
+                //$('#part01 .btnBeManage').hide();
+            };
+            if ($(this).parents("tbody").find("label.checked").length == 1) {
+                //alert(1)
+                var user_id = $(this).parents("tbody").find("label.checked input").val(); //
+                var staff_mag = {
+                    "orgid": org_ID,
+                    "user_id": user_id
+                };
+                //alert(staff_mag)
+                set_mange(staff_mag, path_mag);
+            }
+
+        } else {
+            $(this).addClass("checked");
+            if ($(this).parents("tbody").find("label.checked").length > 0) {
+                $('#part01 .tabToolBox ').show();
+                $('#part01 .btnBeManage').hide();
+                $('#part01 .btnMoveManage').hide();
+            } else {
+                $('#part01 .tabToolBox ').hide();
+                //$('#part01 .btnBeManage').hide();
+            };
+            if ($(this).parents("tbody").find("label.checkbox").length == $(this).parents("tbody").find("label.checked").length) {//如果被多选则在thead添加class
+                if (!$(this).parents("tbody").prev().find("label.checkbox").hasClass("checked")) {
+                    $(this).parents("tbody").prev().find("label.checkbox").addClass("checked");
+                }
+            }
+            if ($(this).parents("tbody").find("label.checked").length == 1) {
+                // alert(2)
+                //$('#part01 .tabToolBox ').show();
+                var user_id = $(this).parents("tbody").find("label.checked input").val(); //获得USERID
+                var staff_mag = {
+                    "orgid": org_ID,
+                    "user_id": user_id
+                }
+                //alert(staff_mag)
+                set_mange(staff_mag, path_mag);
+            }
+        }
+    }  
+   );
+   
+});
+</script>

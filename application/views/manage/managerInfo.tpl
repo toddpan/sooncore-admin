@@ -5,27 +5,23 @@
             <a class="pageGoBack" id="admin_goback"></a>
             <span class="personName" user="{$must_tag['user_id']}" role_id="{$id}">{$must_tag['last_name']}</span>
             <div class="fr">
-            <a class="btn" onclick="toggleAccount(this)"><span class="text">关闭帐号</span><b class="bgR"></b></a>&nbsp;
-            {if $functions['changePassword'] eq true }
+                <a class="btn" onclick="toggleAccount(this)"><span class="text">关闭帐号</span><b class="bgR"></b></a>&nbsp;              
                 <a class="btn" onclick="alert_reset_pwd({$must_tag['user_id']})"><span class="text">重置密码</span><b class="bgR"></b></a>
-            {/if}
             </div>
         </div>
         <div class="cont-wrapper">
         <ul class="infoNav">
-            <li class="selected">员工信息</li>
+            <li>员工信息</li>
             <li>员工权限</li>
-            <li >管理员权限</li>
+            <li class="selected">管理员权限</li>
         </ul>
-        <dl class="infoCont manager_right">
-            <dd style="display:block;" id="dd1">
-                {if $functions['employeeEdit'] eq true}
+        <dl class="infoCont">
+            <dd style="display:none;" id="dd1">
                 <div class="toolBar2">
                     <a class="btnGray btn_infoEdit"><span class="text">编辑信息</span><b class="bgR"></b></a>
                     <a class="btnBlue btn_infoSave hide" onclick="staff_save_infor(this,{$must_tag['user_id']},{$id})"><span class="text">保存</span><b class="bgR"></b></a>
                     <a class="btnGray btn_infoCancel hide"><span class="text">取消</span><b class="bgR"></b></a>
                 </div>
-                {/if}
                 <table class="infoTable">
                 
                     <tr>
@@ -126,8 +122,7 @@
 					{foreach $other_tag_arr as $other_tag}
 					<tr>
 						<td class="tr">{$other_tag['tag_name']}：</td>
-						<td target_name="">
-						<!-- <td target_name="{$other_tag['tag_key']}">-->
+						<td target_name="{$other_tag['tag_key']}">
 							<span class="infoText ">{$other_tag['tag_value']}</span>
 							<div class="inputBox w360 hide"> 
 								<b class="bgR"></b>
@@ -158,7 +153,7 @@
 		<!-- 	<h3 class="setTitle">IM设置</h3> -->
 	<!-- 	<label class="checkbox im_file checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
-	<!-- 	可使用全时蜜蜂 IM 互传文档</label> -->
+	<!-- 	可使用全时云企 IM 互传文档</label> -->
 	<!-- 	<label class="checkbox add_link checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
 	<!-- 	自动将联系过的联系人添加到常用联系人列表</label> -->
@@ -166,19 +161,19 @@
 	<!-- 	<input type="checkbox" checked="checked"> -->
 	<!-- 	自动将联系过的讨论组添加到讨论组列表</label> -->
 	<h3 class="setTitle">通话设置</h3>
-		<label class="checkbox accept_call checked" style="width: 155px;">
+		<label class="checkbox accept_call checked">
 			<input type="checkbox" checked="checked" />
 				允许用户设置接听策略
 		</label>
-		<label class="checkbox set_area checkbox2" style="width: 240px;">
+		<label class="checkbox set_area checkbox2">
 			<input type="checkbox" checked="checked" />
 				用户可设定接听策略到海外直线电话
 		</label>
-		<label class="checkbox accept_cloud checked" style="width: 155px;">
+		<label class="checkbox accept_cloud checked">
 			<input type="checkbox" checked="checked">
-				允许使用蜜蜂拨打电话
+				允许使用云企拨打电话
 		</label>
-		<label class="checkbox accept_areaPhone checkbox2 checked" style="width: 130px;">
+		<label class="checkbox accept_areaPhone checkbox2 checked">
 			<input type="checkbox" checked="checked" />
 				允许拨打海外电话
 		</label>
@@ -204,11 +199,11 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox allow_attendee_call checked" style="width: 150px;">
+		<label class="checkbox allow_attendee_call checked">
 			<input type="checkbox" checked="checked" />
 				允许参会人自我外呼
 		</label>
-		<label class="checkbox record_name checked" style="width: 260px;">
+		<label class="checkbox record_name checked">
 			<input type="checkbox" checked="checked" />
 				所有参会者在加入会议时，允许录制姓名
 		</label>
@@ -293,11 +288,11 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox report_num checked" style="width: 220px;">
+		<label class="checkbox report_num checked">
 			<input type="checkbox" checked="checked" />
 			参会人加入会议，告知参会者人数
 		</label>
-		<label class="checkbox warning_information checked" style="width: 325px;">
+		<label class="checkbox warning_information checked">
 			<input type="checkbox" checked="checked" />
 			第一方与会者是否听到“您是第一个入会者”的提示
 		</label>
@@ -327,7 +322,7 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox accept_95 checked" style="width: 230px;">
+		<label class="checkbox accept_95 checked">
 			<input type="checkbox" checked="checked" />
 			数据会议结束后，立即结束电话会议
 		</label>
@@ -349,34 +344,34 @@
 			<input id="accept_max_input" name="accept_max_input" class="form-text input_right"  style="width: 60px;" value="" placeholder="" type="text"/>方
 			<span class="gray-style">(只限数字，最大2000方，最小2方)</span>
 		</label>
-		<label class="checkbox accept_inner_local" style="width: 130px;">
+		<label class="checkbox accept_inner_local">
 			<input type="checkbox" checked="checked" />
 			允许国内本地接入
 		</label>
-		<label class="checkbox accept_40" style="width: 135px;">
+		<label class="checkbox accept_40">
 			<input type="checkbox" checked="checked" />
 			允许国内 400 接入
 		</label>
-		<label class="checkbox accept_80" style="width: 135px;">
+		<label class="checkbox accept_80">
 			<input type="checkbox" checked="checked" />
 			允许国内 800 接入
 		</label>
-		<label class="checkbox accept_hk_local" style="width: 140px;">
+		<label class="checkbox accept_hk_local">
 			<input type="checkbox" checked="checked" />
 			允许香港 local 接入
 		</label>
-		<label class="checkbox accept_toll_free" style="width: 160px;">
+		<label class="checkbox accept_toll_free">
 			<input type="checkbox" checked="checked" />
 			允许国际 toll free 接入
 		</label>
-		<label class="checkbox accept_local_toll" style="width: 165px;">
+		<label class="checkbox accept_local_toll">
 			<input type="checkbox" checked="checked" />
 			允许国际 local toll 接入
 		</label>
 	</dd>
-            <dd style="display: none">
+            <dd>
                 <div class="toolBar2">
-                    {if $admin_role_arr|@count neq 0}<a class="btnGray btn_infoEdit2" id="detail_3"><span class="text">编辑信息</span><b class="bgR"></b></a>{/if}
+                    <a class="btnGray btn_infoEdit2" id="detail_3"><span class="text">编辑信息</span><b class="bgR"></b></a>
                     <a class="btnBlue btn_infoSave2 hide" onclick="save_manger_detail({$must_tag['user_id']})"><span class="text">保存</span><b class="bgR"></b></a>
                     <a class="btnGray btn_infoCancel2 hide"><span class="text">取消</span><b class="bgR"></b></a>
                 </div>
@@ -449,7 +444,7 @@
 			{foreach $admin_role_arr as $role}
                     <table class="infoTable">
                         <tr>
-                            <td width="220" id="admin_role_id" target="{$role['id']}">管理员角色：</td>
+                            <td width="220">管理员角色：</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -459,10 +454,10 @@
                                     <span class="text selected">{$role['role']}</span>
                                     <div class="optionBox">
                                         <dl class="optionList" >
-                                            <dd class="option" target="0" onclick="reselect_role(this)">请选择管理员角色</dd>
-                                            <dd class="option {if $role['role']=="员工管理员"}selected{/if}" target="3" onclick="reselect_role(this)">员工管理员</dd>
-                                            <dd class="option {if $role['role']=="帐号管理员"}selected{/if}" target="4" onclick="reselect_role(this)">帐号管理员</dd>
-                                           <!-- <dd class="option {if $role['role']=="生态管理员"}selected{/if}" target="5" onclick="reselect_role(this)">生态管理员</dd> -->
+                                            <dd class="option" target="1" onclick="reselect_role(this)">请选择管理员角色</dd>
+                                            <dd class="option {if $role['role']=="员工管理员"}selected{/if}" target="2" onclick="reselect_role(this)">员工管理员</dd>
+                                            <dd class="option {if $role['role']=="帐号管理员"}selected{/if}" target="3" onclick="reselect_role(this)">帐号管理员</dd>
+                                            <dd class="option {if $role['role']=="生态管理员"}selected{/if}" target="4" onclick="reselect_role(this)">生态管理员</dd>
                                         </dl>
                                     </div>
                                 </div>
@@ -483,13 +478,13 @@
                             <td>
                                 <div id="weidu01{$i}" class="combo selectBox w210">
                                     <a class="icon" ></a>
-                                    <span class="text selected">{$role['scope_level_1']}</span>
+                                    <span class="text selected">{$first_weidu}</span>
                                     <div class="optionBox">
                                         <dl class="optionList" target="2">
                                             <dd class="option" target="1" onclick="reselect_weidu(2,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">请选择第一个管理维度</dd>
                                             <dd class="option {if $first_weidu[$j]=="部门"}selected{/if}" target="2" onclick="reselect_weidu(2,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">部门</dd>
-                                      <!--      <dd class="option {if $first_weidu[$j]=="地区"}selected{/if}" target="3" onclick="reselect_weidu(3,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">地区</dd>
-                                            <dd class="option {if $first_weidu[$j]=="成本中心"}selected{/if}" target="4" onclick="reselect_weidu(4,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">成本中心</dd> -->
+                                            <dd class="option {if $first_weidu[$j]=="地区"}selected{/if}" target="3" onclick="reselect_weidu(3,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">地区</dd>
+                                            <dd class="option {if $first_weidu[$j]=="成本中心"}selected{/if}" target="4" onclick="reselect_weidu(4,this,'detail_ztree{$i}','first_level{$i}','weidu01{$i}')">成本中心</dd>
                                         </dl>
                                        
                                     </div>
@@ -497,11 +492,11 @@
                             </td>
                             <td>
                                 <div class="select-box w210" id="first_level{$i}">
-                                    <input type="text" class="text" onclick="showMenu(this);" id="departmentSel" value="{$role['org_name']}"  cl_id="part1" placeholder="请选择管理的部门" />
+                                    <input type="text" class="text" onclick="showMenu(this);" id="departmentSel" value="{$role.first_detail}"  cl_id="part1" placeholder="请选择管理的部门" />
                                     <a class="icon"  id="menuBtn" onclick="showMenu(this); return false;"></a>
                                     <div class="selectOptionBox" id="selectOption1" style="display: none; width: 210px;">
 									
-                                        <ul class="ztree" id="detail_ztree{$i}" ids="{$role['scope_level_1_value']}"></ul>
+                                        <ul class="ztree" id="detail_ztree{$i}" ids="{$role.ids}"></ul>
                                     </div>
                                 </div>
                             </td>
@@ -513,20 +508,20 @@
                             <td>
                                 <div id="weidu02" class="combo selectBox w210">
                                     <a class="icon" ></a>
-                                    <span class="text selected">{$role['scope_level_2']}</span>
+                                    <span class="text selected">{$second_weidu}</span>
                                     <div class="optionBox">
                                         <dl class="optionList">
                                             <dd class="option" target="1">请选择第二个管理维度</dd>
-                                            <dd class="option {if $role['scope_level_1'][$j]=="部门"}hide{/if} {if $role['scope_level_2'][$j]=="部门"}selected{/if}" target="2" onclick="reselect_weidu_1(2,this,'detail_ztree{$i}','first_level{$i}','weidu02',event)">部门</dd>
-                                            <dd class="option {if $role['scope_level_1'][$j]=="地区"}hide{/if} {if $role['scope_level_2'][$j]=="地区"}selected{/if}" target="3" onclick="reselect_weidu_1(3,this,'detail_ztree{$i}','first_level{$i}','weidu02{$i}',event)">地区</dd>
-                                            <dd class="option {if $role['scope_level_1'][$j]=="成本中心"}hide{/if} {if $role['scope_level_2'][$j]=="成本中心"}selected{/if}" target="4" onclick="reselect_weidu_1(4,this,'detail_ztree{$i}','first_level{$i}','weidu02',event)">成本中心</dd>
+                                            <dd class="option {if $first_weidu[$j]=="部门"}hide{/if} {if $second_weidu[$j]=="部门"}selected{/if}" target="2" onclick="reselect_weidu_1(2,this,'detail_ztree{$i}','first_level{$i}','weidu02',event)">部门</dd>
+                                            <dd class="option {if $first_weidu[$j]=="地区"}hide{/if} {if $second_weidu[$j]=="地区"}selected{/if}" target="3" onclick="reselect_weidu_1(3,this,'detail_ztree{$i}','first_level{$i}','weidu02{$i}',event)">地区</dd>
+                                            <dd class="option {if $first_weidu[$j]=="成本中心"}hide{/if} {if $second_weidu[$j]=="成本中心"}selected{/if}" target="4" onclick="reselect_weidu_1(4,this,'detail_ztree{$i}','first_level{$i}','weidu02',event)">成本中心</dd>
                                         </dl>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                <div class="select-box w210 {if $role['scope_level_2']==''}hide{/if}" id="first_level{$i}">
-                                    <input type="text" class="text" onclick="showMenu(this);" id="departmentSel2" placeholder="请选择管理的部门" value="{$role['scope_level_2_value']}" cl_id="part1"  ids="{$role['scope_level_2']}" />
+                                    <input type="text" class="text" onclick="showMenu(this);" id="departmentSel2" placeholder="请选择管理的部门" value="{$role.second_detail}" cl_id="part1"  ids="{$role.second_id}"/>
                                     <a class="icon"  onclick="showMenu(this); return false;"></a>
                                     <div class="selectOptionBox" style="display: none; width: 210px;">
 										

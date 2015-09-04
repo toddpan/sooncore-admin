@@ -36,17 +36,24 @@
 
 <script type="text/javascript">
 function descendNum(num){
+
+	
+	if(num>0){
+		num-- ;
+		setTimeout(function(){return descendNum(num)},1000);
+	}
+	
 	if(num == 0 ){
 	    //ajax重新发送短信
+		
 		$("#repeatSend span.text").text("重新发送");
 		$("#repeatSend").removeClass("disable").addClass("yes");
 		return false;
-	}else{
-		$("#repeatSend").removeClass("yes").addClass("disable");
-		$("#repeatSend span.text").text("重新发送("+num+")");
-		num=num-1;
-		setTimeout(function(){descendNum(num)}, 1000);
 	}
+	$("#repeatSend span.text").text("重新发送("+num+")");
+	
+	$("#repeatSend").removeClass("yes").addClass("disable");
+	
   }
 function repeatSend(t) {
 	if($(t).hasClass("disable")){
@@ -58,24 +65,19 @@ function repeatSend(t) {
             //ajax重新发送短信开始
 			var path="resetpassword/send_msg_code/" + <?php echo $user_id;?> + '/' + <?php echo $mobile;?>;
 			var obj={};
-			$(t).addClass("disable").removeClass("yes");
-			$("#repeatSend  span.text").text("重新发送(60)");
-     		//descendNum(60)
 			$.post(path,obj,function(data){
 				var json = $.parseJSON(data);
 			   if(json.code==0)
 			   {
-				   //	alert(1111);
+				   	alert(1111);
 			   		//发送结束
 		     		$(t).addClass("disable").removeClass("yes");
-		     		$("#repeatSend  span.text").text("重新发送");
+		     		$("#repeatSend  span.text").text("重新发送(60)");
 		     		descendNum(60)
 			 	}
 			 		else
 			 	{
-			 			$('.errorMsg').text(json.msg);
-			 			  //$('#sms_code_ppp').focus();
-			 			  $('.errorMsg').show();
+			   		return false;
 			 	}
 			})
 		

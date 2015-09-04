@@ -5,7 +5,7 @@
 		<a class="close" onclick="hideDialog();"></a>
 	</dt>
 	<dd class="dialogBody">
-		<span class="text01">新密码设置成功，请您重新登录蜜蜂！</span>
+		<span class="text01">新密码设置成功，请您重新登录云企！</span>
 	</dd>
 	<dd class="dialogBottom">
 		<a class="btn yes" onclick="hideDialog()"><span class="text">确定</span><b class="bgR"></b></a>

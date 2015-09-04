@@ -95,7 +95,7 @@ class LogLib{
                 'Org_id' => $CI->p_org_id ,//组织ID
                 'site_id' => $CI->p_site_id ,//站点ID
                 'user_id' => $CI->p_user_id ,//操作会员ID
-                'login_name' => $CI->p_account ,//操作账号
+                'login_name' => $CI->p_user_id ,//操作账号
                 'display_name' => $display_name ,//操作姓名
                 'log_type_id' => $big_id ,//日志活动类型ID
                 'log_type_name' => $big_name ,//类型名称

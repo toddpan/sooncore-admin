@@ -109,10 +109,8 @@ class API{
 			//echo '<br/>';
 			$api_msg = $api_type . __FUNCTION__ . ' $apiurl=' . $apiurl . '  $data=' . any_to_str($data) . '  $api_method=' . $api_method . '  $post_head=' . $post_head . ' .';
 			//echo $api_msg;
-			log_message('info', 'post api ' . $api_msg);
+			log_message('debug', 'post api ' . $api_msg);
 			$json_data = httpCurl($apiurl, $data,$api_method,array($post_head));
-			
-			log_message('info', $json_data);
 			//print_r($json_data);
 			$ns_write_data = $json_data;
 			if(is_array($ns_write_data)){
@@ -398,10 +396,10 @@ class API{
 			if(is_array($ns_write_data)){
 				$ns_write_data = json_encode($ns_write_data);
 			}
-			//write_test_file( __FUNCTION__ . $api_type . '-' . time() . '.txt' ,  $apiurl . any_to_str($data) . $api_method . $post_head . any_to_str($ns_write_data));
+			write_test_file( __FUNCTION__ . $api_type . '-' . time() . '.txt' ,  $apiurl . any_to_str($data) . $api_method . $post_head . any_to_str($ns_write_data));
 			//print_r($json_data);
 			// exit;
-			//log_message('debug', any_to_str($ns_write_data));
+			log_message('debug', any_to_str($ns_write_data));
 			$http_code = isset($json_data['http_info']['http_code'])?$json_data['http_info']['http_code']:'' ;
 			//echo $http_code;//200
 			$http_body = isset($json_data['http_info']['http_body'])?$json_data['http_info']['http_body']:'' ;
@@ -486,7 +484,7 @@ class API{
 
 		}
 		$redata = res_arr($redata);//整理结果数组
-		//log_message('debug', 'post api ' . $api_type  . __FUNCTION__ . ' $redata =' . any_to_str($redata). ' .');
+		log_message('debug', 'post api ' . $api_type  . __FUNCTION__ . ' $redata =' . any_to_str($redata). ' .');
 		return $redata;
 	}
 	/**

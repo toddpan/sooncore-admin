@@ -202,26 +202,29 @@ abstract class AccountUploadInterface{
 		if(!$contract_id){throw new Exception('Get contract id from local db failed.');}
 		$boss_request['customer']['contract']['id'] = $contract_id;
 		
-		//--组织boss请求的users参数
-		$boss_request['customer']['users'] = $this->_getBossUserParam($user_ids, $sellingProducts);
-	
-		//--本地记录request请求
-		$request_with_id    = $this->ci->account_model->saveRequestInfo($boss_request);
-		if( ! $request_with_id){
-			log_message('error', 'save request to local db failed');
-			continue;
-		}
-		//--调用boss开通接口
-		log_message('info', 'send a boss request');
-		$boss_rst = $this->ci->boss->combinedAccount($request_with_id);
-		if( ! $boss_rst){
-			log_message('error','send users info to boss failed,the request id is-->'.$request_with_id['requestId']);
-			return array(false,$request_with_id['requestId']);
-		}
-		log_message('info', 'send a boss request finished!');
+		//分批发送请求
+		$chunks = array_chunk($user_ids, BATCH_MAX_CHUNKSIZE);
+		foreach($chunks as $ids){
+			//--组织boss请求的users参数
+			$boss_request['customer']['users'] = $this->_getBossUserParam($ids, $sellingProducts);
 		
-		return array(true,'');
+			//--本地记录request请求
+			$request_with_id    = $this->ci->account_model->saveRequestInfo($boss_request);
+			if( ! $request_with_id){
+				log_message('error', 'save request to local db failed');
+				continue;
+			}
+			//--调用boss开通接口
+			log_message('info', 'send a boss request');
+			$boss_rst = $this->ci->boss->combinedAccount($request_with_id);
+			if( ! $boss_rst){
+				log_message('error','send users info to boss failed');
+				continue;
+			}
+			log_message('info', 'send a boss request finished!');
+		}
 		
+		return;
 	}
 	
 	public function _getBossUserParam($user_ids, $sellingProducts=NULL){
@@ -262,136 +265,6 @@ abstract class AccountUploadInterface{
 		}
 		
 		return array_column($sub_orgs, 'id', 'nodeCode');
-	}
-	
-	public function checkParamForEnableAndDisable($value){
-		//参数检验-必填项
-		if(empty($value['customer_code'])){
-			return array(false, 'customer_code is required!');
-		}
-	
-		if(empty($value['site_id'])){
-			return array(false, 'site_id is required!');
-		}
-	
-		if(empty($value['user_ids']) OR !is_array($value['user_ids'])){
-			return array(false, 'user_ids is required.or user_ids should not be empty!');
-		}
-	
-		//校验数据、重组数据，如果没有提供org_id，就使用默认org_id
-		$e_message = '';
-		foreach($value['user_ids'] as $k=>$id){
-			//过滤掉不合法的user id
-			$id = intval($id);
-			if(empty($id)){
-				continue;
-			}
-				
-			//通过本地数据库，校验用户是否属于当前站点,如果不属于，则中断任务
-			if( !$this->isBelongToSite($value['customer_code'], $value['site_id'], $id) ){
-				$e_message = "user[user_id:{$id}] is not belong to this site.or has not opened bee product.customer_code:{$value['customer_code']}.site_id:{$value['site_id']}";
-				break;
-			}
-				
-			//通过user_id获取用户所在组织的,组织id和组织nodeCode
-			$org_info = $this->ci->ums->getOrganizationsByUserId($id);
-			if(!$org_info OR count($org_info)>1){
-				$e_message = "Get organization info from ums failed, or this user belong to mutiple organizations.[user_id:{$id}]";
-				break;
-			}else{
-				$tmp = array();
-				$tmp['id'] = $id;
-				$tmp['_org_id'] = $org_info[0]['id'];
-				$tmp['_org_node_code'] = $org_info[0]['nodeCode'];
-				$value['users'][] = $tmp;
-			}
-		}
-	
-		if($e_message !== ''){
-			return array(false, $e_message);
-		}
-	
-		return array(true, $value);
-	}
-	
-	public function isBelongToSite($customer_code, $site_id, $user_id){
-		return $this->ci->account_model->isBelongToSite($customer_code, $site_id, $user_id);
-	}
-
-	/**	获取站点根组织
-	 * 	这里获取根组织的方法是：获取管理员的user_id,根据user_id去ums查出node_code，取出node_code串的第一个组织
-	 * @param int site_id
-	 * @return array
-	*/
-	public function getRootId($site_id){
-		//系统管理员id
-		$manager_id = $this->ci->account_model->getSystemManagerUserId($site_id);
-		if(empty($manager_id)){
-			return array(false, 'get site system manager id from local db failed!');
-		}
-		
-		//从本地db获取uc_user_admin
-		$root_id = $this->ci->account_model->getRootOrgIdFromUserAdminTable($manager_id);
-		if(!empty($root_id)){
-			log_message('info', 'get root id['.$root_id.'] from local db uc_user_admin.');
-			return array(true, $root_id);
-		}
-
-		//从本地db获取uc_site_config
-		$root_id = $this->ci->account_model->getRootOrgIdFromSiteConfigTable($site_id);
-		if(!empty($root_id)){
-			log_message('info', 'get root id ['.$root_id.']from local db uc_site_config.');
-			return array(true, $root_id);
-		}
-
-		//从ums获取
-		$manager_org_info = $this->ci->ums->getOrganizationByUserId($manager_id);
-		if(empty($manager_org_info['nodeCode'])){
-			return array(false, 'get system manager org nodeCode from ums failed!');
-		}else{	
-			$root_id = array_shift(explode('-', trim($manager_org_info['nodeCode'], '-')));
-			log_message('info', 'get root id['.$root_id.'] from ums by system manager parent org nodeCode.');
-		}
-		
-		return array(true, $root_id);
-	}
-
-	//保存自定义标签
-	public function saveCustomTags($customerCode, $siteId, $allUsers){
-		$siteCustomTags = $this->ci->account_model->getSiteCustomTags($siteId);//站点下的自定义标签
-		
-		if(!empty($siteCustomTags)){
-			foreach($allUsers as $user){
-				if(!empty($user['custom_tags']) && is_array($user['custom_tags']) && count($user['custom_tags'])>0){
-					$saveCustomTagData = array();
-					foreach($user['custom_tags'] as $tagCode=>$tagValue){
-						if(!isset($siteCustomTags[$tagCode])){
-							log_message('info', 'invalid tag_code:'.$tagCode);
-							continue;
-						}
-
-						$tmp = array();
-						$tmp['user_id'] 	= $user['id'];
-						$tmp['tag_value'] 	= $tagValue;
-						$tmp['tag_id']  	= $siteCustomTags[$tagCode]['id'];
-						$tmp['tag_name']  	= $siteCustomTags[$tagCode]['tag_name'];
-						$tmp['tag_scope']  	= $siteCustomTags[$tagCode]['tag_scope'];
-						$tmp['tag_type']  	= $siteCustomTags[$tagCode]['tag_type'];
-						$saveCustomTagData[] = $tmp;
-					}
-					$this->ci->account_model->saveCustomTags($saveCustomTagData);
-				}
-			}
-		}else{
-			log_message('info', "this site[{$siteId}] not defined custom tag.");
-		}
-
-		return true;
-	}
-
-	public function isvalidCustomerCodeAndSiteId($customer_code, $site_id){
-		$contract_id = $this->ci->account_model->getContractId($customer_code, $site_id);
-		return (boolean)$contract_id;
 	}
 		
 }

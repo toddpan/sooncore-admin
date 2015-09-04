@@ -22,13 +22,8 @@ function delet_createLdap(t)
 					{
 						
 						_this.parent().parent().next().find("tbody label.checked").parent().parent().remove();
-						//如果展示列表没有了值，则要隐藏掉删除按钮，和抬头的复选框按钮
-						length = _this.parent().parent().next().find("tbody").children().length;
 						hideDialog();
-						if(length == 0){
-							_this.parent().hide();
-							_this.parent().parent().next().find("thead label").hide();
-						}
+						
 					}
 					else
 					{
@@ -86,6 +81,7 @@ function delet_createLdap(t)
 		{
 			//alert(1111);
 			var path="ldap/showLdapInfoPage";
+			var ldap_id=id;
 			var obj=
 				{
 					"ldap_id":id

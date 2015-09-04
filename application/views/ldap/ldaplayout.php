@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>蜜蜂管理中心</title>
+<title>云企管理中心</title>
 <link href="<?php echo base_url('public/css/common.css');?>" rel="stylesheet" />
 <link href="<?php echo base_url('public/css/self_common.css');?>" rel="stylesheet" />
 <link href="<?php echo base_url('public/css/datepicker.css');?>" rel="stylesheet" />
@@ -93,14 +93,19 @@
 		<div class="dialogBorder">
 
 		</div>
-		<!-- 
 		<b class="bgTL"></b><b class="bgTR"></b><b class="bgBL"></b><b class="bgBR"></b><b class="shadow"></b>
-		 -->
 	</div>
 	
+<script type="text/javascript" src="public/js/jquery.js"></script>
+<script type="text/javascript" src="public/js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="public/js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="public/js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="public/js/jquery.tree.js"></script>
 <script type="text/javascript" src="public/js/jquery.jscrollpane.min.js"></script>
 <script type="text/javascript" src="public/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="public/js/common.js"></script>
 <script type="text/javascript" src="public/js/tree.js"></script>
+<script type="text/javascript" src="public/js/self_common.js"></script>
 <script type="text/javascript" src="public/js/self_tree.js"></script>
 <script type="text/javascript">
 $(function() {

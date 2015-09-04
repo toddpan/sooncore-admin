@@ -2,9 +2,9 @@
 //LDAP服务器参数
 $lang['servertype0'] 	= '请选择服务类型';
 $lang['servertype1'] 	= 'Microsoft Active Directory';//MS_AD
-$lang['servertype2'] 	= 'OPENDIRECTORY';//OPENDIRECTORY
-// $lang['servertype3'] 	= 'Lotus Dimino';//LOTUS_DIMINO
-// $lang['servertype4'] 	= '其他';//OTHERS
+$lang['servertype2'] 	= 'OpenDirectory';//OPENDIRECTORY
+$lang['servertype3'] 	= 'Lotus Dimino';//LOTUS_DIMINO
+$lang['servertype4'] 	= '其他';//OTHERS
 
 //LDAP连接方式
 $lang['authtype_name0'] = '请选择连接方式';
@@ -12,7 +12,7 @@ $lang['authtype_name1'] = 'LDAP';
 $lang['authtype_name2'] = 'LDAPS';
 
 //网页展示中文信息
-$lang['html_title']				= '蜜蜂管理中心';
+$lang['html_title']				= '云企管理中心';
 $lang['org_name']				= '组织管理';
 $lang['ldap_syn_setting']		= 'ldap同步设置';
 $lang['link_ladp']				= '连接LDAP服务器';
@@ -40,8 +40,8 @@ $lang['chose_syn_struct']		= '选择要同步的组织结构';
 $lang['chose_staff_label']		= '请选择代表员工的标签';
 $lang['chose_ldap_message']		= '请选择对应的LDAP信息';
 $lang['must_staff_label']		= '必选的员工标签';
-$lang['set_uc_account']			= '请设置蜜蜂账号';
-$lang['use_email_label']		= '使用邮箱作为蜜蜂帐号';
+$lang['set_uc_account']			= '请设置云企账号';
+$lang['use_email_label']		= '使用邮箱作为云企帐号';
 $lang['use_prefix_label']		= '指定统一的标签作为帐号前缀';
 $lang['chose_label']			= '选择标签';
 $lang['assure']					= '确定';
@@ -52,12 +52,12 @@ $lang['save_set']				= '保存设置';
 
 $lang['message0']				= '请选择';
 $lang['message1']				= '同步后，如果在 LDAP 找不到用户信息立即停用并删除';
-$lang['message2']				= '请输入不用开通蜜蜂帐号的例外规则';
+$lang['message2']				= '请输入不用开通云企帐号的例外规则';
 $lang['message3']				= '您可以写入这样一个规则 OU=labourer';
 
 //员工标签信息
-$lang['name']			= '姓氏';
-$lang['first_name']		= '名字';
+$lang['name']			= '姓名';
+$lang['first_name']		= '名';
 $lang['last_name']		= '姓';
 $lang['sex']			= '性别';
 $lang['account_id']		= '账号';
@@ -71,7 +71,7 @@ $lang['user_id']		= '员工ID';
 $lang['constcenter']	= '成本中心';
 $lang['country_code']	= '国码';
 $lang['country']		= '国家';
-$lang['officeaddress']	= '办公室所在地';
+$lang['officeaddress']	= '办公地址';
 
 //错误信息国际化
 $lang['success']					= '成功';

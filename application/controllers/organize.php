@@ -21,6 +21,8 @@ class Organize extends Admin_Controller {
 		$this->load->library('API', '', 'API');
 		// 加载组织类库
 		$this->load->library('OrganizeLib', '', 'OrganizeLib');
+		// 加载组织类库
+		$this->load->library('UccLib', '', 'ucc');
 		// 加载维度UserResourceLib类
 		$this->load->library('UserResourceLib', '', 'UserResourceLib');
 		// 加载部门相关操作的中文提示信息类
@@ -143,26 +145,22 @@ class Organize extends Admin_Controller {
 		$operate_boolean = $this->OrganizeLib->modify_manager($in_arr,$sys_arr);
 		if($operate_boolean){
 			//日志
-//            $this->load->library('LogLib','','LogLib');
-//            $log_in_arr = $this->p_sys_arr;
-// //            array(
-// //                  'Org_id' => $this->p_org_id ,//组织ID
-// //                  'site_id' => $this->p_site_id ,//站点ID
-// //                  'operate_id' => $this->p_user_id,//操作会员ID
-// //                  'login_name' => $this->p_account ,//操作账号[可以为空，没有，则重新获取]
-// //                  'display_name' => $this->p_display_name,//操作姓名[可以为空，没有，则重新获取]
-// //                  'client_ip' => $this->p_client_ip ,//客户端ip
-// //              );
-//           $re_id = $this->LogLib->set_log(array('5','15'),$log_in_arr);
-//           //echo $re_id;
+           $this->load->library('LogLib','','LogLib');
+           $log_in_arr = $this->p_sys_arr;
+           array(
+                 'Org_id' => $this->p_org_id ,//组织ID
+                 'site_id' => $this->p_site_id ,//站点ID
+                 'operate_id' => $this->p_user_id,//操作会员ID
+                 'login_name' => $this->p_account ,//操作账号[可以为空，没有，则重新获取]
+                 'display_name' => $this->p_display_name,//操作姓名[可以为空，没有，则重新获取]
+                 'client_ip' => $this->p_client_ip ,//客户端ip
+             );
+          $re_id = $this->LogLib ->set_log(array('5','15'),$log_in_arr);
 			form_json_msg('0','', '指定为组织管理者成功');//返回信息json格式
 		}else{
 			form_json_msg('1','', '指定为组织管理者失败');//返回信息json格式
 		}
 	}
-	
-	
-	
 
 	/**
 	 *
@@ -174,70 +172,44 @@ class Organize extends Admin_Controller {
 	 * -# 获得父组织结构id下的组织结构并分配到视图
 	 * @return null
 	 *
+	public function OrgList() {
+            $this->load->view('organize/organizeStaff.php');
+	}
 	 */
-	public function OrgList() {	
-		$this->setFunctions();
-		
-		$this->load->view('organize/organizeStaff.php');
-	}
-	
-	private  function setFunctions(){
-		$roleFunctions = $this->setFunctionsByRoles();
-		$customFunctions = $this->setFunctionsBySite();
-		
-		$functions = array_merge($customFunctions, $roleFunctions);
-		
-		foreach ($customFunctions as $key=>$value){
-			$functions[$key] = $functions[$key] && $value;
-		}
-		
-		$this->functions = $functions;
-	}
-	
-	private function setFunctionsBySite(){
-		$functions = array();
-		
-		$functions['ldapListMenu'] = $this->siteConfig['importType'] == 2;
-		$functions['orgManage'] = $this->siteConfig['importType'] != 2;
-		$functions['orgRename'] = $this->siteConfig['importType'] != 2;
-		
-		$functions['employeeAdd'] = $this->siteConfig['importType'] != 2;
-		$functions['employeeChange'] = $this->siteConfig['importType'] != 2;
-		$functions['employeeBatch'] = $this->siteConfig['importType'] != 2;
-		
-		return $functions;
-	}
-	
-	private function setFunctionsByRoles(){
-		$functions = array();
-		
-		$functions['tagMenu'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		$functions['ldapListMenu'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		
+        
+        /**
+	 *
+	 * @brief 组织结构页面-获得根组织和下一级组织
+	 * @details
+	 * -# 仅得到根组织和下一级组织数据，下一级的子级为保证页面速度将使用AJAX实现
+         */
+        public function OrgList(){
+            $user_id = $this->p_user_id;//获得用户ID（管理员）
+            $session_id = $this->p_session_id;//获得 SESSION_ID
+            $org_id = $this->p_org_id;//获得组织ID
+            $customer_code = $this->p_customer_code;//客户编码
+            
+            $ret = $this->ucc->getOrgList($user_id, $session_id, $org_id, $customer_code);
+            if(!$ret){
+		log_message('error', __FUNCTION__ . " input->\n" . var_export($ret, true));
+                form_json_msg('1','', '未能获得数据');
+            }
+            $data['org_json'] = $ret['data'][0];
+            print_r($data['org_json']);
+            
+            
+            //$site_id = $this->p_site_id;//站点代码
+            //获取当前选择的组织的员工列表 管理者在前
+            //$user_arr = $this->OrganizeLib->get_users_list($org_id ,$site_id );
+            
+            //$data['user_arr'] = $user_arr;//根组织的用户列表
+            $this->load->view('organize/organizeStaff.php',$data);
+        }
 
-		$functions['orgManage'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		$functions['orgAuthority'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
-		$functions['orgRename'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		$functions['orgMove'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		
-			
-		$functions['employeeAdd'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
-		$functions['employeeChange'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
-		$functions['employeeAsManager'] = $this->p_role_id == SYSTEM_MANAGER;
-		$functions['employeeBatch'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
 
-		
-		return $functions;
-	}
-	
-	
-	
-	
-	
-	
-	
 
-	/**
+
+        /**
 	 * @abstract 组织结构树
 	 */
 	public function get_org_tree(){
@@ -253,7 +225,7 @@ class Organize extends Admin_Controller {
 		$in_arr = array(
             'is_first' => 1 ,//是否第一级0不是1是       
 		);
-		$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr, 1, $in_arr);
+		$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr ,1,$in_arr);//格式化成目录树结构
 		$org_json = '[]';
 		if(is_array($org_arr)){//如果是数组
 			$org_json = json_encode($org_arr);
@@ -335,113 +307,13 @@ class Organize extends Admin_Controller {
 
 		// 获取code
 		$is_suc = arr_unbound_value($re_arr, 'code', 2, array());
-		
-		// 移动部门成功
+
 		if($is_suc == 0){
+			// 移动部门成功
+			
 			// TODO 发消息到数据库确定被移动部门及其下面员工的新权限
 			
-			// 判断被移动部门是否有部门管理者，有，则调用UCCServer创建同事关系的接口
-			$this->load->model('uc_org_manager_model');
-			$admin_id = $this->uc_org_manager_model->get_org_manager_userid($move_org_id, $this->p_site_id);
-			if($admin_id > 0){
-				$data = 'user_id=' . $admin_id . '&org_id=' . $move_org_id . '&parent_id=' . $newParentId . '&is_admin=1';
-				$api_arr = $this->API->UCCServerAPI($data, 9);
-				if(api_operate_fail($api_arr)){//失败
-					log_message('error', 'uccapi async/createColleague fail.');
-				}else{
-					log_message('debug', 'uccapi async/createColleague success.');
-				}
-			}
-			
-			// 从UMS获取被移动部门的旧上级部门的名称
-			$this->load->library('UmsLib', '', 'ums');
-			$old_paerent_info = $this->ums->getOrganizationById($old_parent_id);
-			$old_parent_name = isset($old_paerent_info['name']) ? $old_paerent_info['name'] : '';
-			
-			// 从UMS获取被移动部门的新上级部门的名称
-			$new_paerent_info = $this->ums->getOrganizationById($newParentId);
-			$new_parent_name = isset($new_paerent_info['name']) ? $new_paerent_info['name'] : '';
-			
-			// 从UMS获得被移动部门的名称
-			$org_info = $this->ums->getOrganizationById($move_org_id);
-			$dept_name = isset($org_info['name']) ? $org_info['name'] : '';
-			
-			// 从UMS获取被移动部门下的所有员工
-			$staff_arr = $this->ums->getOrganizationUsers($move_org_id);
-			
-			// 向被移动部门中的员工发送系统消息
-			$this->load->library('Informationlib', '', 'Informationlib');
-			if(!isemptyArray($staff_arr)){
-				foreach ($staff_arr as $staff_arr){
-					$staff_info_pre_arr = array(
-							'from_user_id' 	=> $this->p_user_id,	// 消息发送者用户id
-							'from_site_id' 	=> $this->p_site_id,	// 消息发送者站点id
-							'to_user_id' 	=> $staff_arr['id'],	// 消息接受者id[是组织时为组织id,是用户时，是用户id]
-							'to_site_id' 	=> $this->p_site_id,	// 消息接受者站点id
-							'is_group' 		=> 0,					// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]
-							'msg_type' 		=> 1,					// 消息类型  1 - 组织变动
-							'msg_id' 		=> 8,					// 8-部门移动
-					);
-					$staff_info_body = array(
-							'operator_id' 	=> $this->p_user_id,	// 操作发起人用户ID
-							'dept_id' 		=> $move_org_id,		// 被移动部门的ID
-							'dept_name' 	=> $dept_name,			// 被移动部门的名称
-							'old_dept_name' => $old_parent_name ,	// 被移动部门旧的上级部门
-							'new_dept_name' => $new_parent_name,	// 被移动部门新的上级部门
-							'desc' 			=> '',					// 消息描述
-					);
-					$this->Informationlib->send_info($staff_info_pre_arr, $staff_info_body);
-				}
-			}
-			
-			
-			// 向被移动部门的原上级部门的管理者发送系统消息
-			$this->load->model('uc_org_manager_model');
-			$old_manager_id = $this->uc_org_manager_model->get_org_manager_userid($old_parent_id, $this->p_site_id);
-			if(!empty($old_manager_id)){
-				$info_pre_arr = array(
-						'from_user_id' 	=> $this->p_user_id,	// 消息发送者用户id
-						'from_site_id' 	=> $this->p_site_id,	// 消息发送者站点id
-						'to_user_id' 	=> $old_manager_id,		// 消息接受者id[是组织时为组织id,是用户时，是用户id]
-						'to_site_id' 	=> $this->p_site_id,	// 消息接受者站点id
-						'is_group' 		=> 0,					// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]
-						'msg_type' 		=> 1,					// 消息类型  1 - 组织变动
-						'msg_id' 		=> 8,					// 8-部门移动
-				);
-				$info_body = array(
-						'operator_id' 	=> $this->p_user_id,	// 操作发起人用户ID
-						'dept_id' 		=> $move_org_id,		// 被移动部门的ID
-						'dept_name' 	=> $dept_name,			// 被移动部门的名称
-						'old_dept_name' => $old_parent_name ,	// 被移动部门旧的上级部门
-						'new_dept_name' => $new_parent_name,	// 被移动部门新的上级部门
-						'desc' 			=> '',					// 消息描述
-				);
-				$this->Informationlib->send_info($info_pre_arr, $info_body);
-			}
-			
-			
-			// 向被移动部门的新上级部门的管理者发送系统消息
-			$new_manager_id = $this->uc_org_manager_model->get_org_manager_userid($newParentId, $this->p_site_id);
-			if(!empty($new_manager_id)){
-				$info_pre_arr = array(
-						'from_user_id' 	=> $this->p_user_id,	// 消息发送者用户id
-						'from_site_id' 	=> $this->p_site_id,	// 消息发送者站点id
-						'to_user_id' 	=> $new_manager_id,		// 消息接受者id[是组织时为组织id,是用户时，是用户id]
-						'to_site_id' 	=> $this->p_site_id,	// 消息接受者站点id
-						'is_group' 		=> 0,					// 是否为讨论组聊天1是[是组织] 0 否[是单个用户]
-						'msg_type' 		=> 1,					// 消息类型  1 - 组织变动
-						'msg_id' 		=> 8,					// 8-部门移动
-				);
-				$info_body = array(
-						'operator_id' 	=> $this->p_user_id,	// 操作发起人用户ID
-						'dept_id' 		=> $move_org_id,		// 被移动部门的ID
-						'dept_name' 	=> $dept_name,			// 被移动部门的名称
-						'old_dept_name' => $old_parent_name ,	// 被移动部门旧的上级部门
-						'new_dept_name' => $new_parent_name,	// 被移动部门新的上级部门
-						'desc' 			=> '',					// 消息描述
-				);
-				$this->Informationlib->send_info($info_pre_arr, $info_body);
-			}
+			// TODO 调用战役接口发送系统消息
 			
 			// 在安全管理的日志管理中记录日志
 			$this->load->library('LogLib', '', 'LogLib');
@@ -449,11 +321,10 @@ class Organize extends Admin_Controller {
 			$this->LogLib ->set_log(array('5', '18'), $log_in_arr);
 			
 			form_json_msg('0', '', $this->lang->line('move_org_5'), array()); //'move org success'
+		}else{
+			// 移动部门失败
+			form_json_msg('1', '', $this->lang->line('move_org_6'), array()); //'move org fail'
 		}
-		
-		// 移动部门失败
-		form_json_msg('1', '', $this->lang->line('move_org_6'), array()); //'move org fail'
-
 	}
 
 	/**
@@ -506,16 +377,12 @@ class Organize extends Admin_Controller {
 		$org_id  = strtolower($this->input->post('org_id' , true));//当前组织id
 		$org_id = empty_to_value($org_id,0);//517
 		//获得当前下级组织数组
+                $org_list_data = array();
 		$org_list_data = $this->OrganizeLib->get_org_array($org_id,'nextlevel','1,3,5');
 		//print_r($org_list_data);
 		///exit;
-		$in_arr = array(
-            'is_first' => 0 ,//是否第一级0不是1是       
-		);
-		$org_arr = $this->OrganizeLib->InitzTree_arr($org_list_data ,1,$in_arr);
-		$org_json = '[]';
-		if(is_array($org_arr)){//如果是数组
-			$org_json = json_encode($org_arr);
+		if(is_array($org_list_data)){//如果是数组
+			$org_json = json_encode($org_list_data);
 		}
 		echo $org_json;
 	}
@@ -524,26 +391,22 @@ class Organize extends Admin_Controller {
 	 * @brief 根据post过来的组织id，获得当前组织的帐号列表信息[部门管理者在前，其它人员在后]
 	 */
 	public function get_users_list(){
-		$org_id = $this->input->post('org_id', true); // 当前部门id
-		log_message('info', 'Into method get_users_list input --> $org_id = ' . $org_id . '.');
-
-		// 判断部门id是否为空
-		$org_id = empty_to_value($org_id, 0);
-		
-		// 调用组织类获得当前部门的员工列表
-		$this->load->library('OrganizeLib', '', 'OrganizeLib');
-		$user_arr = $this->OrganizeLib->get_users_list($org_id, $this->p_site_id );
-		
-		// 将数据传递到页面上
+		$org_id=$this->input->post('org_id', true);
+		$org_id = empty_to_value($org_id,0);//517
+		//新的父组织id
+		$org_pid = $this->input->post('parent_orgid' , true);
+		$org_pid = empty_to_value($org_pid,0);
+		write_test_file( '' . __FUNCTION__ . time() . '.txt' ,'$org_id =' .$org_id);
+		$site_id = $this->p_site_id;
+		$site_id = empty_to_value($site_id,0);//517
+		$this->load->library('OrganizeLib','','OrganizeLib');
+		$user_arr = $this->OrganizeLib->get_users_list($org_id ,$site_id );
+		//print_r($user_arr);
+		// echo json_encode($user_arr);
+		// die();
 		$data['user_arr'] = $user_arr;
-		$this->functions['multiChoose'] = $this->siteConfig['importType'] != 2 && $this->p_role_id != ACCOUNT_MANAGER;
-		
-		$this->load->view('public/part/userlist.php', $data);
-	}	
-	
-	
-	
-	
+		$this->load->view('public/part/userlist.php',$data);
+	}
 
 	/**
 	 * @brief 根据post过来的组织id，获得当前组织的帐号列表信息[部门管理者在前，其它人员在后]
@@ -608,9 +471,9 @@ class Organize extends Admin_Controller {
 	 */
 	public function saveNewOrg() {
 		log_message('info', '1111');
-		$org_id = $this->input->post('id' , true);
-		$org_pId = $this->input->post('pId' , true);
-		$org_name = $this->input->post('name' , true);
+		$org_id = strtolower($this->input->post('id' , true));
+		$org_pId = strtolower($this->input->post('pId' , true));
+		$org_name = strtolower($this->input->post('name' , true));
 
 		$data = array(
                     'name' => $org_name,//"创想空间北京分公司",

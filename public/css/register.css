@@ -1,0 +1,215 @@
+.regCont {
+	background:#fcfcfc;
+}
+.regBox{
+    width: 1180px;
+    margin: 0 auto;
+    background: #f5f5f5;
+    height: 100%;
+    min-height: 650px;
+    overflow: hidden;
+}
+
+.leftBox{
+    display: block;
+    overflow:hidden;
+    background: #fff;
+    border-left: 1px solid #f6f6f6;
+    border-right: 1px solid #f6f6f6;
+    height:100%;
+    min-height: 650px;
+}
+span.errorMsg{
+    height: auto;
+    line-height: 1em;
+    width: 356px;
+}
+
+.infoTable tr:first-child td {
+    padding-bottom: 0;
+}
+
+.leftBox h2{
+    font-family: "微软雅黑",arial;
+    font-size: 24px;
+    color: #000;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.hr{ 
+    width: 95%;
+    margin: 10px auto;
+    border:none;
+    border-top: 1px dashed #ddd;
+}
+
+.infoTable{
+    margin: 0 auto;
+}
+.infoTable td {
+    padding-bottom: 15px;
+}
+.infoTable th {
+    width: 8em;
+}
+.inputBox label{
+    padding: 4px;
+}
+
+.inputBox>.input{
+    width: 346px;
+}
+.regBtn{
+    display: inline-block;
+    width: 128px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    background: #FF9000;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.regBtnDisabled{
+    background: #DDD;
+    cursor: no-drop;
+}
+.submit{
+    margin-top: 30px;
+}
+.regBtn span{
+    text-decoration: none;
+}
+
+
+
+ #msgBox #msgBg{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position:fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: #000;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+#msgBox #content{
+    display: block;
+    width: 280px;
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    z-index: 9999;
+    position:fixed;
+    left: 50%;
+    margin-left: -140px;
+    top: 50%;
+    margin-top:-35px;
+    background: #fff;
+    border: 1px solid #099c9d;
+    border-radius: 3px;
+    box-shadow: 3px 3px 5px #7E7E7E;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+.sendCode{
+    display: inline-block;
+    width: 8em;
+    height:26px;
+    line-height: 26px;
+    background: #6BD7EB;
+    border-radius: 3px;
+    border: 1px solid #5BB3C3;
+    color: #fff;
+    text-align: center;
+    margin-left: 15px;
+}
+
+.finsh{
+    display:block;
+    text-align: center;
+    margin-top: 150px;
+    font-family: "微软雅黑";
+}
+.finsh-msg{
+    font-size: 26px;
+    line-height: 40px;
+    margin: 1em auto;
+    color: #FF9000;
+    font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+}
+.finsh a{
+    display: inline-block;
+    width: 128px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    background: #FF9000;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.finsh a:hover{
+    background: #FFAE00;
+}
+.stepBox{
+    width: 1080px;
+    margin: 60px auto;
+    font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+    font-size: 16px;
+}
+.stepBox ul{
+    display: block;
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+}
+.stepBox ul li{
+    display: block;
+    overflow: hidden;
+    float: left;
+    width: 360px;
+    background: url(../images/reg_step_bg.gif) repeat-x center top;
+}
+.stepBox ul li.stepHover{
+    background-position: center bottom;
+}
+.stepBox ul li i{
+    margin-left: 110px;
+    background:#fff url(../images/reg_step_ico.png) no-repeat center top;
+    color: #fff;
+    display: block;
+    float: left;
+    width: 30px;
+    text-align: center;
+    font-size: 20px;
+}
+.stepBox ul li.stepHover i{
+    background-position: center bottom;
+}
+.stepBox ul li span{
+    color: #ddd;
+    display: block;
+    float: left;
+    background: #fff;
+    padding: 0 0.5em;
+}
+.stepBox ul li.stepHover span{
+    color: #6bd7eb;
+}
+
+.footer {
+	height: 47px;
+	background: #6BD7EB;
+	text-align: center;
+}

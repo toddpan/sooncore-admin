@@ -134,29 +134,13 @@ class BossLib{
 	}
 	
 	/**
-	 * 查询指定客户下合同对应的所有账户(废弃)
-	 * @deprecated
+	 * 查询指定客户下合同对应的所有账户
 	 * @param string $customer_code 客户编码
 	 * @param 合同id  $contract_id   合同id
 	 */
 	public function getAccountInfo($customer_code, $contract_id){
 		$method = 'GET';
 		$url  = $this->apiurl.'/accounts/getByCustomerCodeAndContractId/'.$customer_code.'/'.$contract_id;
-		$params = array();
-		$ret = httpCurl($url, $params,$method);
-		
-		log_message('info',"get account info from boss. url is->".$url." customer code is ->".$customer_code." result is->".var_export($ret, true));
-		
-		if($ret['code'] == 0  && $ret['data'] != ''){
-			return json_decode($ret['data'], true);
-		}else{
-			return false;
-		}
-	}
-	
-	public function getAccountInfoByCustomerCode($customer_code){
-		$method = 'GET';
-		$url  = $this->apiurl.'/accounts/getByCustomerCodeForUc/'.$customer_code;
 		$params = array();
 		$ret = httpCurl($url, $params,$method);
 		

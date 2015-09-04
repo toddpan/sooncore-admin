@@ -1,97 +1,75 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;" lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 		<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
 		<base href="{site_url('')}"/>
 		<base target="_blank" />
-		<title>蜜蜂管理中心</title>
+		<title>云企管理中心</title>
 		<link href="public/css/login.css" rel="stylesheet" />
-        <script type="text/javascript" src="public/js/jquery.js"></script>
-        <script type="text/javascript" src="public/js/placeholder.js"></script>
-        <script type="text/javascript" src="public/js/scrollFront.js"></script>
+            <script type="text/javascript" src="public/js/jquery.js"></script>
+            <script type="text/javascript" src="public/js/placeholder.js"></script>
 	</head>
-	<body>
-		<div class="header">
+        <body style="overflow: hidden;">
+            <div class="header">
 		  <div class="headerInner">
-			<a class="logo" style="color:#fff;text-decoration:none;">
-			<!-- <img src="public/images/logo.png" /> -->
-				<span style="font-size:45px;">全时</span><span style="font-size:20px;">管理中心</span>
+                      <a class="logo" style="text-decoration:none;">
+                            <span style="font-size:45px;">
+                                <img src="public/images/guaji_logo.png" />
+                            </span>
+                            <span class="logoText">呱唧用户注册</span>
 			</a>
-			<span style="float:right;color:#06A49F;font-size:15px;margin:40px 30px 0 0;"><i>Powered by 全时</i></span>
+			<span style="float:right;font-size:15px;margin:40px 30px 0 0;"><i>guaji.yikaihui.com</i></span>
 		  </div>
 		</div>
+            <div class="mainBox">
+                <div id="mainBody">
+                    <div id="cloud1" class="cloud"></div>
+                    <div id="cloud2" class="cloud"></div>
+                </div>
+                <div id="weather">
+                        <img src="public/images/cloud.png" width="300">
+                </div>
+                <script type="text/javascript" src="public/js/cloud.js"></script>
+             </div>
+                
 		<div class="loginCont">
-		  <div class="front-scroll">
-				<div class="page" id="page1" style="display: block">
-					<h2 data-left="0">为移动互联网而生的企业社交协作平台</h2>
-					<p data-left="0">全时蜜蜂全面支持 PC 与智能手机同步使用。<br />随时随地查看最新的消息、实时沟通与开会。</p>
-					<img src="public/images/ad/img1.png" data-left="76" class="img1" width="231" height="147" alt="" />
-					<img src="public/images/ad/img2.png" data-left="429" class="img2" width="79" height="139" alt="" />
-					<img src="public/images/ad/img3.png" data-left="332" class="img3" width="61" height="61" alt="" />
-				</div>
-				<div class="page" id="page2" style="display:none">
-					<h2 data-left="0">管理你的组织与员工更轻松了</h2>
-					<p data-left="0">通过 LDAP 或API 同步，在全时蜜蜂有效管理企业生态的组织与员工。</p>
-					<img src="public/images/ad/img4.png" data-left="182" class="img1" width="236" height="196" alt="" />
-					<img src="public/images/ad/img5.png" data-left="203" class="img2" width="140" height="106" alt="" />
-					<img src="public/images/ad/pic24.gif" data-left="350" data-top="248" class="img3" width="24" height="24" alt="" />
-					<img src="public/images/ad/hand.gif" data-left="360" data-top="264" class="img4" width="37" height="45" alt="" />
-				</div>
-				<div class="page" id="page3" style="display: none">
-					<h2 data-left="0">连接你的企业生态，一起提高工作效率</h2>
-					<p data-left="0">马上让周边的生态圈合作伙伴跟您一起用互联网一起协作、决策。</p>
-					<div class="pic-bg" data-left="132"></div>
-					<div class="pic1" data-left="102"></div>
-					<div class="pic2" data-left="373"></div>
-					<div class="pic3" data-left="226"></div>
-					<div class="pic4" data-left="206"></div>
-					<div class="pic5" data-left="463"></div>
-					<div class="pic6" data-left="105"></div>
-					<div class="pic7" data-left="457"></div>
-				</div>
-				<div class="page" id="page4" style="display: none">
-					<h2 data-left="0">通过应用集成，提升整个公司决策效能</h2>
-					<p data-left="0">全时蜜蜂提供完整的API，让企业可以快速与内部系统集成，<br />以消息来驱动人们快速决策。</p>
-					<div class="pic1" data-left="185"></div>
-					<div class="pic2" data-left="263"></div>
-					<div class="pic3" data-left="341"></div>
-					<div class="pic4" data-left="224"></div>
-					<div class="pic5" data-left="302"></div>
-				</div>
-				<div class="page-num">
-					<a  class="active" onclick="scrollOne()">1</a>
-					<a  onclick="scrollTwo()">2</a>
-					<a  onclick="scrollThree()">3</a>
-					<a  onclick="scrollFour()">4</a>
-				</div>
-			</div>
+                <script type="text/javascript">
+                    //设置窗口高度
+                    var windowHeight = $(window).height();
+                    var newHeight = windowHeight-88-47;
+                    if(newHeight>650){
+                        //alert(windowHeight);
+                        $(".loginCont").css("height",newHeight+"px");
+                    }
+                </script>
 		 	<dl class="loginBox">
+                            <div class="loginBg"></div>
+                            <div class="loginC">
 				<dt class="title">管理员登录</dt>
 				<dd class="error"></dd>
 				<dd>
 					<div class="inputBox2" style="cursor: pointer">
-					  <label for="userName">请输入您的帐号</label>
-					  <input id="userName" name="userName" type="input" style="width: 232px" class="input" placeholder="" />
+					  <!--//<label for="userName">请输入您的帐号</label>//-->
+					  <input id="userName" name="userName" type="input" style="width: 232px" class="input" placeholder="请输入您的帐号" />
 					</div>
 				</dd>
 				<dd>
 					<div class="inputBox2" style="cursor: pointer">
-						<label for="userPwd">请输入您的密码</label>
-						<input id="userPwd" name="userPwd" type="password" style="width: 232px" class="input" placeholder="" />
+						<!--//<label for="userPwd">请输入您的密码</label>//-->
+						<input id="userPwd" name="userPwd" type="password" style="width: 232px" class="input" placeholder="请输入您的密码" />
 					</div>
 				 </dd>
-				 <dd class="checkcode" style="{if $login_num>3}display: none;{/if}cursor: pointer">
+				 <dd class="checkcode" style=" {if $login_num<3 }display: none;{/if} cursor: pointer">
 					<div class="inputBox2">
-						<label for="checkcode">请输入验证码</label>
-						<input id="loginCode" name="loginCode" type="text" class="input" placeholder="" target="{$login_num}"/>
+						<!--//<label for="checkcode">请输入验证码</label>//-->
+						<input id="loginCode" name="loginCode" type="text" class="input" placeholder="请输入验证码" target="{$login_num}"/>
 					</div>
-					<img id="pwdcode" src="login/code/"+Math.random()+""  
-						style="float: left; margin-right: 2px; height:36px; width:58px"  
-						onclick=this.src="login/code/"+Math.random()+"" /> 
-					<a onclick=document.getElementById('pwdcode').src="login/code/"+Math.random()+"">看不清，换一张
+					<img id="pwdcode" src="login/code/"+Math.random()+"" onclick=this.src="login/code/"+Math.random()+"" /> 
+                                        <a style="display:none;" onclick=document.getElementById('pwdcode').src="login/code/"+Math.random()+"">看不清，换一张
 					</a>
 					<div class="clearfix"></div>
 				</dd>
@@ -99,30 +77,16 @@
 					<label class="checkbox" id='remPwd' rel='0' style="cursor: pointer" >
 						<input type="checkbox" />记住帐号
 					</label>
-					<a onclick="showDialog('resetpassword/index');" class="forgetPwd">忘记密码</a> 
+                                    <a onclick="showDialog('resetpassword/index');" class="forgetPwd">忘记密码</a>
+                                    <a href="register/" target="_blank" class="register">注册用户</a> 
 				</dd>
 				<dd class="tc"> 
 					<a onclick="loginChecked(this);" class="loginBtn">
-						<span class="loginspan">登录</span>
+						<span class="loginspan" style="curson:pointer">登 录</span>
 					</a>
 				</dd>
+                            </div>
 		 	</dl>
-		 	<div class="linkBox">
-				<dl class="linkArea linkArea01" style="display:none">
-				  <dt>帮助中心</dt>
-				  <dd>&gt;&nbsp;<a>下载用户手册</a></dd>
-				  <dd>&gt;&nbsp;<a>常见问题FAQ</a></dd>
-				</dl>
-				<dl class="linkArea linkArea02" style="margin-left: 350px;cursor:pointer;"  onclick="jump();">
-				  <dt>下载与安装</dt>
-				  <dd><a>下载最新的客户端</a></dd>
-				</dl>
-				<dl class="linkArea linkArea03" style="display:none">
-				  <dt>关注全时</dt>
-				  <dd><a class="sina">新浪微博</a></dd>
-				  <dd><a class="qq">腾讯微博</a></dd>
-				</dl>
-		  </div>
 		</div>
 		<div class="footer">
 		  <div class="footerInner"> 
@@ -137,19 +101,19 @@
 		<div class="mask"></div>
 		<div id="dialog" class="dialog">
 		  <div class="dialogBorder"></div>
+		  <b class="bgTL"></b>
+		  <b class="bgTR"></b>
+		  <b class="bgBL"></b>
+		  <b class="bgBR"></b>
 		  <b class="shadow"></b>
 		</div>
+                
 		<script type="text/javascript" src="public/js/self_common.js"></script>
 		<script type="text/javascript" src="public/js/common.js"></script>
 		<script type="text/javascript">
-		function jump(){
-			window.location = "{$download_link}";
-		}
-		</script>
-		<script type="text/javascript">
 		var countNumber=$("#loginCode").attr("target");//登陆次数连续错误3次显示
 		function loginChecked(t){
-			showcode(countNumber)
+			showcode(countNumber);
 			if($(t).hasClass("false"))
 			{
 				return;
@@ -165,13 +129,6 @@
 				 _t.removeClass("false");
 				return false;
 			}
-//			var reg=/^[0-9a-z_\.]+@[0-9a-z_]+(\.[0-9a-z_]+)*/;
-//			if(!reg.test(userName)){
-//				$('.error').text('请输入正确的用户名');
-//				$('#userName').focus();
-//				 _t.removeClass("false");
-//				return false;
-//			}
 			if(userPwd == ''){
 				$('.error').text('请输入密码');
 				$('#userPwd').focus();
@@ -188,13 +145,18 @@
 			var path="login/loginin";
 			var obj={
 				"userName":userName,
-				"userPwd":encodeURIComponent(userPwd),
+				"userPwd":userPwd,
 				"loginCode":loginCode
 			 };
-			$.post(path,obj,function(data){
-				//alert(data);
-				var json = $.parseJSON(data);
-				if(json.code == 0){
+                         $.ajax({
+                            url:path,
+                            type:"POST",
+                            data:obj,
+                            timeout:10000,
+                            dataType:"json",
+                            success:function(data){
+                              //var msgJson = eval(data); dataType为json，就不用转了
+				if(data.code === 0){
 				  if ($("#remPwd").hasClass("checked")){
 					   setCookie('username',userName,30);
 				  }else{
@@ -204,16 +166,19 @@
 				  location = "{site_url('main/index')}";
 				  _t.removeClass("false");	
 				}else{
-				   $(json.error_id).focus();
-				   countNumber=json.other_msg.login_num;
+				   $(data.error_id).focus();
+				   countNumber=data.other_msg.login_num;
 				   showcode(countNumber);
-				   $('.error').text(json.prompt_text);	
+				   $('.error').text(data.prompt_text);	
 				   _t.removeClass("false");		   
 				   return false;
 				}
-				
-			  })
+                            },
+                            error:function(){}
+                          });
+			  
 			}
+			 
 		 	function get_user_frmcookies()
 			 {
 			   username= getCookie('username')

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>蜜蜂管理中心</title>
+<title>云企管理中心</title>
 </head>
 <body>
 <!--ldap详细信息.html-->
@@ -184,7 +184,7 @@
              </table>
            
         </dd>
-       <dt class="setTitle" style="margin:15px 0 5px;">请为您企业选择统一的蜜蜂帐号前缀</dt>
+       <dt class="setTitle" style="margin:15px 0 5px;">请为您企业选择统一的云企帐号前缀</dt>
         <dd>
         	<table class="infoTable">
                 <tr>
@@ -193,7 +193,7 @@
              </table>
            
         </dd>
-        <dt class="setTitle" style="margin:15px 0 5px;">不开通全时蜜蜂的例外规则</dt>
+        <dt class="setTitle" style="margin:15px 0 5px;">不开通全时云企的例外规则</dt>
         <dd>
         	<table class="infoTable">
 				<?php foreach($filter_rule as $f):?>

@@ -227,30 +227,3 @@
 	background:none;
 	color:#2E444A;
 }
-
-.mapping_area dd td{
-	padding: 0;
-	border-bottom: 0 none;
-}
-.mappingInputBox {
-    position: relative;
-    _float: left;
-    _margin-right: 5px;
-}
-.mappingInputBox .input_area {
-    height: 20px;
-    background: url(../images/loginInputBg.png) 0 0 repeat-x #fbfdff;
-    padding: 4px;
-    border: 1px solid #b2bdcd;
-    line-height: 18px;
-    font-size: 14px;
-    color: #4f4f4f;
-    width: 310px;
-}
-.wid200{
-	width: 150px;
-}
-.mar10{
-	margin-top: 10px;	
-}
-

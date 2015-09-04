@@ -526,16 +526,14 @@ function addZuzhi(e) {
 	nodes = zTree.getSelectedNodes(),
 	treeNode = nodes[0];
 	if (treeNode) {
-//		treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"新建节点" + (newCount++)});
-		treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"输入部门名称"});
+		treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"新建节点" + (newCount++)});
 	} else {
-//		treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"新建节点" + (newCount++)});
-		treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"输入部门名称"});
+		treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"新建节点" + (newCount++)});
 	}
 	if (treeNode) {
 		zTree.editName(treeNode[0]);
 	} else {
-		alert("该部门无法增加子部门");
+		alert("叶子节点被锁定，无法增加子节点");
 	}
 	$("#novalueTable").show().prev("table").hide();
 	$("#novalueTable").next(".page").hide();
@@ -551,7 +549,7 @@ function deleteZuzhi(e) {
 
 	var node = preNode != null? preNode:nextNode!=null?nextNode:parentNode!=null?parentNode:null;
 	if (nodes.length == 0) {
-		alert("请先选择一个部门");
+		alert("请先选择一个节点");
 		return;
 	}
 	var isDisplay = $("#novalueTable").is(":visible");

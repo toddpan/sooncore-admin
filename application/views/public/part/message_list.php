@@ -15,7 +15,7 @@
 				</li>
 		   <?php endforeach;?>
 		  
-		  <!--<li><a  onClick="showDetailPage('msg1.html',this)">欢迎使用全时蜜蜂</a> <span class="time">17:35</span> </li>-->
+		  <!--<li><a  onClick="showDetailPage('msg1.html',this)">欢迎使用全时云企</a> <span class="time">17:35</span> </li>-->
 		</ul>
 		<div class="page">
 		 <?php echo $page_text;?>

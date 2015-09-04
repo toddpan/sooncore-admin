@@ -11,7 +11,6 @@ class Cluster_Model extends MY_Model{
 
 	public function __construct(){
         parent::__construct(); 
-		$this->db = $this->load->database('domain', true);
 		$this->tbl = array(
 			'cluster'=>'uc_cluster_user_num',//集群表
 			'customer_cluster'=>'uc_domain_router',//客户与集群关联表
@@ -19,7 +18,6 @@ class Cluster_Model extends MY_Model{
     }
 
     public function getCustomerCluster($customer_code, $site_id = null){
-    	$this->db->reconnect();
     	$where = array('customerCode'=>$customer_code);
     	if(!is_null($site_id)) $where['siteID'] = $site_id;
     	
@@ -29,7 +27,6 @@ class Cluster_Model extends MY_Model{
     }
     
     public function saveCustomerCluster($customer_code, $site_id, $site_url, $user_amount, $cluster_id){
-    	$this->db->reconnect();
     	try{
     		$this->db->trans_begin();
     		
@@ -61,21 +58,8 @@ class Cluster_Model extends MY_Model{
     }
     
     public function getClusters(){
-    	$this->db->reconnect();
     	$ret = $this->db->get_where($this->tbl['cluster']);
     	return $ret->num_rows()>0 ? $ret->result_array() : false;
-    }
-    
-    public function getClusterByEnvironmentName($name){
-    	$this->db->reconnect();
-    	$ret = $this->db->get_where($this->tbl['cluster'],array('EnvironmentName'=>$name));
-    	return $ret->num_rows()>0 ? $ret->first_row('array') : false;
-    }
-    
-    public function getClusterByDomain($url){
-    	$this->db->reconnect();
-    	$ret = $this->db->get_where($this->tbl['cluster'],array('url'=>$url));
-    	return $ret->num_rows()>0 ? $ret->first_row('array') : false;
     }
     
 }

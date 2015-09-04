@@ -137,7 +137,6 @@ class Log_class {
                 ),
                 array(
                     'id' => 15,
-                	'isopen' => 1,//是否开启
                     'content' => '指定员工管理员',
                 ),
                 array(

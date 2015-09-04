@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>蜜蜂管理中心</title>
+<title>云企管理中心</title>
 </head>
 <body>
 <!--修改密码.html-->
@@ -171,7 +171,6 @@ function first()
 }
 function second()
 {
-	$(this).parents("td").next().html();
 	var newPwd=$("#newPwd").val();
 	var oldPwd=$("#oldPwd").val();
 	var isNewValid=regex.test(newPwd);
@@ -209,7 +208,6 @@ function second()
 }
 function third()
 {
-	//$(this).parents("td").next().html();
 		var newPwd=$("#newPwd").val();
 		var repeatPwd=$("#repeatPwd").val();
 		//var isRepeatValid=valitateRepeatPwd(newPwd,repeatPwd);
@@ -342,31 +340,26 @@ $(function(){
 			$('#newPwd').removeClass("second")
 		}	
 	})
-	
-/**  --------------该方法为解决[B150306-001]而注释掉----------------------//
-//	$(document).click(function(e)
-//	{
-//		var t=$(e.target);
-//		if(t.attr('type')!='password')
-//		{
-// 				if($('#oldPwd').hasClass("f"))
-// 					{
-// 		  				first();
-// 					}
-// 				if($('#newPwd').hasClass("s"))
-// 					{
-// 					  second();
-// 					}
+	$(document).click(function(e)
+	{
+		var t=$(e.target);
+		if(t.attr('type')!='password')
+		{
+				if($('#oldPwd').hasClass("f"))
+					{
+		  				first();
+					}
+				if($('#newPwd').hasClass("s"))
+					{
+					  second();
+					}
 				
-// 				if($('#repeatPwd').hasClass("t") && $('#repeatPwd').val()!='')
-// 					{
-// 					  third();
-// 					}
-//		}
-//	})  
-    --------------该方法为解决[B150306-001]而注释掉---------------------- **/
-
-    
+				if($('#repeatPwd').hasClass("t") && $('#repeatPwd').val()!='')
+					{
+					  third();
+					}
+		}
+	})
 	/*$("#oldPwd").blur(function(){
 		
 		var password_complexity = <?php //echo $current_pwd_arr['complexity_type']; ?>;

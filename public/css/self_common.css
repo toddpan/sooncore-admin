@@ -77,7 +77,7 @@ a span {
 }
 a {
     text-decoration: underline;
-    color: #52a9b3;
+    //color: #52a9b3;
 }
 a:focus {
     outline: none
@@ -112,24 +112,13 @@ a:focus {
 .hide{
     display:none;
 }
-body {
-    position: relative;
-    font: 12px "Microsoft YaHei","Î¢ÈíÑÅºÚ",Arial, sans-serif;
-    background: #4f5457;
-    color: #4f4f4f;
-}
+
 .pageBody {
     width: 100%;
     margin: 0 auto;
     min-width: 1000px;
 }
-.header {
-    height: 87px;
-    padding: 0 5px;
-    background: url(../images/header_bg.png) 0 0 repeat-x;
-    position: relative;
-    z-index: 10;
-}
+
 .logo {
     display: inline-block;
     float: left;
@@ -267,7 +256,7 @@ body {
     z-index: 22;
 }
 .headerLink .menu {
-    right: 0;
+    left: 0;
     top: 78px;
 }
 
@@ -480,7 +469,6 @@ li{
     height: 24px;
     background: url(../images/icon.png) no-repeat 0 -180px;
     overflow: hidden;
-    z-index: 9;
 }
 .combo .input,
 .select-box .input {
@@ -519,7 +507,6 @@ font-size: 14px;
 color: #c4c5c6;
 line-height: 16px;
 cursor:text;
-z-index: 0;
 }
 .inputBox input {
     height: 18px;
@@ -579,14 +566,10 @@ z-index: 0;
     display: block;
     position: relative;
     border: 0 none;
-    /* margin: 0 30px 0 6px; */
+    margin: 0 30px 0 6px;
    /* height: 18px;*/
-    line-height: 26px;
-    height: 26px;
-    /* padding: 4px 0; */
-    padding: 0;
-    margin: 0 2%;
-    width: 96%;
+    line-height: 18px;
+    padding: 4px 0;
     font-size: 14px;
     color: #c4c5c6;
     cursor: pointer;
@@ -670,7 +653,6 @@ z-index: 0;
 }
 .selectBox .icon {
     background-position: 0 -180px;
-    z-index: 1;
 }
 .datepicker {
     width: 110px;
@@ -838,14 +820,13 @@ z-index: 0;
 .conTabsHead li {
     float: left;
     display: block;
-    width: 95%;
-    padding-left: 5%;
+    width: 50%;
     height: 40px;
     line-height: 40px;
     color: #3e5674;
     background: url(../images/conTabs.png) 0 -1px repeat-x;
     font-size: 16px;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
     position: relative;
     _display:inline;
@@ -1143,12 +1124,11 @@ td.ellipsis {
 }
 .checkbox {
     display: inline-block;
-    background: url(../images/checkbox.png) 0 12px no-repeat;
+    background: url(../images/checkbox.png) 0 7px no-repeat;
     color: #2e444a;
     font-size: 14px;
     height: 26px;
     padding-left: 4px;
-    line-height: 2.5em;
 }
 .checkbox input{
 	filter: alpha(opacity=0);
@@ -1159,7 +1139,7 @@ td.ellipsis {
 	opacity: 1;
 }
 .checkbox.checked {
-    background-position: 0 -14px;
+    background-position: 0 -19px;
 }
 
 .disabled {
@@ -1626,12 +1606,6 @@ td.ellipsis {
 .w210 .input {
     width: 202px;
 }
-.w300 {
-    width: 300px;
-}
-.w300 .input {
-    width: 292px;
-}
 .w360 {
     width: 360px;
 }
@@ -1737,9 +1711,8 @@ td.ellipsis {
 .infoTable .tr {
     padding-right: 12px;
     color: #4f4f4f;
-    width: 140px;
+    width: 100px;
     vertical-align: top;
-    white-space: nowrap;
 }
 .tr_r
 {
@@ -1902,19 +1875,8 @@ td.ellipsis {
 .dialog {
     position: fixed;
     /* _position:relative;*/
-    _position:absolute;
-    _margin-bottom:120px;
-    _bottom:auto;
-    _top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
-    /* _margin-top:100px !important;
-      _margin-left:-800px !important;*/
-
-    top: 40%;
+    top: 50%;
     left: 50%;
-    _top:40%;
-    _left:53%;
-    /*_top:-600px;
-    _left:100px;*/
     z-index:1000;
     display: none;
 }
@@ -1961,8 +1923,7 @@ td.ellipsis {
     position: relative;
     _z-index:2000;
     z-index:2;
-    /*border: 1px solid #b0b1b2;*/
-    border: none;
+    border: 1px solid #b0b1b2;
     background: #f1f6f8;
 }
 .dialogBox {
@@ -2107,9 +2068,6 @@ td.ellipsis {
 .poptip3 {
     left: 207px;
 }
-.poptip3 {
-    top: 170px;
-}
 .poptip {
     right: 80px;
     background: url(../images/poptipBg0.png) 0 0 no-repeat;
@@ -2229,14 +2187,13 @@ td.ellipsis {
     border-bottom: 1px solid #e5ecf1;
     line-height: 26px;
     font-weight: bold;
-    padding: 10px 0;
 }
 .groupLimit .setTitle {
     margin-bottom: 10px;
 }
 .toolBar2 {
-    padding: 0px 28px;
-    height: 1px;
+    padding: 5px 28px;
+    height: 28px;
     margin: 0 -28px;
     text-align: right;
 }
@@ -2363,7 +2320,6 @@ td.ellipsis {
 .D_addAccounts .infoTable .tr {
     padding: 0;
     width: 80px;
-    white-space: nowrap;
 }
 .D_uploadLogo {
     width: 500px;
@@ -2739,7 +2695,7 @@ span.chart-e {
 #menu3 {
     width: 160px;
     display: none;
-    top: 37px;
+    top: 30px;
     right: 0px;
     position: absolute;
     z-index:99;
@@ -3615,7 +3571,7 @@ th.errorLabel {
 	top: 28px;
 	left: 0;
 	z-index: 20;
-	width: 297px;
+	width: 208px;
 	background: #fff;
 	box-shadow: 0 2px 10px 0px rgba(0,0,0,.2);border: 1px solid #b4bfcf;}
 .lianxiangUl li{
@@ -3649,36 +3605,3 @@ a
 .add_css{
 	*position:static;
 }
-.infoInput {
-    position: relative;
-    z-index: 10;
-    height: 18px;
-    padding: 4px;
-    border-width: 0;
-    background: #fbfdff url("../images/loginInputBg.png") repeat-x scroll 0 0;
-    line-height: 18px;
-    font-size: 14px;
-    color: #4f4f4f;
-    border: 1px solid #b2bdcd;
-    *margin-top: 5px;
-}
-
-.inputInfoBox {
-	height: 26px;
-    background: url(../images/loginInputBg.png) 0 0 repeat-x #fbfdff;
-    border: 1px solid #b2bdcd;
-    border-radius: 1px;
-    display: inline-block;
-}
-.inputInfoBox input {
-	background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    border: medium none;
-    color: #4f4f4f;
-    font-size: 14px;
-    height: 18px;
-    line-height: 18px;
-    *height: 17px;
-    *line-height: 17px;
-    padding: 4px;
-}
-

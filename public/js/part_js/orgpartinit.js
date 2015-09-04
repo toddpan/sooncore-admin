@@ -1,38 +1,81 @@
 // JavaScript Document
 $(function()
 {
-	InitzTree(); //初始化结构组织树
+    //得到组织结构部门的员工列表
+   $("#ztree .nodeBtn").live("click",function(){
+       //alert($(this).attr("title"));
+       
+       if(!$(event.target).hasClass("button")){ //排除节点前三角箭头的点击事件
+            $(".curSelectedNode").removeClass("curSelectedNode");
+            $(this).addClass("curSelectedNode");
+            $(".tabToolBox").css("display","none");
+            var obj = getSelectNode();
+
+            var obj2 = {
+                org_id : obj.oid,
+                parent_id : obj.pid
+            };
+            load_staff(obj2, "organize/get_users_list");
+            var orgNameStr = '<span>'+$(this).attr("title")+'</span>';
+            $("#part01 .p1 .bread").html(orgNameStr);
+       
+       }
+       
+   });
+   
+   //点击三角箭头加载下一级节点
+   $(".nodeBtn .button").live("click",function(){
+       var status = $(this).hasClass("noline_close");
+       var childrenNode = $(this).parent(".nodeBtn").next("ul");//获得子部门
+        childrenNode.slideToggle("fast");
+       if(status){//判断节点是否展开
+           $(this).removeClass("noline_close").addClass("noline_open");
+           //alert(childrenNode.length);
+           
+           if(childrenNode.length===0){//如果子部门为空则加载
+                onExpand(event);
+            }
+            
+       }else{
+           $(this).removeClass("noline_open").addClass("noline_close");
+       }
+   });
+   
+   
+   
+   //添加员工的部分选择部门事件
+   $("#departmentTree .nodeBtn").live("click",function(){
+       var _this = $(event.target);
+        if(!_this.hasClass("button")){ //排除节点前三角箭头的点击事件
+            $("#departmentTree .curSelectedNode").removeClass("curSelectedNode");
+            $(this).addClass("curSelectedNode");
+            
+            //var selectNodeName = _this.attr("title").split(" > ");
+            $('#inputVal2').find("input").val($.trim($(this).text()));
+       }
+       
+   });
+   
+  
+   
     //点击员工调岗
     // $(".btnChangeUser_O").die("click");
     $(".btnChangeUser_O").click(function() {
-		if($(this).hasClass("false"))
-		{
-			return;
-		}
-		$(this).addClass("false");
-		var _this=$(this);
+        if($(this).hasClass("false"))
+        {
+                return;
+        }
+        $(this).addClass("false");
+        var _this=$(this);
         var user_id ='';
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        var nodes = zTree.getSelectedNodes();
-        var treeNode = nodes[0];
-        //alert(treeNode.length)
-
-        var id_2 = treeNode.pId;
-        var org_code ='-' + treeNode.id;
-        var node;
-        while (zTree.getNodesByParam('id', id_2, null)[0] != null) {
-            node = zTree.getNodesByParam('id', id_2, null)[0];
-            id_2 = node.pId;
-            org_code ='-' + node.id + org_code;;
-            // value.push(node.name);
-            // id_value.push(node.id);
-
+        var treeNode = getSelectNode();
+        if (treeNode.oid == null) {
+            alert("未能获取到部门信息");
+            return false;
         }
-        if (treeNode != null) {
-            var orgid = treeNode.id;
-
-            // alert(orgid)
-        }
+        var id_2 = treeNode.pid;
+        var orgid = treeNode.oid;
+        
         $('#part01 table tbody label').each(function() {
             if ($(this).hasClass("checked")) {
                 var value = $(this).find('input').val();
@@ -46,6 +89,7 @@ $(function()
         if (lastIndex > -1) {
             user_id = user_id.substring(0, lastIndex) + user_id.substring(lastIndex + 1, user_id.length);
         }
+        //alert(user_id)
         user_id ='[' + user_id +']';
 		
         //返回code是否成功，如果成功：重新加载当前组织帐号列表。
@@ -53,48 +97,29 @@ $(function()
 		_this.removeClass("false");
         $('#dialog .dialogBottom #move_staff_part').die('click');
         $('#dialog .dialogBottom #move_staff_part').live('click', function() {
-			/*if($(this).hasClass("false"))
-			{
-				return;
-			}
-			$(this).addClass("false");*/
-			var _t=$(this);
-            var dgtree = $.fn.zTree.getZTreeObj("dgmoveorg");
-            var nodes1 = dgtree.getSelectedNodes();
-            var treeNode1 = nodes1[0];
-            if (treeNode1 != null) {
-                var neworgid = treeNode1.id;
-                var parent_orgid = treeNode1.pId;
+            /*if($(this).hasClass("false"))
+            {
+                    return;
+            }
+            $(this).addClass("false");*/
+            var _t=$(this);
+            var dgtree = $("#dgmoveorg a.curSelectedNode");
+            var new_org_id = dgtree.attr("org_id");
+            var new_title = dgtree.text();
+            if (new_org_id != null) {
+                var neworgid = new_org_id;
                 // alert(orgid1)
             } else {
                 alert("请选择要调入的部门！");
                 return false;
             }
-            id_2 = treeNode1.pId;
-            var org_code1 ='-' + treeNode1.id;
-            while (zTree.getNodesByParam('id', id_2, null)[0] != null) {
-                node = zTree.getNodesByParam('id', id_2, null)[0];
-                id_2 = node.pId;
-                org_code1 ='-' + node.id + org_code1;
-                // value.push(node.name);
-                // id_value.push(node.id);
-
-            }
-            var orgname = "";
-            orgname = treeNode.name;
-            var neworgname = "";
-            neworgname = treeNode1.name;
-            // alert(orgname);
-            //alert(neworgname);
-            //alert(user_id)
+            var orgname = treeNode.name;
+            var neworgname = new_title;
             var staff = {
-                //"parent_orgid":parent_orgid,
-                //"old_org_code":org_code,
                 "orgid": orgid,
-                "orgname": orgname, //新的部门名称//
+                "orgname": orgname, //老的部门名称//
                 "user_id": user_id,
                'neworgid': neworgid,
-                //'new_org_code':org_code1,
                 "neworgname": neworgname //新的部门名称
             };
             //alert(parent_orgid)
@@ -103,9 +128,9 @@ $(function()
                // alert(data);
                 var json = $.parseJSON(data);
 
-                if (json.code == 0) {
+                if (json.code === 0) {
                     //重新加载当前组织帐号列表
-					org_del_staff();
+			org_del_staff();
                   /*  var obj = {
                         "parent_orgid": parent_orgid,
                         "org_id": orgid
@@ -113,15 +138,13 @@ $(function()
                     load_staff(obj, path_user, path_mag);*/
                     hideDialog();
                 } else {
-					
-				alert(json.prmopt_text)
-		  	
-					hideDialog();
-				}
-				_t.removeClass("false");
+                    alert(json.prmopt_text);
+                    hideDialog();
+		}
+		_t.removeClass("false");
 			
-            })
-        })
+            });
+        });
 
     });
     //选中员工，点击删除员工
@@ -277,9 +300,8 @@ $(function()
                     if (json.other_msg.state == 1) {
                         dG = 1;
 
-//                        $(".poptip3").fadeIn();
-                        alert(json.prompt_text + ',请先删除下级组织');
-                        _this.removeClass('false');
+                        $(".poptip3").fadeIn();
+                        //alert(dG)
                     } else if (json.other_msg.state == 2) {
                         dG = 1;
                         $(".poptip3").fadeIn();
@@ -305,15 +327,12 @@ $(function()
     //alert(2)
     $('#part01 table td a.btnOn').die("click");
     //关闭员工账号
-
     //$(document).on("click",'#part01 table td a.btnOn',function()
     $('#part01 table td a.btnOn').live('click', function() {
         //alert(2);
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        nodes = zTree.getSelectedNodes();
-        treeNode = nodes[0];
-        var org_ID = treeNode.id;
-        var parent_orgid = treeNode.pId;
+        var obj = getSelectNode();
+        var org_ID = obj.oid;
+        //var parent_orgid = obj.pid;
         var user_id = $(this).parents("tr").find("td:first").find("input").val(); //
         var staff_account = {
             //"parent_orgid":parent_orgid,
@@ -364,21 +383,14 @@ $(function()
     //开通账号
     //$(document).on("click",'#part01 table td a.btnOff',function()
     $('#part01 table td a.btnOff').live('click', function() {
-		if($(this).hasClass("false"))
-		{
-			return;
-		}
-		$(this).addClass("false");
+        if($(this).hasClass("false"))
+        {
+                return;
+        }
+        $(this).addClass("false");
         // alert(564657567)
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        var nodes = zTree.getSelectedNodes();
-        var treeNode = nodes[0];
-        var org_ID = treeNode.id;
-        var parent_orgid = treeNode.pId;
-        var user_id = $(this).parents("tr").find("td:first").find("input").val(); //
+        var user_id = $(this).parents("tr").find("td:first").find("input").val();
         var staff_account = {
-            //"parent_orgid":parent_orgid,
-            // "orgid":org_ID,
             "type_id": 1,
             "user_id": user_id
         };
@@ -394,7 +406,7 @@ $(function()
             }
 			else
 			{
-				alert(json.prmopt_text)
+				alert(json.prmopt_text);
 				return false;
 			}
 			_this.removeClass("false");

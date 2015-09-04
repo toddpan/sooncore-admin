@@ -3,7 +3,7 @@
 <head>
 <base href="{$tag_base_url}" />
 <meta charset="utf-8">
-<title>免费试用蜜蜂</title>
+<title>免费试用云企</title>
 <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -14,19 +14,19 @@
 <!-- end header -->
 
 <div class="main">
-  <div class="breadcrumb">免费试用蜜蜂</div>
+  <div class="breadcrumb">免费试用云企</div>
   <h2 style="margin-top: 50px;">请输入短信验证码</h2>
-  <h3>短信验证码已经发送到您的手机 {$phone}上，请在下框中输入验证码。</h3>
+  <h3>短信验证码已经发送到您的手机 {$mobileNumber}上，请在下框中输入验证码。</h3>
   <div class="form-box">
         <div id="email" class="form-item error">
-          <label for="userEmail" class="label-noIcon"><span style="display: inline;">请输入验证码…</span></label>
+          <label for="userEmail" class="label-noIcon" onClick=""><span style="display: inline;">请输入验证码…</span></label>
           <input type="text" id="userCode" maxlength="45" name="userEmail" class="form-text valid" placeholder="" value="" style="padding-left:8px; margin-right: 10px; width: 225px; ">
-          <a  id="resendCheckcode" onClick="resendCheckcode(this,{$mobileNumber})" class="blue-link">重新发送验证码<span></span></a>
+          <a  id="resendCheckcode" onClick="resendCheckcode(this,{$phone})" class="blue-link">重新发送验证码<span></span></a>
           <div class="form-error" id="error_code" style="left: 400px;display:none">验证码错误，请重新输入</div>
           
         </div>
   </div>
-  <div class="form-footer" style="margin: 50px 0;"> <input style="cursor:pointer;" class="form-btn" id="code_next" user_id="{$user_id}"  value="下一步" /> <a href="http://www.quanshi.com" class="gray-link">取消</a></div>
+  <div class="form-footer" style="margin: 50px 0;"> <input class="form-btn" id="code_next" user_id="{$user_id}"  value="下一步" /> <a href="http://www.quanshi.com" class="gray-link">取消</a></div>
 </div>
 <div class="footer">
   <div class="footerInner"> <span class="text rightLine">创想空间商务通信服务有限公司 @copyright 2001-2011 京ICP备0500547号</span> <span class="text">24小时服务热线：400-810-1919</span> </div>
@@ -80,18 +80,6 @@
 		}
 	}
 	$(function(){
-		// 当验证码输入框获得焦点时，隐藏提示信息
-		$('#userCode').focus(function(){
-			$(this).prev().find('span').text('');
-		});
-		
-		// 当验证码输入框失去焦点时，如果input的value为空，则显示提示信息
-		$('#userCode').blur(function(){
-			if($(this).val() == ''){
-				$(this).prev().find('span').text('请输入验证码…');
-			}
-		});
-		
 	    $('#code_next').click(function()
 	    {
             var code=$('#userCode').val();

@@ -35,10 +35,8 @@ class UC_PWD_Manage_Model extends MY_Model{
 		// 执行查询
 		$query = $this->db->get_where(self::TBL, $condition);
 		
-		
 		if($query->num_rows() > 0){
-			
-			return $query->row_array();
+			$query->row_array();
 		}
 
 		// 返回查询结果数组

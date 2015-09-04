@@ -3,7 +3,7 @@
 <head>
 <base href="{$tag_base_url}" />
 <meta charset="utf-8">
-<title>免费试用蜜蜂</title>
+<title>免费试用云企</title>
 <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -18,11 +18,11 @@
 <!-- end header -->
 
 <div class="main">
-  <div class="breadcrumb">免费试用蜜蜂</div>
+  <div class="breadcrumb">免费试用云企</div>
   <h2 style="margin-top: 50px;">免费试用帐号申请成功！</h2>
   <div class="success-content">
   	<table><tr><th>企业登录域名：</th><td>adjadfjk@quanshi .com</td></tr><tr><th>管理帐号：</th><td>jiecheng.zhang@quanshi.com</td></tr></table></div>
-  <div class="center-box"> <a  class="form-btn">登录蜜蜂管理中心</a> </div>
+  <div class="center-box"> <a  class="form-btn">登录云企管理中心</a> </div>
   
 </div>
 <div class="footer">

@@ -1,17 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云企管理中心</title>
+</head>
+<body>
+<!--安全管理_密码管理.html-->
 <div class="contHead">
 	<span class="title01">安全管理</span>
 	<ul class="nav02">
-	  	<?php if($this->functions['PasswordManage']){?>
-			<li class="first selected"><a>密码管理</a></li>
+		<?php if($this->p_role_id == SYSTEM_MANAGER){?>
+		<li class="first selected"><a >密码管理</a></li>
 		<?php }?>
-		<?php if($this->functions['SensitiveWord']){?>
-			<!-- <li><a onclick="loadCont('sensitiveword/sensitiveWordPage/1');">敏感词管理</a></li> -->
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+<!--  		<li><a onclick="loadCont('sensitiveword/sensitiveWordPage/1');">敏感词管理</a></li>-->
 		<?php }?>
-		<?php if($this->functions['LogManage']){?>
-			<li class="log" onclick="loadCont('log/logPage');"><a >日志管理</a></li>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
+		<li><a onclick="loadCont('log/logPage');">日志管理</a></li>
 		<?php }?>
-		<?php if($this->functions['UserActionManage']){?>
-			<!--<li class="last"><a onclick="loadCont('useraction/userActionPage');">用户活动查询</a></li> -->
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+<!-- 		<li class="last"><a onclick="loadCont('useraction/userActionPage');">用户活动查询</a></li> -->
 		<?php }?>
 	</ul>
 </div>
@@ -26,6 +34,7 @@
 		<li>
 			<span class="text02" style="color: #555758; text-align: left">用户密码有效期</span>
 			<div class="combo selectBox w150">
+				
 				<a class="icon" ></a>
 				<span class="text selected">90天</span>
 				<div class="optionBox part1" target="0">
@@ -74,10 +83,9 @@
 			</div>
 		</li>
 	</ul>
-	<!-- 
 	<b class="bgTL"></b><b class="bgTR"></b><b class="bgBL"></b><b class="bgBR"></b>
-	 -->
 </div>
+
 <div class="btnBox01" style="display: none">
 	<a class="btnBlue yes"  onclick="saveSuccess()"><span class="text">保存</span><b class="bgR"></b></a>
 	<a class="btnGray btn"  onclick="cancel_resetPwd()"><span class="text">取消</span><b class="bgR"></b></a>
@@ -87,7 +95,6 @@ $('.safe').removeClass("false");
 var validity = $('ul.list .optionBox').eq(0).find('dd.selected').attr('target');
 var momery = $('ul.list .optionBox').eq(1).find('dd.selected').attr('target');
 var complexity = $('ul.list .optionBox').eq(2).find('dd.selected').attr('target');
-//alert(complexity);
 function saveSuccess() {
     var expiry_day_type;
     var history_type;
@@ -107,7 +114,6 @@ function saveSuccess() {
             complexity_type = $(this).attr("target");
         }
     }) 
-    //alert(complexity_type);
 	var path = "password/modifyPWDManage";
     var obj = {
         "expiry_day_type": expiry_day_type,
@@ -119,27 +125,15 @@ function saveSuccess() {
         //alert(data)
         var json = $.parseJSON(data);
         if (json.code == 0) {
-
-            //alert(111);
-            // 如果密码复杂度由小变大，则弹框提醒当前登录的管理员
-            if(complexity < complexity_type){
-            	//alert(222);
-            	$(".btnBox01").hide();
-                showDialog('<?php echo site_url("password/alert_reset_pwd"); ?>');
-            }else{
-            	$(".rightCont").append('<div class="successMsg">保存成功</div>');
-                setTimeout(function() {
-                    $(".successMsg").remove();
-                    $(".btnBox01").hide();
-                },
-                2000);
-            }
-
-         validity = expiry_day_type;
-         momery = history_type;
-         complexity = complexity_type;
-                
-            
+            validity = expiry_day_type;
+            momery = history_type;
+            complexity = complexity_type;
+            $(".rightCont").append('<div class="successMsg">保存成功</div>');
+            setTimeout(function() {
+                $(".successMsg").remove();
+                $(".btnBox01").hide();
+            },
+            2000)
         } else
 				   {
 				   		alert(json.prompt_text);
@@ -225,3 +219,5 @@ $(function() {
     })
 });
 </script>
+</body>
+</html>

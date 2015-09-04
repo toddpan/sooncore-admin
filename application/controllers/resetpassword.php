@@ -7,7 +7,6 @@
  * @version 	v1.0
  */
 class ResetPassword extends Web_Controller {
-	public static $num = 1;
 	
 	/**
 	 * 构造方法
@@ -72,32 +71,10 @@ class ResetPassword extends Web_Controller {
 		
 		// 判断产品状态
 		$user_id = isset($ums_user_info['id']) ? $ums_user_info['id'] : '';
+		$mobile  = isset($ums_user_info['mobileNumber']) ? $ums_user_info['mobileNumber'] : '';
 		$product_info = $this->ums->getUserProduct($user_id, UC_PRODUCT_ID);
 		if($product_info == false){
 			return_json(UMS_PRODUCT_NOT_EXIST, $this->lang->line('ums_product_not_exist'), array()); // 该账号不存在
-		}
-		
-		// 判断手机号是否为空
-		$mobile  = isset($ums_user_info['mobileNumber']) ? $ums_user_info['mobileNumber'] : '';
-		if(empty($mobile)){
-			return_json(HAVE_NO_PHONE, $this->lang->line('have_no_phone'), array()); // 无法获取到您的手机号，请联系系统管理员
-		}
-		
-		// 判断该用户是否是管理员
-		$this->load->model('uc_user_admin_model');
-		$this->load->model('uc_user_admin_role_model');
-		$admin_where_arr = array(
-			'userID' => $user_id
-		);
-		$re_admin_arr = $this->uc_user_admin_model->getAdminByUseridAndState($admin_where_arr);
-		$where_arr = array(
-			'user_id' 	=> $user_id,
-			'state'		=> ADMIN_OPEN
-		);
-		$re_admin_role_arr = $this->uc_user_admin_role_model->getAdminByUseridAndState($where_arr);
-		$role_id = isset($re_admin_role_arr['role_id']) ? $re_admin_role_arr['role_id'] : '';
-		if(empty($re_admin_arr) || is_empty($role_id)){
-			return_json(YOU_ARE_NOT_ADMIN, $this->lang->line('you_are_not_admin'), array()); // 您输入的账号不是管理员账号
 		}
 		
 		// 发送手机短信验证码
@@ -112,41 +89,28 @@ class ResetPassword extends Web_Controller {
 	public function send_msg_code($user_id, $mobile){
 		log_message('info', 'Into method send_msg_code input---> $user_id=' . $user_id .',$mobile=' . $mobile);
 		
-		// 获取24小时内验证码发送次数
-		$this->load->model('uc_phone_varification_code_model');
-		$today_num = $this->uc_phone_varification_code_model->get_today_num($user_id);
-		
-		// 判断24小时内验证码发送次数是否小于五次，是，则发送验证码，否，则删除今天之前的验证码
-		if($today_num < TODAY_CODE_SEND_NUM){
-			
-			// 生成短信验证码（6位数字）
-			$msg_code = '';
-			for($i = 0; $i < 6; $i++){
-				$msg_code .= rand(0, 9);
-			}
-			
-			// 调用UCCServer接口发送手机短信验证码
-			$this->load->library('UccLib', '', 'ucc');
-			$this->lang->load('msg_tpl', 'chinese');
-			$msg_tpl = $this->lang->line('msg_tpl_forget_pwd');
-			$content = sprintf($msg_tpl, $msg_code);;
-			$this->ucc->sendMobileMsg($user_id, $content, $mobile);
-			
-			// 将验证码保存到数据库中
-			$code_info = array(
-					'user_id' 			=> $user_id,
-					'varification_code' => $msg_code,
-					'create_time' 		=> time(),
-					'state' 			=> CODE_NOT_VALID // 未验证
-			);
-			$this->uc_phone_varification_code_model->saveCode($code_info);
-			
-			return_json(COMMON_SUCCESS, $this->lang->line('success'), array('user_id' => $user_id, 'mobile' => $mobile));
-			
-		}else{
-			$this->uc_phone_varification_code_model->del_code($user_id);
-			return_json(COMMON_FAILURE, sprintf($this->lang->line('most_msg_num'), TODAY_CODE_SEND_NUM), array()); // 您今天最多只能发送5条短信验证码
+		// 生成短信验证码（6位数字）
+		$msg_code = '';
+		for($i = 0; $i < 6; $i++){
+			$msg_code .= rand(0, 9);
 		}
+		
+		// 调用UCCServer接口发送手机短信验证码
+		$this->load->library('UccLib', '', 'ucc');
+		$content = sprintf(FORGET_PWD_MSG_TEMPLATE, $msg_code);;
+		$this->ucc->sendMobileMsg($user_id, $content, $mobile);
+		
+		// 将验证码保存到数据库中
+		$this->load->model('uc_phone_varification_code_model');
+		$code_info = array(
+				'user_id' 			=> $user_id,
+				'varification_code' => $msg_code,
+				'create_time' 		=> time(),
+				'state' 			=> CODE_NOT_VALID // 未验证
+		);
+		$this->uc_phone_varification_code_model->saveCode($code_info);
+		
+		return_json(COMMON_SUCCESS, $this->lang->line('success'), array('user_id' => $user_id, 'mobile' => $mobile));
 	}
 
 	/**
@@ -174,7 +138,7 @@ class ResetPassword extends Web_Controller {
 		
 		// 验证表单提交的短信验证码的长度
 		if(strlen($msg_code) != 6){
-			return_json(MSG_LEN_IS_WRONG, $this->lang->line('msg_is_wrong'), array()); // 短信验证码不正确
+			return_json(MSG_LEN_IS_WRONG, $this->lang->line('msg_len_is_wrong'), array()); // 短信验证码不正确
 		}
 		
 		// 根据userId和手机号从数据库中查出符合条件的短信验证码
@@ -195,6 +159,13 @@ class ResetPassword extends Web_Controller {
 		$msg = isset($msg_info['varification_code']) ? $msg_info['varification_code'] : '';
 		if($msg != $msg_code){
 			return_json(MSG_IS_WRONG, $this->lang->line('msg_is_wrong'), array()); // 短信验证码错误
+		}
+		
+		// 验证码验证成功，则删除数据库中的所有当前账号对应的验证码
+		unset($where_arr['state']);
+		$ret = $this->uc_phone_varification_code_model->del_code($where_arr);
+		if(!$ret){
+			return_json(COMMON_FAILURE, $this->lang->line('valid_msg_fail'), array()); // 验证失败
 		}
 		
 		return_json(COMMON_SUCCESS, $this->lang->line('success'), array());
@@ -222,13 +193,26 @@ class ResetPassword extends Web_Controller {
 	private function get_complexity($user_id) {
 		log_message('info', 'Into method get_complexity input---> $user_id=' . $user_id);
 		
-		$this->load->model('uc_user_admin_model');
-		$condition = array(
-			'userID' => $user_id
-		);
-		$admin_info_arr = $this->uc_user_admin_model->getAdminByUseridAndState($condition);
-		$site_id = isset($admin_info_arr['siteID']) ? $admin_info_arr['siteID'] : 0;
-		$org_id  = isset($admin_info_arr['orgID']) ? $admin_info_arr['orgID'] : 0;
+		// 根据userId获得用户所在组织， 获得组织id
+		$this->load->library('UmsLib', '', 'ums');
+		$user_org_info = $this->ums->getOrgInfoByUserId($user_id);
+		$org_id = isset($user_org_info['id']) ? $user_org_info['id'] : '';
+		
+		// 根据组织id查询组织信息，获得部门串
+		$org_info = $this->ums->getOrganizationBrief($org_id);
+		$org_code = isset($org_info['nodeCode']) ? $org_info['nodeCode'] : '';
+		
+		// 将部门串转换成数组，取出根部门id
+		$org_code_arr = explode('-', $org_code);
+		$total_org_id = $org_code_arr[0];
+		
+		// 根据组织id查询根部门的信息，获得siturl
+		$total_org_info = $this->ums->getOrganizationBrief($total_org_id);
+		$site_url = isset($org_info['siturl']) ? $org_info['siturl'] : '';
+		
+		// 根据siturl获得站点id
+		$site_info = $this->ums->getSiteInfoByUrl($site_url);
+		$site_id = isset($site_info['id']) ? $site_info['id'] : '';
 		
 		// 根据站点id和组织id获得密码复杂度
 		$this->load->model('uc_pwd_manage_model');
@@ -248,7 +232,7 @@ class ResetPassword extends Web_Controller {
 				break;
 			}
 		}
-		log_message('info', 'Out method get_complexity input---> $current_pwd_arr=' . var_export($current_pwd_arr, true));
+		
 		return $current_pwd_arr;
 	}
 	
@@ -280,30 +264,6 @@ class ResetPassword extends Web_Controller {
 		if(!$res){
 			return_json(RESET_USER_PWD_FAIL, $this->lang->line('reset_pwd_fail'), array()); // 修改密码失败
 		}
-		
-		// 向客户端发消息
-		$this->load->model('uc_user_model');
-		$select_str = 'siteId';
-		$where_arr = array(
-			'userID' => $user_id
-		);
-		$user_info = $this->uc_user_model->getUserInfos($select_str, $where_arr);
-		$site_id = isset($user_info['siteId']) ? $user_info['siteId'] : 0;
-		$this->load->library('Informationlib','','Informationlib');
-		$info_pre_arr = array(
-			'from_user_id' 	=> $user_id,
-			'from_site_id' 	=> $site_id,
-			'to_user_id' 	=> $user_id,
-			'to_site_id' 	=> $site_id,
-			'is_group' 		=> 0,
-			'msg_type' 		=> 0,
-			'msg_id' 		=> 17,
-			'type' 			=> 0
-		);
-		$info_body = array(
-			'pwd' => md5($pwd)
-		);
-		$this->Informationlib->send_info($info_pre_arr, $info_body);
 		
 		return_json(COMMON_SUCCESS, $this->lang->line('success'), array());
 	}

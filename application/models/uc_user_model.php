@@ -144,64 +144,34 @@ class UC_User_Model extends MY_Model{
      * @param array $where_arr  	where条件
      * @param array $in_where_arr 	账号的status范围数组
      */
-    public function count_open_user() {
-    	$query = $this->db->query('SELECT COUNT(STATUS) num,0 st FROM uc_user WHERE STATUS!=1 AND siteId='. $this->p_site_id . ' 
-    								UNION ALL
-									SELECT COUNT(STATUS) num,1 st FROM uc_user WHERE STATUS=1 AND siteId='. $this->p_site_id . ';');
-    	
-    	return $query->result_array();
+    public function countUser($where_arr, $in_where_arr = array()) {
+    	$this->db->where($where_arr);
+    	if(!empty($in_where_arr)){
+    		$this->db->where_in('status', $in_where_arr);
+    	}
+    	$query = $this->db->get(self::TBL);
+    	return $query->num_rows();
     }
     
     /**
-     * 统计启用和未启用的账号
+     * 统计已启用的账号
      */
-    public function count_use_user() {
-//     	$query = $this->db->query('SELECT COUNT(userID) num,1 st FROM uc_user 
-//     								WHERE siteId='. $this->p_site_id .' AND userID IN (SELECT DISTINCT user_id FROM user_client)
-// 									UNION ALL
-// 									SELECT COUNT(userID) num,0 st FROM uc_user 
-//     								WHERE siteId='. $this->p_site_id .' AND userID NOT IN (SELECT DISTINCT user_id FROM user_client);');
-    	//获取站点下所有已经创建的用户总数
-    	$all_user_num = $this->db->query('select count( distinct userId) as a from uc_user where siteId='.$this->p_site_id)->first_row()->a;
-    	
-    	//获取该站点下已经登录过的用户总数
-    	$logined_user_num = $this->db->query('select count( distinct user_id) as b from user_client where site_id = '.$this->p_site_id)->first_row()->b;
-    	
-    	return array('all_user'=>$all_user_num, 'logined_user'=>$logined_user_num);
-    	
-    	//return $query->result_array();
+    public function count_is_used_user(){
+    	$query = $this->db->query('SELECT userID FROM uc_user WHERE siteId = ' . $this->p_site_id . ' and userId IN (SELECT DISTINCT user_id FROM user_client)');
+    	return $query->num_rows();
+    }
+    
+    /**
+     * 统计未启用的账号
+     */
+    public function count_not_used_user(){
+    	$query = $this->db->query('SELECT userID FROM uc_user WHERE siteId = ' . $this->p_site_id . ' and userId NOT IN (SELECT DISTINCT user_id FROM user_client)');
+    	return $query->num_rows();
     }
     
     public function getAccountIdByUserId($user_id){
     	$query = $this->db->get_where('uc_user', array('userID'=>$user_id));
     	return $query->num_rows() > 0 ? $query->first_row()->accountId : 0;
-    }
-    
-    /**
-     * 根据条件获得用户信息
-     * @param string $select_str
-     * @param array $where_arr
-     */
-    public function getUserInfos($select_str, $where_arr){
-    	$query = $this->db->select($select_str)->get_where(self::TBL, $where_arr);
-    	
-    	if($query->num_rows() > 0){
-    		return $query->row_array();
-    	}
-    	
-    	return array();
-    }
-    
-    /**
-     * @brief 修改员工信息
-     * @param $data 要修改的账户信息
-     */
-    public function updateUserAccountId($data){
-		$this->db->where('userID',$data['userID']);
-		$res = $this->db->update(self::TBL,$data);
-		if(!$res) throw new Exception('update data into uc_ldap_config failed. sql is'.$this->db->last_query());
-		log_message('info', 'the sql update accountID from uc_user is --> '. $this->db->last_query());
-		return $res ? true : false;
     }
    
 }

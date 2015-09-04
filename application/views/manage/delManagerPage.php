@@ -38,7 +38,6 @@ function dele_admin()
 		{
 			$('#self_staff tbody span.checked').parent().parent().remove();
 			hideDialog();
-			$(" #dete_btn_admin").hide();
 		}
 		else
 		{

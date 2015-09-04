@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends Admin_Controller {
 	
 	public function __construct(){
 		parent::__construct();
@@ -32,38 +32,6 @@ class Welcome extends CI_Controller {
         $this->load->view('welcome_message');
     }
     
-    public function test(){
-    	$this->load->library('PortalLib', '', 'portal');
-    	$src_url = "gnetis11.quanshi.com/devcloud";
-    	$dest_url = "devcloud.quanshi.com/gnetis11";
-    	
-     	$ret = $this->portal->addRule($src_url, $dest_url);
-     	print_r($ret);
-    	
-//     	$ret = $this->portal->searchRule($src_url);
-//     	print_r($ret);
-    	
-//     	$ret = $this->portal->modifyRule(14,$src_url, 'www.baidu.com');
-//     	print_r($ret);
-    	
-//     	$ret = $this->portal->delRule($src_url);
-//     	print_r($ret);
-
-//     	$pattern = '/^([0-9a-zA-Z-_]+)\.quanshi.com\/([0-9a-zA-Z-_]+)$/';
-//     	$match = array();
-//     	$subject = 'd-d.quanshi.com/aa';
-//     	if(preg_match($pattern, $subject, $match)){
-//     		echo 'yes';
-//     		print_r($match);
-//     	}else{
-//     		echo 'no';
-//     	}
-
-    	
-    	
-    	
-    	
-    }
     /*
      * boss 调试
     public function test(){
@@ -80,20 +48,6 @@ class Welcome extends CI_Controller {
     	print_r($ret);
     }
     */
-    
-    /*
-    //短信发送test
-    public function test(){
-    	echo 'start to send message';
-    	$this->load->library('UccLib', '', 'ucc');
-    	$user_id = 61371839;
-    	$content = 'a test';
-    	$mobile  = '13601231924';
-    	$this->ucc->sendMobileMsg($user_id, $content, $mobile);
-    	echo 'done';
-    }
-    */
-    
 }
 
 /* End of file welcome.php */

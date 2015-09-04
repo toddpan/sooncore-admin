@@ -9,7 +9,7 @@
 
 require_once(__DIR__.DIRECTORY_SEPARATOR.'AccountProcessInterface.php');
 
-class AccountEnableProcessImpl extends AccountProcessInterface{
+class AccountEnableProcessImpl implements AccountProcessInterface{
 	
 	public function __construct(){
 		parent::__construct();
@@ -91,7 +91,7 @@ class AccountEnableProcessImpl extends AccountProcessInterface{
 		log_message('info', 'closing account finished.');
 		
 		#检查是否所有的账号都启用成功，如果是，则callback成功，否则callback失败，任务记log
-		log_message('info', 'start to checkout users which enable failed.');
+		log_message('info', 'start to checkout users which close failed.');
 		if(!empty($failed_list)){
 			$this->ci->boss->account_callback($uc['callback'], $uc['request_id'], $uc['contract_id'], BOSS_CALLBACK_FAILED ,$success_list, $failed_list);
 			throw new Exception('Encounter a problem when create user, the msg is-->'.$msg);
@@ -112,7 +112,6 @@ class AccountEnableProcessImpl extends AccountProcessInterface{
 	 */
 	private function _enableAccount($user){
 		//ucc创建同事关系
-		/*
 		log_message('info', 'start to create colleage relationship for user.');
 		$org_info = $this->ci->ums->getOrganizationByUserId($user['id']);//获取当前用户所在的组织
 		$is_manager = 0;//是否为管理者 1-是 0-否
@@ -120,10 +119,8 @@ class AccountEnableProcessImpl extends AccountProcessInterface{
 			return array(false, 'create colleague to ucc failed.');
 		}
 		log_message('info', 'creating colleage relationship for user finished.');
-		*/
 		
 		//uniform启用会议
-		/*
 		log_message('info', 'start to send data to uniform.');
 		$user_type = 2;//操作类型 1-新增或修改 2-启用
 		$meeting_xml_data = $this->_getMeetingXMLData($user, $user_type);
@@ -131,7 +128,6 @@ class AccountEnableProcessImpl extends AccountProcessInterface{
 			return array(false, 'save meeting info to uniform failed.');
 		}
 		log_message('info', 'sending data to uniform finished.');
-		*/
 		
 		//uc_user本地更新状态
 		log_message('info', 'start to close user status at local...');

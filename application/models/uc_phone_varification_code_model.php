@@ -7,7 +7,6 @@
  * @version 	v1.0
  */
 class uc_phone_varification_code_model extends CI_Model {
-	
 	// 定义表名称
 	const TBL = 'uc_phone_varification_code';
 	
@@ -83,22 +82,14 @@ class uc_phone_varification_code_model extends CI_Model {
 	
 	/**
 	 * 根据条件删除验证码记录
+	 * @param array $where_arr 条件数组
 	 */
-	public function del_code($user_id){
-		$result = mysql_query("DELETE FROM uc_phone_varification_code WHERE user_id = $user_id AND FROM_UNIXTIME(create_time, '%Y-%m-%d') != CURDATE();");
-		if($result && mysql_affected_rows() > 0){
+	public function del_code($where_arr){
+		$this->db->delete(self::TBL, $where_arr);
+		
+		if($this->db->affected_rows() > 0){
 			return true;
 		}
-		
 		return false;
-	}
-	
-	/**
-	 * 获得今天发送的短信总数
-	 */
-	public function get_today_num($user_id){
-		$query = $this->db->query("SELECT * FROM uc_phone_varification_code WHERE user_id = $user_id AND FROM_UNIXTIME(create_time, '%Y-%m-%d') = CURDATE();");
-		
-		return $query->num_rows();
 	}
 }

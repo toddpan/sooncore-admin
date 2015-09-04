@@ -23,7 +23,6 @@ class UC_Controller extends CI_Controller {
 	public $p_account_id; 	// 分账id，即accountId
 	public $p_type;			// 管理员类型：1、总公司管理员；2、分公司管理员；3、生态企业管理员；0、其它
 	public $p_role_id;		// 角色Id
-	public $p_admin_role_id;// uc_user_admin_role表中的主键
 	public $p_super_admin_id; // 总管理者Id
 	public $p_client_ip;	// 客户端ip
 	public $p_org_type;		// 组织类型
@@ -33,7 +32,7 @@ class UC_Controller extends CI_Controller {
 	public $p_session_id;
 	public $p_is_ldap;
 	public $p_privilege_ids;// 权限数组
-	public $p_has_login;	// 验证是否已经登陆过
+	public $p_has_login;		// 验证是否已经登陆过
 	public $p_sys_arr;		// 常用参数数组
 	
 	/**
@@ -67,7 +66,6 @@ class UC_Controller extends CI_Controller {
 		$this->p_account_id 	= $this->session->userdata('account_id');	// 分账id，即accountId
 		$this->p_type 			= $this->session->userdata('admin_type');	// 管理员类型：1、总公司管理员；2、分公司管理员；3、生态企业管理员；0、其它
 		$this->p_role_id 		= $this->session->userdata('role_id');		// 角色Id
-		$this->p_admin_role_id  = $this->session->userdata('admin_role_id');// uc_user_admin_role表的主键
 		//$this->p_super_admin_id = $this->session->userdata('account');	// 总管理者Id
 		$this->p_client_ip 		= $this->session->userdata('client_ip');	// 客户端ip
 		$this->p_org_type 		= $this->session->userdata('org_type');		// 组织类型
@@ -84,18 +82,16 @@ class UC_Controller extends CI_Controller {
 // 		log_message('info', 'cache=' . var_export($cache_arr, true));
 		
 		if(is_empty($this->p_account) || is_empty($this->p_site_id) || is_empty($this->p_stie_domain) || is_empty($this->p_company_type) || is_empty($this->p_org_id)){
-			log_message('info', 'the session is out of date1.'.$this->p_account);
-			log_message('info', 'the session is out of date1.'.$this->p_site_id);
-			log_message('info', 'the session is out of date1.'.$this->p_stie_domain);
-			log_message('info', 'the session is out of date1.'.$this->p_company_type);
-			log_message('info', 'the session is out of date1.'.$this->p_org_id);
+			log_message('info', 'the session is out of date1.');
+				
 			gotourl(41,'',site_url('login/loginPage'),array());
 		}
 		
-		if(is_empty($this->p_user_id) || is_empty($this->p_type) || is_empty($this->p_role_id) || is_empty($this->p_client_ip)){
+		if(is_empty($this->p_user_id) || is_empty($this->p_type) || is_empty($this->p_role_id) || is_empty($this->p_client_ip) || is_empty($this->p_org_type)){
 			log_message('info', 'the session is out of date2.');
 			gotourl(41,'',site_url('login/loginPage'),array());
 		}
+		
 		
 		if(is_empty($this->p_org_nodeCode) || is_empty($this->p_customer_code) || is_empty($this->p_contract_id) || is_empty($this->p_is_ldap) || is_empty($this->p_account_id)){
 			log_message('info', 'the session is out of date3.');
@@ -118,14 +114,12 @@ class UC_Controller extends CI_Controller {
 				'accountId'			=> $this->p_account_id,		// 分账id，即accountId，注意：如果有用户，则是用户自己的
 				'siteURL' 			=> $this->p_stie_domain,	// 站点域名domain
 				'contractId' 		=> $this->p_contract_id,	// 合同id
-				'operate_id' 		=> $this->p_user_id,		// 操作发起人用户ID
+				'operator_id' 		=> $this->p_user_id,		// 操作发起人用户ID
 				'client_ip' 		=> $this->p_client_ip,		// 客户端ip
 				'oper_account' 		=> $this->p_account,		// 操作帐号
 				'oper_display_name' => $this->p_display_name,	// 操作姓名
 				'orgID' 			=> $this->p_org_id,			// 组织id
 		);
-				
-		$this->initGlobalVariables();		
 	}
 	
 	/**
@@ -135,7 +129,6 @@ class UC_Controller extends CI_Controller {
 	 */
 	public function assign($key,$val = null) {
 		return $this->template->assign($key,$val);
-		
 	}
 	
 	//smarty模板显示页面
@@ -146,39 +139,6 @@ class UC_Controller extends CI_Controller {
 	//smarty模板，获取解析后的页面内容
 	public function fetch($html){
 		return $this->template->fetch($html);
-	}
-	
-	
-
-	/*
-	 * 定义全局变量初始化函数
-	 */
-	private function initGlobalVariables(){
-		$this->setSiteConfig();
-	}
-	
-	/*
-	 * 设置站点配置信息
-	 */
-	private function setSiteConfig(){
-		$info = $this->session->userdata('siteConfig');
-		
-		if(empty($info)){
-			$info = array();
-			
-			$info['siteType'] = $this->p_is_ldap != 0 ? 1 : 0;
-			
-			$this->load->model('uc_site_config_model', 'site_config');
-			$info['importType'] = $this->site_config->getImportType($this->p_site_id);
-			
-			$this->session->set_userdata('siteConfig', $info);
-		}
-		
-		$this->siteConfig = $info;
-	}
-	
-	protected function redirectToMainPage(){
-		echo ('<script type="text/javascript">window.location = "main/index";</script>');
 	}
 }
 
@@ -284,7 +244,6 @@ class Task_Controller extends UC_Controller{
 	public function __construct(){
 		parent::__construct();
 		define('DB_RESOURCE','default');// 当前控制器连接的数据库
-		@set_time_limit(0);
 	}
 }
 

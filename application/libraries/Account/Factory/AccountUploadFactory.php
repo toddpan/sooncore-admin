@@ -40,7 +40,6 @@ class AccountUploadFactory extends AccountFactory{
 				require_once($account_upload_path.DIRECTORY_SEPARATOR.'AccountCreateUploadImpl.php');
 				$process_obj = new AccountCreateUploadImpl;
 				break;
-			/*
 			case USER_POWER_CHANGE_UPLOAD:
 				require_once($account_upload_path.DIRECTORY_SEPARATOR.'UserPowerChangeUploadImpl.php');
 				$process_obj = new UserPowerChangeUploadImpl;
@@ -53,7 +52,6 @@ class AccountUploadFactory extends AccountFactory{
 				require_once($account_upload_path.DIRECTORY_SEPARATOR.'SitePowerChangeUploadImpl.php');
 				$process_obj = new SitePowerChangeUploadImpl;
 				break;
-			*/
 			case ACCOUNT_DISABLE_UPLOAD:
 				require_once($account_upload_path.DIRECTORY_SEPARATOR.'AccountDisableUploadImpl.php');
 				$process_obj = new AccountDisableUploadImpl;
@@ -62,18 +60,10 @@ class AccountUploadFactory extends AccountFactory{
 				require_once($account_upload_path.DIRECTORY_SEPARATOR.'AccountEnableUploadImpl.php');
 				$process_obj = new AccountEnableUploadImpl;
 				break;
-			case ACCOUNT_UPDATE_UPLOAD:
-				require_once($account_upload_path.DIRECTORY_SEPARATOR.'AccountUpdateUploadImpl.php');
-				$process_obj = new AccountUpdateUploadImpl;
-				break;
-				
-			case USER_POWER_CHANGE_UPLOAD:
-			case ORG_POWER_CHANGE_UPLOAD:
-			case SITE_POWER_CHANGE_UPLOAD:
 			case ACCOUNT_DELETE_UPLOAD:
 			case ECOLOGY_DELETE_UPLOAD:
 			case BATCH_CHANGE_UPLOAD:
-			case ECOLOGY_POWER_CHANGE_UPLOAD:	
+			case ECOLOGY_POWER_CHANGE_UPLOAD:		
 				throw new Exception('This type of upload task is not supported now.type-->'.$type);
 				break;
 			default:

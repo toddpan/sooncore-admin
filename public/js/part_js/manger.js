@@ -10,8 +10,7 @@ function select_manger_type(t)
   $.post(path,obj,function(data)
    {
 	   $('.infor_page').remove();
-	   $('#ri_admin .contTitle02').after(data);
-	   
+	   $('.contTitle02').after(data);
    })
 }
 $(function(){
@@ -47,7 +46,6 @@ $(function(){
 			$(this).parent().find("input").val(value);
 			$(this).parent().find(".label").css("display","block");
 		}
-		value = (value == "'") ? "‘" : value;
 			var obj=
 			  {
 				  "keyword":value,	
@@ -55,13 +53,6 @@ $(function(){
 			  }
 		  $.post(path,obj,function(data)
 		   {
-			  //alert($("#manger_detail_page").length);
-			   if($('#manger_detail_page').length > 0){
-				   //alert($("#manger_detail_page"));
-				   $('#manger_detail_page').remove();
-				   $('.contTitle02').show();
-				   $('.infor_page').show();
-			   }
 			   $('#self_staff').remove();
 			   $('.contTitle02').after(data);
 		   })
@@ -79,7 +70,6 @@ $(function(){
 				if(value == ''){
 					$(this).parent().find("input").val(value);
 				}
-				value = (value == "'") ? "‘" : value;
 			  var obj=
 			  {
 					  "keyword":value,	
@@ -87,11 +77,6 @@ $(function(){
 			  };
 			  $.post(path,obj,function(data)
 					  {
-				  if($('#manger_detail_page').length > 0){
-					   $('#manger_detail_page').remove();
-					   $('.contTitle02').show();
-					   $('.infor_page').show();
-				   }
 				  $('#self_staff').remove();
 				  $('.contTitle02').after(data);
 					  });
@@ -111,56 +96,56 @@ $(function(){
 			   $('.contTitle02').after(data);
 		   })
 	  });
-//    $('#self_staff thead span.checkbox').die().live('click',
-//    function() {
-//		//alert(12)
-//        if ($(this).hasClass("checked")) {
-//            $(this).removeClass("checked");
-//            $(' #self_staff tbody span.checkbox').removeClass("checked");
-//            $(" #dete_btn_admin").hide();
-//        } else {
-//            $(this).addClass("checked");
-//            $(' #self_staff tbody span.checkbox').addClass("checked");
-//            $(" #dete_btn_admin").show();
-//        }
-//    }) 
-//	$('#self_staff tbody span.checkbox').die().live('click',
-//    function() {
-//        //alert(1)
-//        if ($(this).hasClass("checked")) //选中的则去除
-//        {
-//            $(this).removeClass("checked");
-//            $('#self_staff thead span.checkbox').removeClass("checked");
-//            //alert($(' #self_staff tbody tr td span.checked').length);
-//            if ($('#self_staff tbody tr td span.checked').length == 0) {
-//
-//                $(" #dete_btn_admin").hide();
-//                //alert(2)
-//            } else {
-//                $(" #dete_btn_admin").show();
-//                //alert(3)
-//                //alert(222)
-//                //return false;
-//            }
-//            //$(' #self_staff tbody label.checkbox').removeClass("checked");
-//        } else //去除的，则变为选中
-//        {
-//            $(this).addClass("checked");
-//            $(" #dete_btn_admin").show();
-//            //alert(4)
-//            // alert($(' #self_staff tbody tr td span.checked').length);
-//            // alert($(' #self_staff tbody tr td span.checkbox').length);
-//            if ($(' #self_staff tbody tr td span.checked').length == $(' #self_staff tbody tr td span.checkbox').length) {
-//                $(' #self_staff thead span.checkbox').addClass("checked");
-//                //alert(5)
-//            } else {
-//                $(' #self_staff thead span.checkbox').removeClass("checked");
-//                //alert(6)
-//                ///return false;
-//            }
-//            //$(' #self_staff tbody label.checkbox').addClass("checked");
-//        }
-//    })
+    $('#self_staff thead span.checkbox').die().live('click',
+    function() {
+		//alert(12)
+        if ($(this).hasClass("checked")) {
+            $(this).removeClass("checked");
+            $(' #self_staff tbody span.checkbox').removeClass("checked");
+            $(" #dete_btn_admin").hide();
+        } else {
+            $(this).addClass("checked");
+            $(' #self_staff tbody span.checkbox').addClass("checked");
+            $(" #dete_btn_admin").show();
+        }
+    }) 
+	$('#self_staff tbody span.checkbox').die().live('click',
+    function() {
+        //alert(1)
+        if ($(this).hasClass("checked")) //选中的则去除
+        {
+            $(this).removeClass("checked");
+            $('#self_staff thead span.checkbox').removeClass("checked");
+            //alert($(' #self_staff tbody tr td span.checked').length);
+            if ($('#self_staff tbody tr td span.checked').length == 0) {
+
+                $(" #dete_btn_admin").hide();
+                //alert(2)
+            } else {
+                $(" #dete_btn_admin").show();
+                //alert(3)
+                //alert(222)
+                //return false;
+            }
+            //$(' #self_staff tbody label.checkbox').removeClass("checked");
+        } else //去除的，则变为选中
+        {
+            $(this).addClass("checked");
+            $(" #dete_btn_admin").show();
+            //alert(4)
+            // alert($(' #self_staff tbody tr td span.checked').length);
+            // alert($(' #self_staff tbody tr td span.checkbox').length);
+            if ($(' #self_staff tbody tr td span.checked').length == $(' #self_staff tbody tr td span.checkbox').length) {
+                $(' #self_staff thead span.checkbox').addClass("checked");
+                //alert(5)
+            } else {
+                $(' #self_staff thead span.checkbox').removeClass("checked");
+                //alert(6)
+                ///return false;
+            }
+            //$(' #self_staff tbody label.checkbox').addClass("checked");
+        }
+    })
 		$('.btnDeleAdmin').click(function(){
               showDialog('manager/delManagerPage');
 		});

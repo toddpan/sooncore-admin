@@ -4,7 +4,7 @@
     <base href="{$tag_base_url}"/>
     <base target="_blank" />
     <meta charset="utf-8">
-    <title>免费试用蜜蜂</title>
+    <title>免费试用云企</title>
     <link href="public/css/css_trycount/style.css" rel="stylesheet" />
      <script type="text/javascript" src="public/js/jquery.js"></script>
       <script type="text/javascript" src="public/js/common.js"></script>
@@ -22,7 +22,7 @@
   </div>
 
   <div class="main">
-    <div class="breadcrumb">免费试用蜜蜂</div>
+    <div class="breadcrumb">免费试用云企</div>
     <h2 style="margin-top: 50px;">帐号申请成功！</h2>
     <h3>恭喜您已经完成邮箱验证，请点击下方的按钮，验证您的手机号</h3>
     <div class="form-footer" style="margin: 50px 0;">

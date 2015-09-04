@@ -5,7 +5,7 @@
 		<a class="close" onclick="hideDialog();"></a>
 	</dt>
 	<dd class="dialogBody">
-		<span class="text01">确定要将选中的生态企业删除吗？<br />删除后该企业将无法使用蜜蜂。</span>
+		<span class="text01">确定要将选中的生态企业删除吗？<br />删除后该企业将无法使用云企。</span>
         
 	</dd>
 	<dd class="dialogBottom">

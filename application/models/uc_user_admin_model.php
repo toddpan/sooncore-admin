@@ -19,10 +19,7 @@ class UC_User_Admin_Model extends MY_Model
      */
     public function getAdminByUseridAndState($condition) {
     	$query = $this->db->get_where(self::TBL, $condition);
-    	if($query->num_rows() > 0){
-    		return $query->row_array();
-    	}
-    	return array();
+    	return $query->row_array();
     }
     
     /**
@@ -229,25 +226,5 @@ class UC_User_Admin_Model extends MY_Model
 		}
 		
 		return array();
-	}
-	
-	/**
-	 * 根据siteId获得根组织org_id
-	 * @param int $site_id
-	 * @author ge.xie
-	 */
-	public function getOrgId($site_id) {
-		$this->db->reconnect();
-		$this->db->select('orgID');
-		$this->db->from(self::TBL);
-		$this->db->where(array('siteID' => $site_id));
-		$query = $this->db->get();
-
-		if ($query->num_rows() == 1) {
-			$rows = $query->row_array();
- 			return $rows['orgID'];
-		} else {
-			return null;
-		}
 	}
 }

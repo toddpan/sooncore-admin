@@ -1,15 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云企管理中心</title>
+</head>
+<body>
 <div class="contHead">
 	<span class="title01">安全管理</span>
 	<ul class="nav02">
-		<?php if($this->functions['PasswordManage']){?>
-			<li class="first"><a onclick="loadCont('password/PWDManagePage');">密码管理</a></li>
+		<?php if($this->p_role_id == SYSTEM_MANAGER){?>
+		<li class="first"><a onclick="loadCont('password/PWDManagePage');">密码管理</a></li>
 		<?php }?>
-		<!-- <li><a>敏感词管理</a></li> -->
-		<?php if($this->functions['LogManage']){?>
-			<li class="log" onclick="loadCont('log/logPage');"><a >日志管理</a></li>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+<!-- 		<li class="selected"><a >敏感词管理</a></li> -->
 		<?php }?>
-		<?php if($this->functions['UserActionManage']){?>
-			<!--<li class="last"><a onclick="loadCont('useraction/userActionPage');">用户活动查询</a></li> -->
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
+		<li><a onclick="loadCont('log/logPage');">日志管理</a></li>
+		<?php }?>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+<!--  		<li class="last"><a onclick="loadCont('useraction/userActionPage');">用户活动查询</a></li>-->
 		<?php }?>
 	</ul>
 </div>
@@ -286,3 +295,5 @@ function addHmyg() {
 		
 	});
 </script>
+</body>
+</html>

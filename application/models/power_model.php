@@ -37,7 +37,7 @@ class Power_Model extends MY_Model{
 			$rs = $this->db->select('value')->get_where($this->tbl['org'], array('orgID'=>$org_id));
 			if($rs->num_rows()>0){
 				$value = $rs->first_row()->value;
-				$templateUUID = '-'.implode('-', array_reverse(array_slice($org_ids, $k)));
+				$templateUUID = '-'.implode('-', array_reverse(array_slice($org_ids, $k)));//将数组变成字符串使用横线连接
 				break;
 			}
 		}

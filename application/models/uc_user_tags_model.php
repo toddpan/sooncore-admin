@@ -29,9 +29,9 @@ class UC_User_Tags_Model extends MY_Model{
         );
         $tag_arr =  $this->UC_User_Tags_Model->operateDB(2,$data_tags);
         if( is_array($tag_arr) ){
-            log_message('info', 'get User Tags  success. the return array is -> ' . var_export($tag_arr, true));
+            log_message('info', 'get User Tags  success.');
         }else{
-            log_message('debug', 'get User Tags  fail. the return array is -> ' . var_export($tag_arr, true));
+            log_message('debug', 'get User Tags  fail');
         }
         return $tag_arr;
     }

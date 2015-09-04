@@ -56,14 +56,14 @@ var password_complexity = <?php echo $complexity_arr['id']; ?>; //1、8-30位，
 			var isValid_Repeat_passW=(new_password==confirm_password)? true  :  false
 			if (!isValid_new_passW)
 			{
-			  $('.errorMsg').text("输入的新密码不合法");
+			  $('.errorMsg').text("新密码输入错误");
 			  $('#new_password').focus();
 		      $('.errorMsg').show();
 			  return false
 			}
 			else if(!isValid_Repeat_passW)
 			{
-			   $('.errorMsg').text("两次输入的新密码不相等");
+			   $('.errorMsg').text("再次输入的密码错误");
 			   $('#confirm_password').focus();
 			   $('.errorMsg').show();
 			}

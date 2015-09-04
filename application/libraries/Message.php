@@ -282,7 +282,7 @@ class Message{
             'sourTypeId'=> '31',
             'id'=> '3101',
             'name'=> '开始试用',
-            'show' => '您的全时蜜蜂已经开始试用',
+            'show' => '您的全时云企已经开始试用',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -291,7 +291,7 @@ class Message{
             'sourTypeId'=> '31',
             'id'=> '3102',
             'name'=> '试用即将结束',
-            'show' => '您的全时蜜蜂试用即将到期，欢迎联系您的销售',
+            'show' => '您的全时云企试用即将到期，欢迎联系您的销售',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -300,7 +300,7 @@ class Message{
             'sourTypeId'=> '31',
             'id'=> '3103',
             'name'=> '试用到期',
-            'show' => '您的全时蜜蜂试用期已经结束',
+            'show' => '您的全时云企试用期已经结束',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -310,7 +310,7 @@ class Message{
             'sourTypeId'=> '32',
             'id'=> '3201',
             'name'=> '开始使用',
-            'show' => '您的全时蜜蜂已经开始启用',
+            'show' => '您的全时云企已经开始启用',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -320,7 +320,7 @@ class Message{
             'sourTypeId'=> '32',
             'id'=> '3202',
             'name'=> '使用到期',
-            'show' => '您的全时蜜蜂使用已经到期，请立即续约',
+            'show' => '您的全时云企使用已经到期，请立即续约',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -330,7 +330,7 @@ class Message{
             'sourTypeId'=> '32',
             'id'=> '3203',
             'name'=> '后台升级维护通知',
-            'show' => '全时蜜蜂即将升级通知信息',
+            'show' => '全时云企即将升级通知信息',
             'managerTypeIds'=> '1',
             'operate' => '无操作'
             ),
@@ -340,7 +340,7 @@ class Message{
             'sourTypeId'=> '33',
             'id'=> '3301',
             'name'=> '研讨会信息',
-            'show' => '全时蜜蜂研讨会：[研讨会名称]信息',
+            'show' => '全时云企研讨会：[研讨会名称]信息',
             'managerTypeIds'=> '1,2,3',
             'operate' => '无操作'
             ),
@@ -350,7 +350,7 @@ class Message{
             'sourTypeId'=> '33',
             'id'=> '3302',
             'name'=> '功能简介信息',
-            'show' => '全时蜜蜂[功能名称]简介',
+            'show' => '全时云企[功能名称]简介',
             'managerTypeIds'=> '1,2,3',
             'operate' => '无操作'
             )

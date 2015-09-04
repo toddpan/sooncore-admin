@@ -90,10 +90,10 @@ class AccountDisableProcessImpl extends AccountProcessInterface{
 		log_message('info', 'closing account finished.');
 		
 		#检查是否所有的账号都关闭成功，如果是，则callback成功，否则callback失败，任务记log
-		log_message('info', 'start to checkout users which disable failed.');
+		log_message('info', 'start to checkout users which close failed.');
 		if(!empty($failed_list)){
 			$this->ci->boss->account_callback($uc['callback'], $uc['request_id'], $uc['contract_id'], BOSS_CALLBACK_FAILED ,$success_list, $failed_list);
-			throw new Exception('Encounter a problem when disable user, the msg is-->'.$msg);
+			throw new Exception('Encounter a problem when create user, the msg is-->'.$msg);
 		}else{
 			return $this->ci->boss->account_callback($uc['callback'], $uc['request_id'], $uc['contract_id'], BOSS_CALLBACK_SUCCESS ,$success_list, $failed_list);
 		}
@@ -127,31 +127,26 @@ class AccountDisableProcessImpl extends AccountProcessInterface{
 			log_message('error', 'disable user status at local failed.');
 		}
 		
-		/*
 		#如果用户是管理员，则删除用户管理员角色
 		log_message('info', 'start to delete user role at local...');
 		if( ! $this->ci->account->deleteUserRole($user['id'])){
 			log_message('error', 'delete user manager role at local failed');
 		}
-		*/
 		
 		
 		#调用ucc接口,解除同事关系
-		/*
 		log_message('info', 'start to delete colleague relationship...');
 		$org_info = $this->ci->ums->getOrganizationByUserId($user['id']);//获取当前用户所在的组织
 		if(!$this->ci->ucc->deleteColleague($user['id'], $org_info['id'], $org_info['parentId'], 0)){
 			return array(false, 'delete colleague to ucc failed.');
 		}
-		*/
+		
 		
 		#调用会议接口,禁用会议
-		/*
 		log_message('info', 'start to close meeting...');
 		if( ! $this->ci->meeting->closeMeeting($user['id'],3)){
 			return array(false, 'close meeting to uniform failed.');
 		}
-		*/
 		
 		#返回
 		return array(true, 'success');

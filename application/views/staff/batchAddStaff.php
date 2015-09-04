@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>蜜蜂管理中心</title>
+	<title>云企管理中心</title>
 	<!-- Bootstrap styles 引导风格-->
 	<!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
 	<!--<link rel="stylesheet" href="<?php echo base_url('public/jQueryFileUpload/bootstrap.min.css');?>">-->
@@ -28,7 +28,7 @@
 		</div>
 	</div>
      <ul class="menu" id="menu1">
-            <li><a  onclick="loadCont('tag/manageTag/0','group')">员工标签管理</a></li>
+            <li><a  onclick="loadCont('tag/addTagPage/0','group')">员工标签管理</a></li>
          <!--    <li><a  onclick="loadCont('Ldap/showLdapPage')">LDAP设置</a></li> --> 
         </ul>
     </div>

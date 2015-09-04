@@ -44,37 +44,20 @@ function nextStep2() {
     } else {
 		$('.error2').hide();
         //alert(Re_context.getCheckStatus().half) var cont = [];
-		/**
-		 * 不选中父节点的情况处理
-		 * 
-		//选中某个节点但父节点并不选中，需要处理成组织树的数组形式
-		var baseNode	= $('#ldap_tree:first-child a').attr('title');
-		baseNode		= baseNode.substr(0, baseNode.indexOf('['));
-		//判定数组中的值是否已经存在
-		Array.prototype.S=String.fromCharCode(2);
-		Array.prototype.in_array=function(e){
-			var r=new RegExp(this.S+e+this.S);
-			return (r.test(this.S+this.join(this.S)+this.S));
-		};
-		//循环去截取数组
-		cont.push(baseNode);	//第一个串始终是根节点
-		for (var i = 0; i < Re_context.length; i++) {
-			tmp = Re_context[i].id;
-			cont.push(tmp);
-			while(tmp != baseNode){
-				tmp = tmp.substr(tmp.indexOf(',') + 1);
-				if(!cont.in_array(tmp)){
-					cont.push(tmp);
-				}
-			}
-		}
-		 */
-		Re_context.shift();
+        for (var i = 0; i < Re_context.length; i++) {
+            //alert(json.half)
+            if (Re_context[i].getCheckStatus().half == false) {
+                cont.push(Re_context[i]);
+            }
+        }
+        Re_context = cont;
+        //alert(Re_context.length);
         var Re_data = '';
         for (var i = 0; i < Re_context.length; i++) {
             ///Re_data=Re_data+'{id:'+Re_con[i]+',pid:'+Re_con[i+1]+',name:'+Re_con[i+2]+',},';
-            Re_data += Re_context[i].id + ';';
+            Re_data = Re_data + Re_context[i].id + ';';
         }
+        //Re_data=DelLastComma(Re_data);
         org_info = Re_data;
         var path = "ldap/getLdapClass";
         var obj = {
@@ -90,14 +73,13 @@ function nextStep2() {
                 var json = $.parseJSON(data);
                 if (json.code == 0) {
                    	$('.error2').hide();
-                   	if($('.ldapSetBox3 .ldapSetCont dd').children().get(0) == undefined){
-	                    var html = '';
-	                    var arry = json.other_msg;
-	                    for (var i = 0; i < arry.length; i++) {
-	                        html = html + "<label  class='checkbox label_check' onmouseup='click_ldap3(this,event)' style='padding-left:18px;'>" + arry[i] + "</label>" + "<br />";
-	                    }
-	                    $('.ldapSetBox3 .ldapSetCont dd:last').append(html);
-                   	}
+                    var html = '';
+                    var arry = json.other_msg;
+                    for (var i = 0; i < arry.length; i++) {
+                        html = html + "<label  class='checkbox label_check' onclick='' onmouseup='click_ldap3(this,event)'><input type='checkbox'/>" + arry[i] + "</label>" + "<br />";
+                    }
+                    //alert(html);
+                    $('.ldapSetBox3 .ldapSetCont dd:last').append(html);
 
                     //loadCont('<?php // echo site_url('ecologycompany/setEcologyCompany')?>');
                     $('.ldapSetBox2').hide();

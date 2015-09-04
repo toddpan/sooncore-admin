@@ -189,7 +189,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
  * $config['log_threshold'] = 1;
  * 只输出error级别的log
  */
-$config['log_threshold'] = array(1,3);
+$config['log_threshold'] = array(2,3);
 
 /*
 |--------------------------------------------------------------------------
@@ -200,7 +200,8 @@ $config['log_threshold'] = array(1,3);
 | application/logs/ folder. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '/var/log/ucadmin/';
+//$config['log_path'] = '/var/log/ucadmin/';
+$config['log_path'] = './logs/';
 //$config['log_path'] = './logs/';
 
 /*

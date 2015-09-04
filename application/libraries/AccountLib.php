@@ -1115,6 +1115,7 @@ class AccountLib{
 		$CI->load->helper('my_dgmdate');
 		$CI->load->library('API','','API');
 		$CI->load->library('PowerLib','','PowerLib');
+		$CI->load->library('Umslib','','ums');
 		//向UC的管理员表写数据,判断有没有，有了就做修改处理。 userid 和role_id总管理员 、type
 		$CI->load->model('UC_User_Admin_Model');
 		$CI->load->model('UC_User_Model');
@@ -1125,7 +1126,7 @@ class AccountLib{
 		//所有成功的用户数组
 		$callback_user_successed_arr = array();
 
-		//从数据库获得BOSS调用开通站点时的json数据
+		//获取数据
 		$BOSS_post_json = $thread_value;
 		if(bn_is_empty($BOSS_post_json)){//没有数据
 			$this->boss_err(-1,' get BOSS post json fail.');
@@ -1138,15 +1139,7 @@ class AccountLib{
 			$this->boss_err(-1,' BOSS post json to array fail.');
 			return 0;
 		}
-
-		//获得回调地址
-		$callback = arr_unbound_value($BOSS_post_arr,'callback',2,''); //'http://192.168.17.57:8880/activation-engine/ResponseApi/contract';
-		if(bn_is_empty($callback)){//如果是空
-			$this->boss_err(-1,' get post param callback is empty .');
-			return 0;
-		}
-		log_message('info', 'get callback=' . $callback . '  success.');
-
+                   
 		//获得操作类型
 		$boss_type = arr_unbound_value($BOSS_post_arr,'type',2,'');
 		if(bn_is_empty($boss_type)){//为空
@@ -1155,21 +1148,14 @@ class AccountLib{
 		}
 		log_message('info', 'get  type=' . $boss_type . '  success.');
 
-		//requestId
-		$requestId = arr_unbound_value($BOSS_post_arr,'requestId',2,'');
-		if(bn_is_empty($requestId)){//如果是空
-			$this->boss_err(-1,' get post param requestId is empty .');
-			return 0;
-		}
-		log_message('info', 'get requestId=' . $requestId . '  success.');
-
+                
 		//合同数组
 		$contract_arr = arr_unbound_value($BOSS_post_arr['customer'],'contract',1,array());
 			
 		//合同id
 		$contract_id = arr_unbound_value($contract_arr,'id',2,0);
 		log_message('info', 'get $contract_id=' . $contract_id . '  success.');
-
+                
 		//看是否有user ，如果没有则callback
 		$users_arr = arr_unbound_value($BOSS_post_arr['customer'],'users',1,array());
 
@@ -1260,19 +1246,7 @@ class AccountLib{
 		if(bn_is_empty($customerCode)){//如果是空
 			$err_msg = ' get post param customerCode is empty .';
 			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '1',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
+			return $err_msg;
 		}
 		log_message('info', 'get customer customerCode $customerCode=' . $customerCode . '  success.');
 
@@ -1281,49 +1255,27 @@ class AccountLib{
 		if(bn_is_empty($product_id)){//如果是空
 			$err_msg = ' get post param product_id is empty .';
 			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '2',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+			return $err_msg;
 		}
 		log_message('info', 'get $product_id=' . $product_id . '  success.');
 
-		//获得站点名称
-		//$boss_id = isset($BOSS_post_arr['customer']['id'])?$BOSS_post_arr['customer']['id']:'' ;
-		//$site_name = arr_unbound_value($BOSS_post_arr['customer'],'name',2,'');
-		
+                
 		//调用boss接口，获取客户名称
-		$CI->load->library('BossLib', '', 'boss');
-		$customer_info  = $CI->boss->getCustomerInfo($customerCode);
-		$site_name		= isset($customer_info['name']) ? $customer_info['name'] : '';
-		
+		//$CI->load->library('BossLib', '', 'boss');
+		//$customer_info  = $CI->boss->getCustomerInfo($customerCode);
+		//$site_name		= isset($customer_info['name']) ? $customer_info['name'] : '';
+                
+                
+                //根据客户编码查询boss_account的 account_name
+		$CI->load->model('Boss_Account_Model');
+                $boss_info = $CI->Boss_Account_Model->get_account($customerCode);
+		log_message('info', 'get $boss_info=' . var_export($boss_info) . '  success.');
+		$site_name = isset($boss_info['account_name']) ? $boss_info['account_name'] : '';
+                
 		if(bn_is_empty($site_name)){//如果是空
 			$err_msg = ' get post param  customer name is empty .';
-			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '3',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+                        log_message('error', $err_msg);
+			return $err_msg;
 		}
 		log_message('info', 'get customer name $site_name=' . $site_name . '  success.');
 
@@ -1332,21 +1284,8 @@ class AccountLib{
 		$siteURL = arr_unbound_value($BOSS_post_arr['customer']['contract']['resource'],'siteURL',2,'');
 		if(bn_is_empty($siteURL)){//如果是空
 			$err_msg = 'get post customer  contract resource siteURL is empty .';
-			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '4',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+                        log_message('error', $err_msg);
+			return $err_msg;
 		}
 		log_message('info', 'get customer contract resource siteURL  $siteURL=' . $siteURL . '  success.');
 
@@ -1356,41 +1295,15 @@ class AccountLib{
 		$uc_site_arr = $CI->API->UMS_Special_API('',3,array('url' => $siteURL));
 		if(api_operate_fail($uc_site_arr)){//失败
 			$err_msg = ' usm api rs/sites?url is empty .' ;
-			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '5',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+			log_message('error', $err_msg);
+                        return $err_msg;
 		}else{
 			$siteId = isset($uc_site_arr['id'])?$uc_site_arr['id']:'';;
 		}
 		if(bn_is_empty($siteId)){//如果是空
 			$err_msg = ' get post param $siteId is empty .';
-			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '6',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+			log_message('error', $err_msg);
+                        return $err_msg;
 		}
 		log_message('info', 'get usm api rs/sites?url= ' . $siteURL . ' $siteId=' . $siteId . '  success.');
 			
@@ -1483,34 +1396,22 @@ class AccountLib{
 				if(!isemptyArray($sel_arr)){//不为空,已经有记录
 					$err_msg = '  UC_Customer_Model is exit. $where_arr =' . json_encode($where_arr) . ' ';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '7',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
+					return $err_msg;//错误回调
 				}
 				//保存合同属性 1、有记录则更新记录，没记录则新加；3、有记录则不操作，没有则新加
 				//保存站点客户表uc_customer[有则更新，没有则新加]
 				$select_field = 'id';
 				$where_arr = array(
-                      'customerCode' => $customerCode,
-                      'contractId' => $contract_id,
-                      'siteId' => $siteId,//站点id
+                                    'customerCode' => $customerCode,
+                                    'contractId' => $contract_id,
+                                    'siteId' => $siteId,//站点id
 				);
 				$modify_arr = array(
-                    'customerCode' =>$customerCode,//客户编码
-                    'contractId' =>$contract_id,//$requestId,//id 
-                    'siteId' => $siteId,//站点id
-                    'name' => $site_name,//客户名称
-                    'value' => $BOSS_post_json,//BOSS合同开通JSON数据全保存;json_encode($components_arr),//站点权限配置（Json串）
+                                    'customerCode' =>$customerCode,//客户编码
+                                    'contractId' =>$contract_id,//$requestId,//id 
+                                    'siteId' => $siteId,//站点id
+                                    'name' => $site_name,//客户名称
+                                    'value' => $BOSS_post_json,//BOSS合同开通JSON数据全保存;json_encode($components_arr),//站点权限配置（Json串）
 				);
 				log_message('info', '2============$components_arr'.var_export(array('BOSS_post_json' =>$BOSS_post_json), true).'=================2');
 				$insert_arr = $modify_arr;
@@ -1519,38 +1420,11 @@ class AccountLib{
 				if($re_num == -2 || $re_num == -4){//失败 -1 更新记录成功 -2更新操作失败 -3新加的记录id 新加记录成功 -4新加操作失败 -5 没有操作
 					$err_msg = 'update/insert  UC_Customer_Model fail. $re_num =' . $re_num . ' ';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '7',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
+					return $err_msg;//错误回调
 				}
 				log_message('info', 'update/insert  UC_Customer_Model success. $re_num =' . $re_num . ' .');
 
 			}
-			//成功，则调用成功的回调
-			$boss_err_arr = array(
-              'users_arr' => $users_arr,//$users_arr,//所有用户
-              'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-              'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-              'errorCode' => '9',//当前错误:自己处理的流程步骤
-              'error_msg' => '',//当前错误:捕获的异常信息
-              'calltype' => $open_class,//回调类型
-              'requestId' => $requestId,//回调id
-              'result' => 1,//1标示开通成功  -1标示开通失败开通合同时
-              'contractId' => $contract_id,//合同id
-              'callback' => $callback,//回调地址  
-			);
-			log_message('info', 'callback   $callback =' . $callback . '  success.');
-			return $this->boss_err_callback($boss_err_arr);//回调
 		}
 
 		//继续
@@ -1564,13 +1438,13 @@ class AccountLib{
 		$web_customer_uc_arr = array();//合同uc属性
 		$web_customer_uc_property = array();//合同uc属性
 		//创建管理员获得合同属性
-		if($is_first_manager == 1){//第一次加管理员$uc_auth == 10普通用户开通1管理员开通
+		if($is_first_manager == 1){//第一次加管理员$uc_auth == 1     0普通用户开通1管理员开通
 			if($open_type == 1){//1新建账号
 				$sel_field = 'value';
 				$where_arr = array(
-                    'siteId' => $siteId,
-                    'customerCode' => $customerCode,
-                    'contractId' => $contract_id,
+                                    'siteId' => $siteId,
+                                    'customerCode' => $customerCode,
+                                    'contractId' => $contract_id,
 				);
 				$sel_arr = $CI->UC_Customer_Model->get_db_arr($where_arr,$sel_field);
 				if(!isemptyArray($sel_arr)){//有站点合同属性
@@ -1597,25 +1471,12 @@ class AccountLib{
 				}else{//没有站点合同,则报错callback BOSS
 					$err_msg = ' get table UC_Customer_Model [' . json_encode($where_arr). ']  is empty .';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                         'users_arr' => $users_arr,//$users_arr,//所有用户
-                         'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                         'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                         'errorCode' => '11',//当前错误:自己处理的流程步骤
-                         'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                         'calltype' => $open_class,//回调类型
-                         'requestId' => $requestId,//回调id
-                         'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                         'contractId' => $contract_id,//合同id
-                         'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					// return 0;
+					return $err_msg;
 				}
 			}
 		}
 
-		//根据客户编码和站点id获得域ip及域url信息
+		//根据客户编码和站点id获得域ip及域url信息0000000000000000000000000000000
 		$web_cluster_id = '';
 		$web_cluster_url = '';
 		$CI->load->library('WebLib','','WebLib');
@@ -1625,19 +1486,7 @@ class AccountLib{
 		if(bn_is_empty($web_cluster_id) || bn_is_empty($web_cluster_url)){
 			$err_msg = ' get $web_cluster_id OR  $web_cluster_url is empty $web_cluster_id=' . $web_cluster_id . ' $web_cluster_url=' . $web_cluster_url . '.';
 			$this->boss_err(-1,$err_msg);
-			$boss_err_arr = array(
-                 'users_arr' => $users_arr,//$users_arr,//所有用户
-                 'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                 'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                 'errorCode' => '11',//当前错误:自己处理的流程步骤
-                 'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                 'calltype' => $open_class,//回调类型
-                 'requestId' => $requestId,//回调id
-                 'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                 'contractId' => $contract_id,//合同id
-                 'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
+			return $err_msg;//错误回调
 		}
 		log_message('debug', '  $web_cluster_id=' . $web_cluster_id . ' $web_cluster_url=' . $web_cluster_url . '.');
 
@@ -1692,38 +1541,12 @@ class AccountLib{
 								if($companyType == ''){//如果是空
 									$err_msg = ' get post param $companyType is empty .';
 									$this->boss_err(-1,$err_msg);
-									$boss_err_arr = array(
-                                   'users_arr' => $users_arr,//$users_arr,//所有用户
-                                   'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                                   'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                                   'errorCode' => '14',//当前错误:自己处理的流程步骤
-                                   'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                                   'calltype' => $open_class,//回调类型
-                                   'requestId' => $requestId,//回调id
-                                   'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                                   'contractId' => $contract_id,//合同id
-                                   'callback' => $callback,//回调地址  
-									);
-									return $this->boss_err_callback($boss_err_arr);//错误回调
-									// return 0;
+									return 14;
 								}
 								if($isLDAP == ''){//如果是空
 									$err_msg = ' get post param $isLDAP is empty .';
 									$this->boss_err(-1,$err_msg);
-									$boss_err_arr = array(
-                                   'users_arr' => $users_arr,//$users_arr,//所有用户
-                                   'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                                   'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                                   'errorCode' => '15',//当前错误:自己处理的流程步骤
-                                   'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                                   'calltype' => $open_class,//回调类型
-                                   'requestId' => $requestId,//回调id
-                                   'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                                   'contractId' => $contract_id,//合同id
-                                   'callback' => $callback,//回调地址  
-									);
-									return $this->boss_err_callback($boss_err_arr);//错误回调
-									//return 0;
+                                                                        return 15;
 								}
 							}
 						}else{
@@ -1750,20 +1573,7 @@ class AccountLib{
 			$err_msg = ' $uc_arr is empty .';
 			log_message('error', $err_msg);
 			echo api_json_msg(-1,array('msg' => $err_msg) , 1);
-			$boss_err_arr = array(
-               'users_arr' => $users_arr,//$users_arr,//所有用户
-               'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-               'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-               'errorCode' => '13',//当前错误:自己处理的流程步骤
-               'error_msg' => $err_msg,//当前错误:捕获的异常信息
-               'calltype' => $open_class,//回调类型
-               'requestId' => $requestId,//回调id
-               'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-               'contractId' => $contract_id,//合同id
-               'callback' => $callback,//回调地址  
-			);
-			return $this->boss_err_callback($boss_err_arr);//错误回调
-			//return 0;
+			return 13;
 		}
 
 		if($is_first_manager == 1){//第一次加管理员$uc_auth == 1 && $admin_type == 1 1：总公司管理员 0普通用户开通1管理员开通;只是管理员回调,才需要$site_orgID
@@ -1773,20 +1583,7 @@ class AccountLib{
 				if($site_user_count == ''){//如果是空
 					$err_msg = ' get post param site_user_count is empty .';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '16',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					//return 0;
+					//return 16;
 				}
 				$site_orgID = 0;//$product_id;//企业ID[只管理员时需要用]
 				//.企业ID 通过UMS接口获取;创建组织,返回新创建的组织id
@@ -1804,20 +1601,7 @@ class AccountLib{
 				if(api_operate_fail($uc_org_arr)){//失败
 					$err_msg = 'ums api /rs/organizations fail.';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '17',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					// return 0;
+					return 17;
 
 				}else{
 					log_message('debug', 'ums api /rs/organizations success.');
@@ -1827,22 +1611,9 @@ class AccountLib{
 				if($site_orgID == 0){
 					$err_msg = ' $site_orgID =' . $site_orgID;
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '17',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					// return 0;
+					return 170;
 				}
-
+/*
 				//更新boss站点模板
 				$component_prop_arr = array(
                     'templateUUID' => $siteURL,//可以是站点URL、location、部门名称,站点模板时siteurl；组织权限时组织部门id串
@@ -1857,21 +1628,11 @@ class AccountLib{
 					$err_msg = ' save BOSS contractComponentProps api  fail.';
 					//log_message('error', $err_msg);
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '171',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
+					return 171;//错误回调
 				}
 				log_message('debug', ' save BOSS contractComponentProps api  success.');
+ * 
+ */
 				//添加密码设置
 				$CI->load->model('UC_PWD_Manage_Model');
 				// 1、有记录则更新记录，没记录则新加
@@ -1893,19 +1654,7 @@ class AccountLib{
 				if($re_num == -2 || $re_num == -4){//失败 -1 更新记录成功 -2更新操作失败 -3新加的记录id 新加记录成功 -4新加操作失败 -5 没有操作
 					$err_msg = 'update/insert  UC_PWD_Manage fail. $re_num =' . $re_num . ' ';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '19',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
+					return 19;//错误回调
 				}
 				log_message('info', 'update/insert  UC_PWD_Manage success. $re_num =' . $re_num . ' .');
 				//添加站点数据,判断有没有，有了就做修改处理。站点id 和 客户编码
@@ -1933,19 +1682,7 @@ class AccountLib{
 				if($re_num == -2 || $re_num == -4){//失败 -1 更新记录成功 -2更新操作失败 -3新加的记录id 新加记录成功 -4新加操作失败 -5 没有操作
 					$err_msg = 'update/insert  UC_Site fail. $re_num =' . $re_num . ' ';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '19',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
+					return 190;//错误回调
 				}
 				log_message('info', 'update/insert  UC_Site success. $re_num =' . $re_num . ' .');
 			}
@@ -2241,7 +1978,7 @@ class AccountLib{
 			$select_field = 'userID';
 			$where_arr = array(
 			//'siteId' => $siteId,
-                    'userID' => $ns_user_id     
+                        'userID' => $ns_user_id     
 			);
 			$modify_arr = array(
                  'userID' =>$ns_user_id,//该客户的站点ID
@@ -2355,20 +2092,7 @@ class AccountLib{
 				if($Meet_arr == false){//失败
 					$err_msg = 'MeetAPI common acceptData fail.';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                   'users_arr' => $users_arr,//$users_arr,//所有用户
-                   'successed_arr' => array(),//$callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                   'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                   'errorCode' => '21',//当前错误:自己处理的流程步骤
-                   'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                   'calltype' => $open_class,//回调类型
-                   'requestId' => $requestId,//回调id
-                   'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                   'contractId' => $contract_id,//合同id
-                   'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					//return 0;
+					return 21;
 				}else{//成功或部分失败
 					write_test_file( ' hy_xml_data_msg ' . __FUNCTION__ . time() . '$hy_xml_data.txt' ,$Meet_arr['msg']);
 					log_message('debug', 'MeetAPI common acceptData success.');
@@ -2414,20 +2138,7 @@ class AccountLib{
 						$err_msg = 'uccapi async/dbDispath fail, request data is->'.var_export($data, true);
 						log_message('error', $err_msg);
 						$this->boss_err(-1,$err_msg);
-						$boss_err_arr = array(
-                            'users_arr' => $users_arr,//$users_arr,//所有用户
-                            'successed_arr' => array(),//$callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                            'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                            'errorCode' => '22',//当前错误:自己处理的流程步骤
-                            'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                            'calltype' => $open_class,//回调类型
-                            'requestId' => $requestId,//回调id
-                            'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                            'contractId' => $contract_id,//合同id
-                            'callback' => $callback,//回调地址  
-						);
-						return $this->boss_err_callback($boss_err_arr);//错误回调
-						//return 0;
+                                                return 22;
 					}
 					$err_msg = 'uccapi async/dbDispath fail this have already allocation .';
 					log_message('debug', $err_msg);
@@ -2450,19 +2161,7 @@ class AccountLib{
 						$err_msg = 'uccapi async mqDispath fail.';
 						log_message('error', $err_msg);
 						$this->boss_err(-1,$err_msg);
-						$boss_err_arr = array(
-                            'users_arr' => $users_arr,//$users_arr,//所有用户
-                            'successed_arr' => array(),//$callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                            'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                            'errorCode' => '221',//当前错误:自己处理的流程步骤
-                            'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                            'calltype' => $open_class,//回调类型
-                            'requestId' => $requestId,//回调id
-                            'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                            'contractId' => $contract_id,//合同id
-                            'callback' => $callback,//回调地址  
-						);
-						return $this->boss_err_callback($boss_err_arr);//错误回调
+						return 221;//错误回调
 					}
 					$err_msg = 'uccapi async mqDispath fail. have already allocation';
 					log_message('debug', $err_msg);
@@ -2475,20 +2174,7 @@ class AccountLib{
 				if(api_operate_fail($ucc_server_arr)){//失败
 					$err_msg = 'uccapi async siteCreate fail.';
 					$this->boss_err(-1,$err_msg);
-					$boss_err_arr = array(
-                       'users_arr' => $users_arr,//$users_arr,//所有用户
-                       'successed_arr' => array(),//$callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-                       'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-                       'errorCode' => '22',//当前错误:自己处理的流程步骤
-                       'error_msg' => $err_msg,//当前错误:捕获的异常信息
-                       'calltype' => $open_class,//回调类型
-                       'requestId' => $requestId,//回调id
-                       'result' => -1,//1标示开通成功  -1标示开通失败开通合同时
-                       'contractId' => $contract_id,//合同id
-                       'callback' => $callback,//回调地址  
-					);
-					return $this->boss_err_callback($boss_err_arr);//错误回调
-					//return 0;
+                                        return 222;
 
 				}else{
 					log_message('debug', 'uccapi async siteCreate success.');
@@ -2550,21 +2236,8 @@ class AccountLib{
 			log_message('debug', 'send email  $mss_fail_user_arr=' . json_encode($mss_fail_user_arr) . '.');
 
 		}
-		//TODO 写UC后台消息
-		//参数json,回调BOSS接口平台开通响应接收接口
-		$boss_err_arr = array(
-           'users_arr' => $users_arr,//$users_arr,//所有用户
-           'successed_arr' => $callback_user_successed_arr,//$callback_user_successed_arr,//成功用户
-           'failed_arr' => $all_user_failed_arr,//$all_user_failed_arr,//失败用户
-           'errorCode' => '23',//当前错误:自己处理的流程步骤
-           'error_msg' => '',//当前错误:捕获的异常信息
-           'calltype' => $open_class,//回调类型
-           'requestId' => $requestId,//回调id
-           'result' => 1,//1标示开通成功  -1标示开通失败开通合同时
-           'contractId' => $contract_id,//合同id
-           'callback' => $callback,//回调地址  
-		);
-		return $this->boss_err_callback($boss_err_arr);//错误回调
+		
+		return 1;
 	}
 	/**
 	 * @brief 合同开通失败

@@ -17,13 +17,11 @@ class UC_Area_Model extends MY_Model{
      * @param int 	 $site_id
      */
     public function get_area($customerCode, $site_id){
-    	$this->db->select('area');
+    	$this->db->select('country,area,address');
     	$this->db->where(array('customerCode' => $customerCode, 'siteID' => $site_id));
     	$query = $this->db->get(self::TBL);
-    	if($query->num_rows() > 0){
-    		return $query->row_array();
-    	}
-    	return array();
+    	
+    	return $query->row_array();
     }
     
     /**

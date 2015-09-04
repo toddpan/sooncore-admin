@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>蜜蜂管理中心</title>
+<title>云企管理中心</title>
 </head>
 <body>
 <!--init-group.html-->
 <div class="contHead">
-	<span class="title01 rightLine">组织管理</span><span class="title02">欢迎使用蜜蜂管理后台，管理组织与员工请先为员工设置统一的标签。</span>
+	<span class="title01 rightLine">组织管理</span><span class="title02">欢迎使用云企管理后台，管理组织与员工请先为员工设置统一的标签。</span>
 </div>
 <!--<div class="contTitle"><span class="tips">您可以通过以下两种方式创建组织管理。</span></div>
 <a class="btn_icon btn_ldapSyn"  onclick="loadCont('组织与帐号_LDAP同步1.html');"><span class="iconL"><span class="iconR">LDAP同步</span></span></a>-->

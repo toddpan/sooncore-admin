@@ -54,16 +54,8 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 		
 		#设置成员变量，以供全局调用
 		log_message('info', 'start to set global variable.');
-		$this->is_manager   			= 		($uc['auth'] == AUTH_IS_MANAGER && $uc['type'] == 'create') ? true : false;//是否为管理员
-		$this->uc						= 		 $uc;
-		$this->uc['exchange_org_ids']	=		 array();//记录用户所在的组织id,创建组织交换机
-		
-		$site_config 					= $this->ci->account->getSiteConfigs($this->uc['site_id']);//获取当前站点的类型，以及邮件、短信发送设置项
-		$this->uc['accountNotifyEmail']		= $site_config['accountNotifyEmail'];
-		$this->uc['accountNotifySMS']		= $site_config['accountNotifySMS'];
-		$this->uc['accountDefaultPassword']	= $site_config['accountDefaultPassword'];//默认密码
-		$this->uc['passwordExistingPrompt'] = $site_config['password_existing_prompt'];//密码提示语
-		$this->uc['isLDAP']				= $site_config['isLDAP'];
+		$this->is_manager   		= 		($uc['auth'] == AUTH_IS_MANAGER && $uc['type'] == 'create') ? true : false;//是否为管理员
+		$this->uc					= 		 $uc;
 		log_message('info', 'seting global variable finished.');
 		
 		#依次去开通用户
@@ -80,6 +72,7 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 				log_message('error', $e->getMessage());
 			}
 			
+			
 			if(!$is_ok){
 				$failed_list[] = array(
 					'id'			=>$user['id'],
@@ -95,28 +88,6 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 				);
 			}
 		}
-		
-		#创建组织交换机。此处失败不中断任务，只记录log
-		if(count($this->uc['exchange_org_ids'])>0){
-			log_message('info','start to create org exchange for user.');
-			if( ! $this->ci->ucc->createOrgExchange($this->uc['site_id'], $this->uc['exchange_org_ids'])){
-				log_message('info','creating org exchange failed.org ids-->'.var_export($this->uc['exchange_org_ids'], true));
-			}else{
-				log_message('info','creating org exchange for user finished.');
-			}
-		}
-
-		#创建同事关系。此处失败不中断业务，只记录log
-		$cmd = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Common'.DIRECTORY_SEPARATOR.'colleague '.$this->uc['customer_code'];
-		log_message('info', 'start to create colleague relationship');
-		system($cmd,$ret_value);
-		log_message('info', 'create colleague relationship.command-->'.$cmd.' return-->'.$ret_value);
-		if($ret_value == 0){
-			log_message('info', 'create colleague relationship success');
-		}else{
-			log_message('info', 'create colleague relationship failed');
-		}
-		
 		log_message('info', 'opening account finished.');
 		
 		#检查是否所有的账号都开通成功，如果是，则callback成功，否则callback失败，任务记log
@@ -149,7 +120,7 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 	 * @param array $user 
 	 * @return array array(boolean, $msg)
 	 */
-	private function _openAccount($user){	
+	private function _openAccount($user){
 		#如果是系统管理员，则执行管理员开通的一些操作
 		log_message('info', 'start to do some operation for manager(if it is).');
 		if($this->is_manager){
@@ -160,6 +131,24 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 		}
 		log_message('info', 'doing some operation for manager(if it is) finished.');
 		
+		#向ucc创建组织交换机
+		#-ucc会检查组织交换机是否已经创建,如果已经创建，则不再创建
+		log_message('info','start to create org exchange for user.');
+		$org_info = $this->ci->ums->getOrganizationByUserId($user['id']);//获取当前用户所在的组织
+		if($org_info && ! $this->ci->ucc->createOrgExchange($this->uc['site_id'], $org_info['id'])){
+			return array(false, 'create org exchage for user '.$user['id'].' failed');
+		}
+		log_message('info','creating org exchange for user finished.');
+		
+		#向ucc创建同事关系
+		#-如果创建的用户是管理员，则为组织管理者，否则不是（是否为组织管理者 0-不是 1-是）。
+		log_message('info', 'start to create colleage relationship for user.');
+		if(!$this->ci->ucc->createColleague($user['id'], $org_info['id'], $org_info['parentId'], ($this->is_manager ? 1 : 0))){
+			return array(false, 'create colleague to ucc failed.');
+		}
+		log_message('info', 'creating colleage relationship for user finished.');
+		
+		
 		#向uniform开通会议
 		#-uniform接口数据xml格式，这里需要将数据准备好后，由array转xml
 		#-这个接口主要向uniform传送一些和会议相关的参数 
@@ -169,70 +158,7 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 			return array(false, 'save meeting info to uniform failed.');
 		}
 		log_message('info', 'sending data to uniform finished.');
-		
-		#-从ums获取用户的基本信息，以及组织信息
-		$user_info = $this->ci->ums->getUserById($user['id']);
-		if(!$user_info){
-			return array(false, 'get user info from ums failed,user id:'.$user['id']);
-		}
-		$org_info = $this->ci->ums->getOrganizationByUserId($user_info['id']);
-		
-		if(!empty($org_info)){
-			#-收集用户所在的组织id,为后面批量创建组织交换机做准备
-			if( ! in_array($user_info['organizationId'],$this->uc['exchange_org_ids'])){
-				$this->uc['exchange_org_ids'][] = $org_info['id'];
-			}
 
-			#-在本地保存用户同事关系数据，为后面c++任务提供数据
-			log_message('info', 'start to save user colleague info at local.');
-			$colleagueData = array(
-				'user_id' 		=>$user['id'],
-				'customer_code'	=>$this->uc['customer_code'],
-				'org_id'		=>isset($org_info['id']) ? $org_info['id'] : '',
-				'is_admin'		=>$this->is_manager ? 1 : 0,
-				'node_code'		=>isset($org_info['nodeCode']) ? $org_info['nodeCode'] : '',
-				'status'		=>1,
-				'created'		=>time(),
-				'modify'		=>time()
-			);
-			if(!$this->ci->account->saveColleagueData($colleagueData)){
-				return array(false, 'save info at local failed.');
-			}
-			log_message('info', 'saving user colleague info at local finished.');
-		}
-
-		#-重置密码,重置前先检查是否设置过密码，如果设置过则不予修改
-		log_message('info', 'start to reset password for user.');
-		$password  = '';
-		if( ($this->uc['isLDAP'] != 0) && !$this->is_manager ){//ldap类型的普通用户
-			$password = "您的域密码";
-			$this->uc['is_reset_password'] = 0;
-			log_message('info', 'Ldap site,not reset password');
-		}else{//非ldap普通用户
-			if(empty($user_info['password'])){
-				$password = empty($this->uc['accountDefaultPassword']) ? $this->_generate_password(8) : $this->uc['accountDefaultPassword'];//生成随机8位密码
-				if(!$this->ci->ums->resetUserPassword($user['id'], $password)){
-					return array(false, 'reset user password failed.');
-				}
-				$this->uc['is_reset_password'] = 1;
-				log_message('info', 'reset password success!');
-			}else{
-				$password = empty($this->uc['passwordExistingPrompt']) ? '已有的全时产品的密码' : $this->uc['passwordExistingPrompt'];
-				$this->uc['is_reset_password'] = 0;
-				log_message('info', 'The password have been reseted');
-			}
-		}
-		log_message('info', 'reseting password for user finished.The password is->'.$password);
-		
-		#-在本地保存 用户信息
-		log_message('info', 'start to save user info at local.');
-		if(!$this->ci->account->saveUserInfo($this->uc, $user)){
-			return array(false, 'save info at local failed.');
-		}
-		log_message('info', 'saving user info at local finished.');
-		
-		
-		
 		#向ums开通用户产品
 		#-程序执行到这里时，用户的信息已经存储在ums，这里只是将用户的产品状态置为开通状态
 		#-如果是创建管理员，用户的信息是boss主动调ums创建
@@ -243,42 +169,42 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 		}
 		log_message('info', 'seting user product status finished.');
 		
-		#发送邮件or短信
-		//--发邮件
-		if( !empty($user_info['email']) && ($this->uc['accountNotifyEmail'] == 1) ){
-			log_message('info', 'start to send email to user ['.$user['id'].']');
-			$template_var = array(
-				'user_name'=>$user_info['displayName'],
-				'login_name'=>$user_info['loginName'],
-				'email'=>$user_info['email'],
-				'password'=>$password,
-				'cor_name'=>'全时',
-			);
-			$mail_type = $this->is_manager ? MANAGER_CREATE_MAIL : USER_CREATE_MAIL;
-			$this->ci->mss->save_mail($template_var, $mail_type);
-			log_message('info', 'sending email to user ['.$user['id'].']finished.');
+		#重置密码
+		log_message('info', 'start to reset password for user.');
+		//$password = $this->_generate_password(8);//生成随机8位密码
+		$password = '111111';//XXX 暂时写死为六个1
+		if(!$this->ci->ums->resetUserPassword($user['id'], $password)){
+			return array(false, 'reset user password failed.');
 		}
 		
-		//--发短信
-		if( !empty($user_info['mobileNumber']) && ($this->uc['accountNotifySMS'] == 1) ){
-			log_message('info', 'start to send message to user['.$user['id'].'].');
-			$this->ci->lang->load('msg_tpl', 'chinese');
-			
-			//短信内容
-			$msg_tpl = '';
-			$link    = '';
-			if($this->is_manager){
-				$msg_tpl = $this->ci->lang->line('msg_tpl_manager_account_create');
-				$link    = UCADMIN_SHORT_LINK;
-			}else{
-				$msg_tpl = $this->ci->lang->line('msg_tpl_account_create');
-				$link    = APP_DOWNLOAD_SHORT_LINK;
-			}
-			$content = sprintf($msg_tpl, $user_info['loginName'], $password, $link);
-	
-			$this->ci->ucc->sendMobileMsg($user['id'], $content, $user_info['mobileNumber']);
-			log_message('info', 'sending message to user ['.$user['id'].'] finished.');
+		//XXX
+		$this->uc['is_reset_password'] = 1;
+		log_message('info', 'reseting password for user finished.');
+		
+		#本地保存用户信息
+		#-在本地保存 用户信息
+		log_message('info', 'start to save user info at local.');
+		if(!$this->ci->account->saveUserInfo($this->uc, $user)){
+			return array(false, 'save info at local failed.');
 		}
+		log_message('info', 'saving user info at local finished.');
+		
+		#TODO 发送开通邮件 这块代码需要调试
+		log_message('info', 'start to send email to user.');
+		/*
+		$send_data = array(
+				'title'=>'账号开通通知',
+				'user_name'=>'张三',
+				'auth_user'=>'李四',
+				'password'=>$password,
+				'login_url'=>'www.quanshi.com',
+				'email'=>'san.zhang@quanshi.com'
+		);
+		if( ! $this->ci->email->send($send_data) ){//如果邮件发送失败，则发短信
+			$this->ci->ucc->sendMobileMsg($user['id'],'aaaa','13601231924');
+		}
+		log_message('info', 'sending email to user finished.');
+		*/
 		
 		#成功返回
 		return array(true, '');
@@ -299,7 +225,6 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 	 */
 	private function _openManager($user){
 		
-		/*
 		#如果管理员还没有添加到组织下，则创建一个组织，并将管理员添加到这个组织下，组织名称为客户名称。
 		log_message('info','start to create a organization for the manager.');
 		$admin_org_info = $this->ci->ums->getOrganizationByUserId($user['id']);
@@ -331,14 +256,7 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 			$user['org_id'] = $admin_org_info['id'];
 		}
 		log_message('info', 'creating a organization for the manager finished');
-		*/
-		#从站点配置表里获取客户根组织id
-		$root_id = $this->ci->account_model->getRootOrgIdFromSiteConfigTable($this->uc['site_id']);
-		if(!$root_id){
-			return array(false, 'get customer root organization id from local site config table failed.');
-		}
-		$user['org_id'] = $root_id;
-
+		
 		#合并合同组件与管理员组件
 		log_message('info', 'start to merge contract components and manager components.');
 		
@@ -364,6 +282,25 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 			}
 		}
 		
+		//3.boss端创建或更新合同模板，创建或更新templateUUID为siteurl的权限模板
+		
+		/*====老的模板更新方法
+		$comp_data = array();
+		$comp_data['templateUUID'] = $this->uc['site_url'];//站点url
+		$comp_data['contractId']   = $this->uc['contract_id'];
+		$comp_data['components']   = $this->uc['components'];
+		
+		$is_created = $this->ci->boss->getContractComponentProps($this->uc['contract_id'], $this->uc['site_url']);
+		if( ! $is_created){//添加
+			if(! $this->ci->boss->batchCreateContractComponentProps($comp_data)){
+				return array(false, 'create contract components to boss failed');
+			}
+		}else{//更新
+			if(! $this->ci->boss->batchModifyContractComponentProps($comp_data)){
+				return array(false, 'update contract components to boss failed');
+			}
+		}
+		*/
 		
 		/**
 		 * ===新的模板更新方法
@@ -413,11 +350,7 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 		
 		//4.本地更新站点模板,如果站点模板不存在，则创建
 		$comp							=       $this->_search_components($this->uc['components'], 'uc', array('size', 'isLDAP', 'companytype'));
-		
-		//将用户数量重置为0，暂时的解决方案
-		//$this->uc['user_amount'] 		= 		$comp['size'];
-		$this->uc['user_amount'] 		= 		0;
-		
+		$this->uc['user_amount'] 		= 		$comp['size'];
 		$this->uc['is_ldap']			=       $comp['isLDAP'];
 		$this->uc['company_type']		=		$comp['companytype'];
 		if( ! $this->ci->account->saveSiteInfo($this->uc, json_encode($this->uc['components']))){
@@ -425,6 +358,14 @@ class AccountCreateProcessImpl extends AccountProcessInterface{
 		}
 		log_message('info', 'merging contract components and manager components finished');
 		
+		#向ucc分配数据库--->此功能废弃
+		/*
+		log_message('info', 'start to dispatch database for site.');
+		if( ! $this->ci->ucc->dbDispatch($this->uc['customer_code'], $this->uc['user_amount'])){
+			return array(false, 'dispatch db in ucc failed');
+		}
+		log_message('info', 'dispatching database for site finished.');
+		*/
 		
 		#向ucc创建站点交换机
 		log_message('info', 'start to create site exchange.');

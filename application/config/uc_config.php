@@ -1,9 +1,8 @@
 <?php
 //环境配置  |生产环境on ;开发环境 dev;测试环境 test
 define('UC_ENVIRONMENT','dev');
-
-//base url,区分AB环境，如果是A环境：devcloud.quanshi.com 如果是B环境 devcloudb.quanshi.com
-define('UC_DOMAIN_URL','devcloud.quanshi.com');
+//base url,区分AB环境，如果是A环境：devyt.xiezuoyun.cn 如果是B环境 devcloudb.quanshi.com
+define('UC_DOMAIN_URL','devyt.xiezuoyun.cn');
 
 //api调用head配置
 define('POST_HEAD','Content-type: application/x-www-form-urlencoded;charset:UTF-8');//接口post head
@@ -12,9 +11,14 @@ define('POST_HEAD_XML','Content-type: text/xml');//接口post head xml数据
 define('POST_HEAD_HTML','text/html; charset=utf-8');//接口post head HTML数据
 
 //系统常量配置
+//define('BOSS_CALLBACK_IP','192.168.35.155');//集群中指定的唯一做域分配处理的ip  地址[当前uc站点ip];注意最后没有/
+//define('BOSS_CALLBACK_URL','devyt.xiezuoyun.cn');//集群中指定的唯一做域分配处理的url  地址[当前uc站点url];注意最后没有/
 define('UC_DOMAIN_DIR','/ucadmin');//uc域接口目录,相对于域表中的url,如果'/ucadmin' ，如果没有目录，则为空 ，注意后台没有/
+//define('MAILIMG', '/mailimg/'); // 邮件中的图片存放地址
 define('IS_OPEN_TEST',0);//是否开通测试输出文件0不开启1开启
 define('IS_OPEN_DEV',0);//是否开启正式环境功能，当前开发或测试时暂时还不能开启0不开启1开启
+//define('CFG_TEMPLETS_STYLE','default');
+//define('USER_DEFAULT_PASSWORD','');//用户初始密码
 define('UC_BOSSAPI_MAX_NUM',20);//UC每次向boss批量调接口时，每次最大发送数据量
 define('DOMAIN_USER_NUM_RATE',0.95);//域该站点的用户量的限值率
 define('UC_PRODUCT_ID',20);//UC产品编号
@@ -22,6 +26,15 @@ define('PC3_PRODUCT_ID',60000);//PC3.0产品编号
 define('UC_PRODUCT_OPEN_STATUS',82);//uc产品开通状态值
 define('UC_PRODUCT_CODE','UC');//UC产品,会议接口applicationId 值也是此值
 define('UC_CHECK_CODE','asdfqwerreqqwerd342');//检验码，由各应用从portal处申请，用于进行检验身份
+//系统邮件信息配置
+define('UC_SENDER_NAME','蜜蜂');//邮件sender_name 发件人
+define('UC_SENDER_ADDRESS','yan.zou@quanshi.com');//发件人邮件地址sender_address
+
+//Acm配置
+define('ACM_LINK',"tcp -h 192.168.61.7 -p 9012:tcp -h 192.168.61.7 -p 9012");
+define('ACM_APPNAME','UC');
+define('ACM_APILEVEL','1.0');
+define('ACM_VERSION','1.0.1');
 
 // 今天允许发送的短信总数
 define('TODAY_CODE_SEND_NUM',5);
@@ -43,14 +56,15 @@ define('COMPLEXITY_TYPE_TWO', 2); // 2、密码复杂性：8-30位数字与字�
 define('COMPLEXITY_TYPE_THREE', 3); // 3、密码复杂性：8-30位数字、符号与字母组合
 define('DEFAULT_PWD_COMPLEXITY_TYPE', 2);// 默认密码复杂性：8-30位数字与字母组合
 
-//公司信息配置
-define('COMPANY_NAME','全时云商务服务股份有限公司');//公司名称
-define('COMPANY_COPR','©Copyright 2013-2016');//版权
-define('COMPANY_ENG_NAME','G-Net Cloud Services Co., Ltd.');//公司英文名
-define('COMPANY_ICP','京ICP备08005473号');//站点备案号
-define('COMPANY_SERVE_TEL','400-810-1919');//24小时服务热线
-define('COMPANY_MSG_SEND_NAME','全时');//系统通知发送者名称
 
+//公司信息配置
+define('COMPANY_NAME','易开会通信服务有限公司');//公司名称
+define('COMPANY_COPR','©Copyright 2014-2015');//版权
+define('COMPANY_ICP','京ICP备08005473号');//站点备案号
+define('COMPANY_SERVE_TEL','400-899-9999');//24小时服务热线
+define('COMPANY_MSG_SEND_NAME','易开会');//系统通知发送者名称
+//正则配置
+define('USER_REGEX','/^[\S]{8,30}$/');//帐号正则表达式
 //系统角色
 define('SYSTEM_MANAGER', 1);          //系统管理员
 define('ORGANIZASION_MANAGER', 2);    //组织管理员
@@ -59,18 +73,19 @@ define('ACCOUNT_MANAGER', 4);         //账号管理员
 define('ECOLOGY_MANAGER', 5);         //生态管理员
 define('CHANNEL_MANAGER', 6);         //渠道管理员
 
-//msf(nfs)ucadmin data 根路径(文件上传的路径)
-define('MFS_UCADMIN_DATA', '/data/ucadmin_data/'); // 使用条件：当前环境部署了MFS并建立了文件夹软连接
-//define('MFS_UCADMIN_DATA', '/user/local/webroot/ucadmin/data/'); // 使用条件：当前环境未部署MFS
 
-// 文件下载的路径
-define('FILE_DOWNLOAD_URL', 'http://'. UC_DOMAIN_URL . '/ucadmin/data/');
+// 批量上传失败文件保存路径
+//define('FAIL_FILE_DIR', '/usr/local/webroot/ucadmin/data/failfile/');
+define('FAIL_FILE_DIR', './data/failfile/');
+// 批量上传文件大小限制  10M
+define('FILE_MAX_SIZE', 1024*1024*10);
+// 批量上传文件保存路径
+//define('BULKIMPORT_FILE_PATH', '/usr/local/webroot/ucadmin/public/jQueryFileUpload/server/php/files/');
+define('BULKIMPORT_FILE_PATH', './public/jQueryFileUpload/server/php/files/');
 
-// LOGO下载路径
-define('LOGO_DOWNLOAD_URL', FILE_DOWNLOAD_URL . 'logo/');
-
-//企业Logo
-define('LOGO_UPLOAD_PATH',MFS_UCADMIN_DATA.'logo/');
+//====logo====
+define('LOGO_UPLOAD_PATH','./data/logo/');
+//define('LOGO_UPLOAD_PATH','/usr/local/webroot/ucadmin/data/logo/');
 define('LOGO_WIDTH',110);
 define('LOGO_HEIGHT',110);
 define('LOGO_MID_WIDTH',300);
@@ -78,15 +93,10 @@ define('LOGO_MID_HEIGHT',205);
 define('LOGO_MAX_SIZE',5000);//kb
 define('LOGO_ALLOW_TYPES','jpg|png');
 
-
-// 应用LOGO
-define('APP_LOGO_UPLOAD_PATH',MFS_UCADMIN_DATA.'app_logo/');
-define('APP_LOGO_DOWNLOAD_URL', FILE_DOWNLOAD_URL . 'app_logo/');
-
-//批量导入配置
-define('BATCH_UPLOAD_PATH', MFS_UCADMIN_DATA.'batchimport/uploadfiles');
-define('BATCH_FAIL_PATH', MFS_UCADMIN_DATA.'batchimport/failfiles');
-define('BATCH_TEMPLATE_PATH', MFS_UCADMIN_DATA.'batchimport/templatefiles');
+//====batch import new==
+define('BATCH_UPLOAD_PATH', './data/batchimport/uploadfiles');
+define('BATCH_FAIL_PATH', './data/batchimport/failfiles');
+define('BATCH_TEMPLATE_PATH', './data/batchimport/templatefiles');
 define('BATCH_MAX_SIZE', 10000);//kb
 define('BATCH_LIMIT_ROWS', 10000);//单个文档可上传最大帐号数
 define('BATCH_MAX_CHUNKSIZE', 2000);//每次读取excel文件取出的行数

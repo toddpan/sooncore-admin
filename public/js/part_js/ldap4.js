@@ -5,14 +5,14 @@ function nextStep4() {
     var ldap4_id = [];
     var i = 0;
     var count = 0;
-    $('.ldapSetBox4 .selectBox input').each(function() {
+    $('.ldapSetBox4 .selectBox span').each(function() {
         $(this).parent("div").removeClass("error");
-        if ($(this).val() == "请选择对应的LDAP信息" ||$(this).val()=="") {
+        if ($(this).text() == "请选择对应的LDAP信息" ||$(this).text()=="") {
             $(this).parent("div").addClass("error");
             count = count + 1;
         }
         ldap4_id[i] = $(this).attr("id");
-        ldap4_value[i] = $(this).val();
+        ldap4_value[i] = $(this).text();
         i++;
     }) 
 	if (count != 0) {
@@ -22,8 +22,7 @@ function nextStep4() {
     } else {
 		$('.error4').hide();
         $('.ldapSetBox4 .ldapSetCont table.infoTable tr').each(function() {
-//        	property_info[$(this).find('td:first').attr("name")] = $(this).find("td dd.selected").text();
-            property_info[$(this).find('td:first').attr("name")] = $(this).find("td .text").val();
+            property_info[$(this).find('td:first').attr("name")] = $(this).find("td dd.selected").text();
         });
         $('.ldapSetBox4').hide();
         $('.ldapSetBox5').show();
@@ -84,14 +83,4 @@ $(function() {
             }
         }
     })
-});
-
-//处理输入属性的时候样式问题
-$('.attrInput').click(function(){
-	$(this).attr('value', '').css('color','#4f4f4f');
-});
-$('.attrInput').bind('blur', function(){
-	if($(this).val() == ''){
-		$(this).attr('value', '请选择对应的LDAP信息').removeAttr('style');
-	}
 });

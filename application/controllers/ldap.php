@@ -45,8 +45,7 @@ class Ldap extends Admin_Controller {
 	/**
      * 显示LDAP配置页面
      */
-    public function showLdapPage() { 
-    	
+    public function showLdapPage() {	// 
 //         获得参数当前ldap编号,如果没有值,则认为是新加页面
         $ldap_id = intval($this->input->get_post('ldap_id', true));
 		if($ldap_id>0){		//$ldap_id不为0表示当前页面属于编辑页面
@@ -57,7 +56,7 @@ class Ldap extends Admin_Controller {
 			}
 			//设置创建LDAP的参数
 			$server_info = array(
-				'serverType'	=> trim($ret['serverType']) == 'MS_AD' ? 'Microsoft Active Directory' : trim($ret['serverType']),
+				'serverType'	=> trim($ret['serverType']),
 				'protocol'		=> trim($ret['protocol']),
 				'hostname'		=> trim($ret['hostname']),
 				'port'			=> trim($ret['port']),
@@ -66,10 +65,8 @@ class Ldap extends Admin_Controller {
 				'basedn' 		=> trim($ret['basedn']),
 				'orgObjectclasses' 	=> trim($ret['ldapOrgMapping']['objectClass']),
 				'orgidproperty' 	=> trim($ret['ldapOrgMapping']['idAttribute']),
-				'orgNameProperty' => trim($ret['ldapOrgMapping']['nameAttribute'])
+				'orgNameProperty' => trim($ret['ldapOrgMapping']['nameAttribute']),
 			);
-			//设置修改LDAP的名称
-			$this->assign('confName', $ret['confName']);
 			
 			//例外规则
 			$rule = $this->ldap->getRuleByLdapId($ldap_id);
@@ -94,25 +91,14 @@ class Ldap extends Admin_Controller {
 		$servertype = $arr['servertype'];
 		$protocol 	= $arr['protocol'];
 		
-		if($ldap_id == 0){
-			$server_info = array(
-					'serverType'	=> $servertype[1],
-					'protocol'		=> $protocol[1]
-			);
-			$this->assign('select_step1', $server_info);
-		}
-		
-// 		$domain		= '@'.$this->p_stie_domain;
-		$this->load->library('UcadminLib','','ucadmin');
-		$suffix_arr	 = $this->ucadmin->get_suffix($this->p_site_id);
+		$domain		= '@'.$this->p_stie_domain;
 		
 		$base_url = dirname(BASEPATH);	//根路径
 		$this->assign('base_url', $base_url);
 		$this->assign('servertype', $servertype);	//第一步中：服务器类型选项
 		$this->assign('authtype_name', $protocol);	//第一步中：服务器连接方式
 		$this->assign('ldap_relative', $ret_tags);	//第四步中：可选标签的数组变量
-		$this->assign('use_suffix', $suffix_arr['use_suffix']);		//第五步中使用何种登录方式修改
-		$this->assign('site_domain', $suffix_arr['suffix']);		//第五步中：域名设置
+		$this->assign('site_domain', $domain);		//第五步中：域名设置
 		
         $this->display('ldap/ldap1.tpl');
     }
@@ -140,16 +126,6 @@ class Ldap extends Admin_Controller {
 		}
 		//ldap获取组织
 		$ret = $this->ums->getLdapOrgTree($server_info);
-		$len = count($ret);
-		for ($i = 0; $i < $len - 1; $i++){
-			for ($j = $i + 1; $j < $len; $j++){
-				if(strcmp(strtolower($ret[$j]['name']), strtolower($ret[$i]['name'])) < 0){	//如果前一个值大于后一个值则需要交换
-					$tmp		= $ret[$i];
-					$ret[$i]	= $ret[$j];
-					$ret[$j]	= $tmp;
-				}
-			}
-		}
 		if($ret===false){
 			form_json_msg(GET_ORGANIZATION_ERROR, '', lang('get_organization_error'));
 		}
@@ -199,7 +175,6 @@ class Ldap extends Admin_Controller {
 		$server_info = $this->_server_info;
 		//获取员工类
 		$ret = $this->ums->getLdapClass($server_info);
-		$ret = $this->sort($ret);
 		if($ret===false){
 			form_json_msg(GET_LABEL_CLASS_ERROR, '', lang('get_label_class_error'));
 		}
@@ -232,7 +207,6 @@ class Ldap extends Admin_Controller {
 			$start = strpos($val, '.') + 1;
 			$ret[$k] = substr($val, $start);	//截取点号后面的属性值，重新赋值给返回数组
 		}
-		$ret = $this->sort($ret);
 
 		if($ret===false){
 			form_json_msg(GET_ATTRIBUTE_ERROR, '', lang('get_attribute_error'));
@@ -251,7 +225,7 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);//选中的属性，即同步的员工信息
 		$property_info		= $this->input->get_post('property_info', true);//选中的属性，即同步的员工信息
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为蜜蜂标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 // 		$objectclasses		= $this->input->get_post('objectclasses', true);    //组织objectclasses
 // 		$idAttribute		= $this->input->get_post('idAttribute', true);    //组织id
@@ -271,11 +245,9 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
 		$email_next			= $this->input->get_post('email_next', true);    //使用统一的标签做为账号前缀时，对应的标签
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为蜜蜂标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 		$ldap_name			= $this->input->get_post('ldap_name', true);    //ldap名称
-		$ldapOrgUserMapping	= $this->input->get_post('ldapOrgUserMapping', true);    //组织用户映射
-		$sync_org			= $this->input->get_post('sync_org', true);    //非标准ldap的同步组织
 		$objectclasses		= empty($server_info['orgObjectclasses']) ? 'organizationalUnit' : $server_info['orgObjectclasses'];    //组织objectclasses
 		$idAttribute		= $server_info['orgidproperty'];    //组织id
 		$nameAttribute		= $server_info['orgNameProperty'];    //组织名称
@@ -320,32 +292,54 @@ class Ldap extends Admin_Controller {
 			'enableUpdate'				=> 1    //是否使用同步更新
 		);
 		//创建LDAP查询映射关系参数
-		$org_arr	= isset($sync_org) ? explode(';', substr($org_info, 0, strlen($org_info) - 1)) : $sync_org;
+		$org_arr	= explode(';', substr($org_info, 0, strlen($org_info) - 1));
 		//由此开始拼接验证规则的的代码
 		$class_count = count($classes); 
 		foreach ($classes as $k => $val){
 			$obj_filter	.= "(objectClass={$val})";
 		}
-		$filter = '(&' . $obj_filter . "({$ldap_user_mapping['idAttribute']}=*)";
 		if(!empty($filter_rule)){	//用户填写了过滤规则
-			$filter_arr	= explode(';', $filter_rule);
-			foreach ($filter_arr as $k => $val){
-				$filter	.= "(!($val))";
+			$filter_arr				= explode(';', $filter_rule);
+			$ldap_search_mapping	= array();
+			$filter0 				= "(|";
+			$filter1 				= "(&";
+			foreach ($filter_arr as $f => $filter){
+				$filter0 .= "($filter)";
+				$filter1 .= "(!($filter))";
 			}
+			$cnt = 2;
+			if($class_count == 1){	//用户只选择了一个类
+				$rule0 = '(&'.$obj_filter.$filter0.'))';	//拼装验证过滤规则字符串1，如：(&(objectClass=user)(|(CN=fengjuan35)(CN=fengjuan36)))
+				$rule1 = '(&'.$obj_filter.$filter1.'))';	//拼装验证过滤规则字符串2，如：(&(objectClass=user)(&(!(CN=fengjuan35))(!(CN=fengjuan35))))
+			}elseif($class_count > 1){	//选择了多个类
+				$rule0 = '(&(|'.$obj_filter.')'.$filter0.'))';	//拼装验证过滤规则字符串1，如：(&(|(objectClass=user)(objectClass=securityPrincipal))(|(CN=fengjuan35)(CN=fengjuan36)))
+				$rule1 = '(&(|'.$obj_filter.')'.$filter1.'))';	//拼装验证过滤规则字符串2，如：(&(|(objectClass=user)(objectClass=securityPrincipal))(&(!(CN=fengjuan35))(!(CN=fengjuan35))))
+			}
+		}else{	//用户没有填写过滤规则
+			if($class_count == 1){	//用户只选择了一个类
+				$rule0 = $rule1 = 'objectClass='.$classes[0];	//构造字符串，如：objectClass=xxxx
+			}elseif($class_count > 1){	//选择了多个类
+				$rule0 = $rule1 = '(|' . $obj_filter.')';	//构造字符串，如：(|(objectClass=xxxx)(objectClass=ss))
+			}
+			$cnt = 1;
 		}
-		$filter .= ')';
-		foreach ($org_arr as $org_key => $org_val){
-			$ldap_search_mapping[$org_key] = array(
-				'searchBase'	 => $org_val,		//表示查询位置，默认是basedn
-				'searchFilter'	 => $filter,
-				'templateId'	 => $this->p_stie_domain,
-				'accountId'		 => $this->p_account_id,
-				'contractId'	 => $this->p_contract_id,
-				'bossType'		 => 2,	//1表示MIS，2表示QSBOSS
-				'searchScope'	 => 1,	//查同级0，查下面一级1，查所有子节点2
-				'action'		 => 1,	//1创建，2删除
-				'enableAutoSync' => 1	//1开通并同步，0开通不同步
-			);
+		$index = 0;
+		for ($i = 0; $i < $cnt; $i++){
+			$rule = 'rule'.$i;	//拼接'rule0'和'rule1'字符串
+			$enableAutoSync = empty($filter_rule) ? 1 : $i;	//如果没有过滤规则 ，则同步的组织开通属性为1，否则每同步的组织会有两种属性
+			foreach ($org_arr as $org_key => $org_val){
+				$ldap_search_mapping[$index++] = array(
+					'searchBase'	 => $org_val,		//表示查询位置，默认是basedn
+					'searchFilter'	 => $$rule,
+					'templateId'	 => $this->p_stie_domain,
+					'accountId'		 => $this->p_account_id,
+					'contractId'	 => $this->p_contract_id,
+					'bossType'		 => 2,	//1表示MIS，2表示QSBOSS
+					'searchScope'	 => 1,	//查同级0，查下面一级1，查所有子节点2
+					'action'		 => 1,	//1创建，2删除
+					'enableAutoSync' => $enableAutoSync	//1开通并同步，0开通不同步
+				);
+			}
 		}
 		
 		//设置创建LDAP的参数
@@ -362,7 +356,6 @@ class Ldap extends Admin_Controller {
 			'basedn'				=> $server_info['basedn'],
 			'username'				=> $server_info['admindn'],
 			'password'				=> $server_info['adminpassword'],
-			'ldapOrgUserMapping'	=> $ldapOrgUserMapping,
 			'ldapOrgMapping'		=> $ldap_org_mapping,
 			'ldapUserMapping'		=> $ldap_user_mapping,
 			'siteLdapConfig'		=> $ldap_site_mapping,
@@ -382,8 +375,6 @@ class Ldap extends Admin_Controller {
 				}
 			}
 		}
-		$this->load->library('UcadminLib','','UcadminLib');
-		$this->UcadminLib->swicth_isldap($this->p_site_id,1);
 		log_message('info', __FUNCTION__.' customerCode->'.$this->p_customer_code.' site_id->'.$this->p_site_id.' input params->'.var_export($ldap_param, true));
 		form_json_msg(COMMON_SUCCESS, '', lang('success'));
 	}
@@ -403,10 +394,9 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
 		$email_next			= $this->input->get_post('email_next', true);    //使用统一的标签做为账号前缀时，对应的标签
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为蜜蜂标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 		$ldap_name			= $this->input->get_post('ldap_name', true);    //ldap名称
-		$ldapOrgUserMapping	= $this->input->get_post('ldapOrgUserMapping', true);    //组织用户映射
 		$objectclasses		= empty($server_info['orgObjectclasses']) ? 'organizationalUnit' : $server_info['orgObjectclasses'];    //组织objectclasses
 		$idAttribute		= $server_info['orgidproperty'];    //组织id
 		$nameAttribute		= $server_info['orgNameProperty'];    //组织名称
@@ -454,31 +444,53 @@ class Ldap extends Admin_Controller {
 		);
 		//创建LDAP查询映射关系参数
 		$org_arr	= explode(';', substr($org_info, 0, strlen($org_info) - 1));
-	//由此开始拼接验证规则的的代码
+		//由此开始拼接验证规则的的代码
 		$class_count = count($classes); 
 		foreach ($classes as $k => $val){
 			$obj_filter	.= "(objectClass={$val})";
 		}
-		$filter = '(&' . $obj_filter . "({$ldap_user_mapping['idAttribute']}=*)";
 		if(!empty($filter_rule)){	//用户填写了过滤规则
-			$filter_arr	= explode(';', $filter_rule);
-			foreach ($filter_arr as $k => $val){
-				$filter	.= "(!($val))";
+			$filter_arr				= explode(';', $filter_rule);
+			$ldap_search_mapping	= array();
+			$filter0 				= "(|";
+			$filter1 				= "(&";
+			foreach ($filter_arr as $f => $filter){
+				$filter0 .= "($filter)";
+				$filter1 .= "(!($filter))";
 			}
+			$cnt = 2;
+			if($class_count == 1){	//用户只选择了一个类
+				$rule0 = '(&'.$obj_filter.$filter0.'))';	//拼装验证过滤规则字符串1，如：(&(objectClass=user)(|(CN=fengjuan35)(CN=fengjuan36)))
+				$rule1 = '(&'.$obj_filter.$filter1.'))';	//拼装验证过滤规则字符串2，如：(&(objectClass=user)(&(!(CN=fengjuan35))(!(CN=fengjuan35))))
+			}elseif($class_count > 1){	//选择了多个类
+				$rule0 = '(&(|'.$obj_filter.')'.$filter0.'))';	//拼装验证过滤规则字符串1，如：(&(|(objectClass=user)(objectClass=securityPrincipal))(|(CN=fengjuan35)(CN=fengjuan36)))
+				$rule1 = '(&(|'.$obj_filter.')'.$filter1.'))';	//拼装验证过滤规则字符串2，如：(&(|(objectClass=user)(objectClass=securityPrincipal))(&(!(CN=fengjuan35))(!(CN=fengjuan35))))
+			}
+		}else{	//用户没有填写过滤规则
+			if($class_count == 1){	//用户只选择了一个类
+				$rule0 = $rule1 = 'objectClass='.$classes[0];	//构造字符串，如：objectClass=xxxx
+			}elseif($class_count > 1){	//选择了多个类
+				$rule0 = $rule1 = '(|' . $obj_filter.')';	//构造字符串，如：(|(objectClass=xxxx)(objectClass=ss))
+			}
+			$cnt = 1;
 		}
-		$filter .= ')';
-		foreach ($org_arr as $org_key => $org_val){
-			$ldap_search_mapping[$org_key] = array(
-				'searchBase'	 => $org_val,		//表示查询位置，默认是basedn
-				'searchFilter'	 => $filter,
-				'templateId'	 => $this->p_stie_domain,
-				'accountId'		 => $this->p_account_id,
-				'contractId'	 => $this->p_contract_id,
-				'bossType'		 => 2,	//1表示MIS，2表示QSBOSS
-				'searchScope'	 => 1,	//查同级0，查下面一级1，查所有子节点2
-				'action'		 => 1,	//1创建，2删除
-				'enableAutoSync' => 1	//1开通并同步，0开通不同步
-			);
+		$index = 0;
+		for ($i = 0; $i < $cnt; $i++){
+			$rule = 'rule'.$i;	//拼接'rule0'和'rule1'字符串
+			$enableAutoSync = empty($filter_rule) ? 1 : $i;	//如果没有过滤规则 ，则同步的组织开通属性为1，否则每同步的组织会有两种属性
+			foreach ($org_arr as $org_key => $org_val){
+				$ldap_search_mapping[$index++] = array(
+					'searchBase'	 => $org_val,		//表示查询位置，默认是basedn
+					'searchFilter'	 => $$rule,
+					'templateId'	 => $this->p_stie_domain,
+					'accountId'		 => $this->p_account_id,
+					'contractId'	 => $this->p_contract_id,
+					'bossType'		 => 2,	//1表示MIS，2表示QSBOSS
+					'searchScope'	 => 1,	//查同级0，查下面一级1，查所有子节点2
+					'action'		 => 1,	//1创建，2删除
+					'enableAutoSync' => $enableAutoSync	//1开通并同步，0开通不同步
+				);
+			}
 		}
 		
 		//设置创建LDAP的参数
@@ -496,7 +508,6 @@ class Ldap extends Admin_Controller {
 			'basedn'				=> $server_info['basedn'],
 			'username'				=> $server_info['admindn'],
 			'password'				=> $server_info['adminpassword'],
-			'ldapOrgUserMapping'	=> $ldapOrgUserMapping,
 			'ldapOrgMapping'		=> $ldap_org_mapping,
 			'ldapUserMapping'		=> $ldap_user_mapping,
 			'siteLdapConfig'		=> $ldap_site_mapping,
@@ -519,8 +530,6 @@ class Ldap extends Admin_Controller {
 				}
 			}
 		}
-		$this->load->library('UcadminLib','','UcadminLib');
-		$this->UcadminLib->swicth_isldap($this->p_site_id,1);
 		form_json_msg(COMMON_SUCCESS, '', lang('update_ldap_success'));
 	}
 	
@@ -529,24 +538,13 @@ class Ldap extends Admin_Controller {
 	 */
 	public function getLdapList(){
 		$ret = $this->ums->getLdapList($this->p_site_id);
-		//按照创建时间进行排序
-		$len = count($ret);
-		for ($i = 0; $i < $len - 1; $i++){
-			for ($j = $i + 1; $j < $len; $j++){
-				if($ret[$j]['createTime'] > $ret[$i]['createTime']){	//如果前一个值大于后一个值则需要交换
-					$tmp		= $ret[$i];
-					$ret[$i]	= $ret[$j];
-					$ret[$j]	= $tmp;
-				}
-			}
+		if(!$ret){
+			form_json_msg(GET_LDAP_TABLE_ERROR, '', lang('get_ldap_table_error'));
 		}
 		//整理数据
 		$ret_data = array();
 		if(is_array($ret) && count($ret)>0){
 			foreach($ret as $item){
-				if(is_null($item['ldapUserMapping'])){	//如果LDAP只是认证并没有同步则不展示
-					continue;
-				}
 				//是否同步用户与组织
 				$flag = $item['siteLdapConfig']['enableOrgSync'] == 1 && $item['siteLdapConfig']['enableUserSync'] == 1;
 				$tmp = array();
@@ -554,7 +552,7 @@ class Ldap extends Admin_Controller {
 				$tmp['ldap_name']			= $item['confName'];
 				$tmp['create_time']			= empty($item['createTime']) ? '' : date('Y/m/d H:i', round($item['createTime']/1000));
 				$tmp['last_update_time']	= empty($item['updateTime']) ? '' : date('Y/m/d H:i', round($item['updateTime']/1000));
-				$tmp['last_sync_date']		= empty($item['ldapOrgMapping']['lastSyncTime']) ? '' : date('Y/m/d H:i', round($item['ldapOrgMapping']['lastSyncTime']/1000));
+				$tmp['last_sync_date']		= empty($item['lastSyncTime']) ? '' : date('Y/m/d H:i', round($item['lastSyncTime']/1000));
 				$tmp['is_auto_sync']	    = $flag ? '关闭同步':'开启同步' ;//是否自动同步组织 1-是 0-否
 				$ret_data[]                 = $tmp;
 			}
@@ -599,31 +597,15 @@ class Ldap extends Admin_Controller {
     		$tree_base	= substr($tree_arr[0], $base_start);	//获得根节点
     		foreach ($tree_arr as $k => $val){	//对于数组的每一条记录都需要递归式的去截取字符串，并将获得到的字符串追加$tree_arr中
     			while ($tree_base != $val){
-    				$pos	= strpos($val, ',') + 1;
-    				$val	= substr($val, $pos);	//每次以逗号截取字符串获得当前字符串的父串
+    				$pos = strpos($val, ',') + 1;
+    				$val = substr($val, $pos);	//每次以逗号截取字符串获得当前字符串的父串
     				if(!in_array($val, $tree_arr)){	//如果当前截出来的字符串没有在$tree_arr数组中，则要追加到数组中
     					array_push($tree_arr, $val);
     				}
     			}
     		}
-    		foreach ($tree_arr as $k => $val){
-    			$tmp = (Object)array();
-    			if($val == $tree_base){
-	    			$tmp->id		= $val;
-	    			$tmp->pId		= '';
-	    			$tmp->name		= $val."[{$server_info['hostname']}]";
-	    			$tmp->nocheck	= false;
-	    			$ldap_tree[]	= $tmp;
-    				continue;
-    			}
-    			$pos			= strpos($val, ',');
-    			$tmp->id		= $val;
-    			$tmp->pId		= substr($val, $pos + 1);
-    			$tmp->name		= substr($val, 0, $pos);
-    			$tmp->nocheck	= false;
-    			$ldap_tree[]	= $tmp;
-    		}
     	}
+		$ldap_tree = $this->getTree($server_info, $tree_arr);	//想要同步的组织组织成树的结构
 		if(is_null($ldap_tree)){
 			form_json_msg(ORGANIZATION_TREE_ERROR, '', lang('organization_tree_error'));
 			break;
@@ -648,23 +630,33 @@ class Ldap extends Admin_Controller {
 		}
 		//Ldap服务器配置参数
 		$server_info = array();
-		//需要将密码处理成密文形式
-		$len		= strlen($res['password']);
-		$password	= '';
-		if($len > 0){
-			for ($i = 0; $i < $len; $i++){
-				$password .= '*';
-			}
-		}
 		
 		$server_info['hostname']			=	isset($res['hostname']) ? $res['hostname'] : ''; 
 		$server_info['port']				=	isset($res['port']) ? $res['port'] : ''; 
 		$server_info['admindn']				=	isset($res['username']) ? $res['username'] : ''; 
 		$server_info['basedn']				=	isset($res['basedn']) ? $res['basedn'] : ''; 
-		$server_info['adminpassword']		=	$password; 
+		$server_info['adminpassword']		=	isset($res['password']) ? $res['password'] : ''; 
 		$server_info['authtype']			=	isset($res['protocol']) ? $res['protocol'] : ''; 
 		$server_info['servertype']			=	isset($res['serverType']) ? $res['serverType'] : ''; 
-		$server_info['servertype']			=	isset($res['serverType']) ? ($res['serverType'] == 'MS_AD' ? 'Microsoft Active Directory' : $res['serverType']) : ''; 
+		//导入的组织列表
+		$ldap_tree	= array();
+		$tree_str   = $res['ldapOrgMapping']['organizations'];	//同步组织的字符串，由于拼接时最后一位有';'字符，因此变数组时应去掉这位
+    	//需要将查找到的返回的同步组织数组，组织成树形数组
+    	if(!empty($tree_str)){
+    		$tree_arr   = explode(';', substr($tree_str, 0, strlen($tree_str) - 1));
+    		$base_start	= stripos($tree_arr[0], $server_info['basedn']);
+    		$tree_base	= substr($tree_arr[0], $base_start);	//获得根节点
+    		foreach ($tree_arr as $k => $val){	//对于数组的每一条记录都需要递归式的去截取字符串，并将获得到的字符串追加$tree_arr中
+    			while ($tree_base != $val){
+    				$pos = strpos($val, ',') + 1;
+    				$val = substr($val, $pos);	//每次以逗号截取字符串获得当前字符串的父串
+    				if(!in_array($val, $tree_arr)){	//如果当前截出来的字符串没有在$tree_arr数组中，则要追加到数组中
+    					array_push($tree_arr, $val);
+    				}
+    			}
+    		}
+    	}
+		$ldap_tree = $this->getTree($server_info, $tree_arr);	//想要同步的组织组织成树的结构
 		//选择的员工标签
 		$classes  = explode(';',$res['ldapUserMapping']['objectClass']);
 		//ldap id
@@ -673,7 +665,7 @@ class Ldap extends Admin_Controller {
 		$loginNameAttribute 	= $res['ldapUserMapping']['loginNameAttribute'];
 		$customLoginNameSuffix	= $res['ldapUserMapping']['customLoginNameSuffix'];
 		$account 				= $loginNameAttribute.$customLoginNameSuffix;
-		//不开通全时蜜蜂的例外规则
+		//不开通全时云企的例外规则
 		$rule_arr = $this->ldap->getRuleByLdapId($ldap_id);
 		if(empty($rule_arr)){
 			$rule_arr = array('this ldap has not filter_rule');
@@ -683,6 +675,7 @@ class Ldap extends Admin_Controller {
 		$this->assign('ldap_id', $ldap_id);
 		$this->assign('server_info', $server_info);
 		$this->assign('classes', $classes);
+		$this->assign('ldap_tree', $ldap_tree);
 		$this->assign('account', $account);
 		$this->assign('filter_rule', $rule_arr);
 		
@@ -754,6 +747,7 @@ class Ldap extends Admin_Controller {
 			form_json_msg(UPDATE_USER_STATUS_ERROR, '', lang('update_user_status_error'));
 		}
 		
+		$this->ldap->updateLdapConfig();
 		form_json_msg(COMMON_SUCCESS, '', lang('success'));
 	}
 	
@@ -886,28 +880,5 @@ class Ldap extends Admin_Controller {
 		$arr['protocol']	= $protocol;
 		return $arr;
 	}
-
-	/**
-	 * 数组排序
-	 * @param array
-	 */
-	public function sort($arr){
-		//按字母表顺序处理返回的字符串信息
-		if(is_array($arr)){
-			$len = count($arr);
-			for ($i = 0; $i < $len; $i++){
-				for ($j = $len - 1; $j > $i; $j--){
-					if(strcmp($arr[$j], $arr[$j - 1]) > 0){	//如果前一个值大于后一个值则需要交换
-						$tmp			= $arr[$j];
-						$arr[$j]		= $arr[$j - 1];
-						$arr[$j - 1]	= $tmp;
-					}
-				}
-			}
-			return array_reverse($arr);
-		}else{
-			return false;
-		}
-			
-	}
+		
 }

@@ -55,6 +55,10 @@
 		<div class="mask" style="display:none"></div>
 			<div id="dialog" class="dialog">
  				<div class="dialogBorder"></div>
+			  	<b class="bgTL"></b>
+			  	<b class="bgTR"></b>
+			  	<b class="bgBL"></b>
+			 	<b class="bgBR"></b>
 			 	<b class="shadow"></b>
 		</div>
 		<script type="text/javascript" src="public/js/filiale/common.js"></script>

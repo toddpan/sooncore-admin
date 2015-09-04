@@ -19,7 +19,7 @@ class UC_User_Admin_Role_Model extends MY_Model
      */
     public function getAdminByUseridAndState($condition) {
     	$query = $this->db->get_where(self::TBL, $condition);
-    	if($query->num_rows() > 0){
+    	if($query->num_rows()){
     		return $query->row_array();
     	}
     	return array();
@@ -49,7 +49,6 @@ class UC_User_Admin_Role_Model extends MY_Model
             		//从ums获取用户信息
             		$this->load->library('UmsLib','','ums');
             		$user_info = $this->ums->getUserById($user_id);
-            		
             	
             		//从uc_user表里获取用户的账号信息
             		$qy = $this->db->get_where('uc_user', array('userID' => $user_id));
@@ -57,8 +56,6 @@ class UC_User_Admin_Role_Model extends MY_Model
             		if(empty($user_info) || empty($user_info_other)){
             			throw new Exception('get user info data failed');
             		}
-            		
-            		$login_name = $user_info['loginName'];
             		 
             		$insert_data_admin_part1 = array(
             				'userId' 		=>$user_id,
@@ -66,8 +63,8 @@ class UC_User_Admin_Role_Model extends MY_Model
             				'hostpasscode'  =>$user_info_other['hostpasscode'],
             				'guestpasscode' =>$user_info_other['guestpasscode'],
             				'accountId'     =>$user_info_other['accountId'],
-            				'display_name'  =>$user_info['displayName'],
-            				'login_name'    =>$login_name,
+            				'display_name'  =>$user_info['lastName'],
+            				'login_name'    =>$user_info['loginName'],
             				'mobile_number' =>$user_info['mobileNumber']
             		);
             		$ret_admin = $this->db->insert('uc_user_admin', array_merge($insert_data_admin_part, $insert_data_admin_part1));
@@ -100,8 +97,8 @@ class UC_User_Admin_Role_Model extends MY_Model
             			'userID'               => $user_id,
             			'scope_level_1'        => $w1['key'],
             			'scope_level_1_value'  => $w1['value'],
-            			'scope_level_2'        => isset($w2['key']) ? $w2['key'] : '',
-            			'scope_level_2_value'  => isset($w2['value']) ? $w2['value'] : ''
+            			'scope_level_2'        => $w2['key'],
+            			'scope_level_2_value'  => $w2['value']
             	);
             	$ret_resource = $this->db->insert('uc_user_resource', $insert_data_resource);
             	if(!$ret_resource) {
@@ -109,8 +106,7 @@ class UC_User_Admin_Role_Model extends MY_Model
             	}
             }
             $this->db->trans_commit();
-            
-            return array(true, $user_id, $id);
+            return true;
         }catch(Exception $e){
             $this->db->trans_rollback();
             log_message('error',$e->getMessage());
@@ -127,7 +123,6 @@ class UC_User_Admin_Role_Model extends MY_Model
         try{
             $this->db->trans_begin();
             foreach($manager_infos as $data){
-            	//var_dump($data);die;
                 $id      = $data['id'];
                 $user_id = $data['user_id'];
                 $role_id = $data['role_id'];
@@ -150,7 +145,7 @@ class UC_User_Admin_Role_Model extends MY_Model
                 		throw new Exception('insert data into uc_admin_resource failed');
                 	}
                 	
-                	//echo $id;
+                	echo $id;
                 	
                 	// 后添加记录
                     $update_data_resource = array(
@@ -202,10 +197,6 @@ class UC_User_Admin_Role_Model extends MY_Model
 // LIMIT 2, 100
         	
         if(!empty($keyword)){
-        	//echo $keyword;
-        	$keyword = ($keyword === '_') ? "\_" : $keyword;
-        	$keyword = ($keyword === '%') ? "\%" : $keyword;
-        	$keyword = ($keyword == "'") ? "’" : $keyword;
         	$this->db->where("(u.display_name LIKE '%". $keyword . "%' or u.login_name LIKE '%" . $keyword . "%' or u.mobile_number LIKE '%". $keyword . "%')");
         	//$this->db->or_like(array('u.display_name'=>$keyword, 'u.login_name'=>$keyword, 'u.mobile_number'=>$keyword));
         }
@@ -301,9 +292,6 @@ class UC_User_Admin_Role_Model extends MY_Model
                     throw new Exception('del data from  uc_user_admin_role table failed');
                 }
                 
-                // 删除uc_user_admin表中的记录
-                $ret_admin = $this->db->delete('uc_user_admin', array('userID' => $id));
-                
                 // 删除表uc_user_resource里的记录
                 $ret_resource = $this->db->delete('uc_user_resource', array('id'=>$id));
             }
@@ -347,7 +335,7 @@ class UC_User_Admin_Role_Model extends MY_Model
             return $ret;
         }
         $query = $this->db->select('role_id')->get_where(self::TBL, array('user_id'=>$user_id, 'state'=>1));
-		if($query->num_rows()>0){
+        if($query->num_rows()>0){
             foreach($query->result_array() as $row){
                 $ret[] = $row['role_id'];
             }

@@ -67,13 +67,13 @@
 			var isValid_loginCode=valitateLoginCode(pass_word_code);
 			if(!isValid_userN)
 			{
-			  $('.errorMsg').text("该账号不存在");
+			  $('.errorMsg').text("请输入正确的账号");
 			  $('.errorMsg').show();
 			  $('#user_account').focus();
 			  return false;
 			}else if(!isValid_loginCode)
 			{
-			  $('.errorMsg').text("您输入的验证码有误");
+			  $('.errorMsg').text("请输入正确的验证码");
 			  $('.errorMsg').show();
 			  $('#pass_word_code').parent().addClass("focus");
 			   $('#pass_word_code').focus();
@@ -86,8 +86,8 @@
 				"user_account":user_account,
 				"pass_word_code":pass_word_code
 			};
-			$(t).addClass("disable").removeClass("yes");
 			$.post(path,obj,function(data){
+			//alert(data)
 				var json = $.parseJSON(data);
 				if (json.code==0)//成功
 				showDialog('resetpassword/input_msgcode_page/' + json.data.user_id + '/' + json.data.mobile);

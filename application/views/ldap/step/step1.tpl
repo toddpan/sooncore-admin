@@ -28,18 +28,18 @@
 				<b class="bgR"></b>
         </div>
 </div> 
-<div class="ldapSetBox1 ldapset_1" target="1">
-	<span class="error1" style="margin-left:160px;color:#ec6764;display:none"></span>
+<div class="ldapSetBox1" target="1">
+	<span class="error1" style="margin-left:160px;color:#FF0000;display:none"></span>
 	<table class="infoTable">
 	     <tbody>
 		 	<tr>
 				<td width="160"></td>
 				<td height="10" class=""></td>
 		 	</tr>
-		 	<tr>
+		 	<tr> 
 				<td width="160">服务器类型：</td>
 				<td>
-					<div class="combo selectBox w318" id="servertype">
+					<div id="servertype" class="combo selectBox w318" id="servertype">
 						<a class="icon"></a>
 						<span title="" class="text">{$select_step1['serverType']}</span>
 						<div class="optionBox">
@@ -47,7 +47,8 @@
 								{$j=0}
 								{$select="selected"}
 								{foreach $servertype as $type}
-									<dd class="option {if $select_step1['serverType']== $type}{$select}{/if}" target="{$j}">{$type}
+									<dd class="option 
+										{if $select_step1['serverType']== $type}{$select}{/if}" target="{$j}">{$type}
 									</dd>
 								{$j=$j+1}
 								{/foreach}                      									                     
@@ -59,9 +60,21 @@
 			<tr> 
 				<td width="160">连接方式：</td>
 				<td>
-					<div class="inputBox w318" id="protocol">
-						<label class="label">{$select_step1['protocol']}</label>
-						<input title="" class="input">
+					<div id="protocol" class="combo selectBox w318" id="protocol">
+						<a class="icon"></a>
+						<span title="" class="text">{$select_step1['protocol']}</span>
+						<div class="optionBox">
+							<dl class="optionList" style="height: 78px;">
+								{$j=0}
+								{$sel="selected"}
+								{foreach $authtype_name as $link_type}
+									<dd class="option 
+										{if $select_step1['protocol']== $link_type}{$sel}{/if}" target="{$j}" >{$link_type}
+									</dd>
+								{$j=$j+1}
+								{/foreach}   
+							</dl>
+						</div>
 					</div>
 				</td>
 			</tr>
@@ -69,6 +82,7 @@
 				<td width="160">LDAP服务器地址：</td>
 				<td>
 					<div id="hostname" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>                  
 						<input type="" value="{if $select_step1['hostname']}{$select_step1['hostname']}{/if}" class="input">
 					</div>
@@ -78,6 +92,7 @@
 				<td width="160">LDAP服务器端口：</td>
 				<td>
 					<div id="port" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>            
 						<input type="" value="{if $select_step1['port']}{$select_step1['port']}{/if}" class="input">
 					</div>
@@ -87,6 +102,7 @@
 				<td width="160">LDAP服务器用户名：</td>
 				<td>
 					<div id="admindn" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>   
 					   <input type="" value="{if $select_step1['admindn']}{$select_step1['admindn']}{/if}" class="input">
 					</div>
@@ -96,6 +112,7 @@
 				<td width="160">LDAP服务器密码：</td>
 				<td>
 					<div id="password" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>   
 						<input type="password" value="{if $select_step1['password']}{$select_step1['password']}{/if}" class="input">
 					</div>
@@ -105,6 +122,7 @@
 				<td width="160">Base DN：</td>
 				<td>
 					<div id="basedn" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>             
 						<input type="" value="{if $select_step1['basedn']}{$select_step1['basedn']}{/if}" class="input">
 					</div>
@@ -114,8 +132,9 @@
 				<td width="160">组织objectClass：</td>
 				<td>
 					<div id="orgObjectclasses" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>                  
-						<input type="" value="{if $select_step1['orgObjectclasses']}{$select_step1['orgObjectclasses']}{/if}" class="input">
+						<input type="" value="{if $select_step1[orgObjectclasses]}{$select_step1[orgObjectclasses]}{/if}" class="input">
 					</div>
 				</td>
 			</tr>
@@ -123,8 +142,9 @@
 				<td width="160">组织ID：</td>
 				<td>
 					<div id="orgidproperty" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>            
-						<input type="" value="{if $select_step1['orgidproperty']}{$select_step1['orgidproperty']}{/if}" class="input">
+						<input type="" value="{if $select_step1[orgidproperty]}{$select_step1[orgidproperty]}{/if}" class="input">
 					</div>
 				</td>
 			</tr>
@@ -132,8 +152,9 @@
 				<td width="160">组织名称：</td>
 				<td>
 					<div id="orgNameProperty" class="inputBox w318">
+						<b class="bgR"></b>
 						<label class="label"></label>           
-						<input type="" value="{if $select_step1['orgNameProperty']}{$select_step1['orgNameProperty']}{/if}" class="input">
+						<input type="" value="{if $select_step1[orgNameProperty]}{$select_step1[orgNameProperty]}{/if}" class="input">
 					</div>
 				</td>
 			</tr>
@@ -152,14 +173,10 @@
 			<span id="idd" class="text" onclick="nextStep(this);" style="cursor: pointer">下一步</span>
 			<b class="bgR"></b>
 		</a>
-		<a class="btnGray btn fl" onclick="loadCont('ldap/getLdapList');">
-			<span class="text" style="cursor: pointer;width:120px;">LDAP列表</span><b class="bgR"></b>
-		</a>
 </div>
 <div id="checking"  style="display:none">
 	<span>验证设置中，请稍候...</span>
 </div>
-
 <script type="text/javascript" src="public/js/part_js/ldap1.js"></script>
 
 <script type="text/javascript">

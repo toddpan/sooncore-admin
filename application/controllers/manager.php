@@ -64,10 +64,6 @@ class Manager extends Admin_Controller{
      	// 获取管理员列表
      	$limit = $config['per_page'];
      	$rdata = $this->uc_user_admin_role_model->getManagerList($keyword, $role_id, $limit, $offset, $this->p_site_id);
-     	
-     	if(empty($rdata)){
-     		$rdata = '没有搜到相关结果';
-     	}
      
      	// 打印log
      	log_message('info', 'out method' . __FUNCTION__ . "\n output-> " . var_export($rdata, true));
@@ -111,9 +107,7 @@ class Manager extends Admin_Controller{
      	$this->load->model('uc_user_admin_role_model');
      	$role_arr = $this->uc_user_admin_role_model->getAdminRoleById($id);
      	$role_name = isset($role_arr['role']) ? $role_arr['role'] : '';
-     	
-     	$this->setFunctions();     	
-     	
+    	
     	// 将数据传递到页面上
     	$this->assign('p_user_id', $this->p_user_id);
     	$this->assign('id', $id);
@@ -121,46 +115,8 @@ class Manager extends Admin_Controller{
    		$this->assign('other_tag_arr', $other_tag_arr);
      	$this->assign('admin_role_arr', $admin_role_arr);
      	$this->assign('role_name', $role_name);
-     	
     	$this->display('manage/managerInfo.tpl');
     }
-    
-	private function setFunctions(){
-		$roleFunctions = $this->setFunctionsByRole();
-		$customFunctions = $this->setFunctionsBySite();
-		
-		$functions = array_merge($customFunctions, $roleFunctions);
-		
-		foreach ($customFunctions as $key=>$value){
-			$functions[$key] = $functions[$key] && $value;
-		}
-		
-		$this->assign('functions', $functions);
-	}
-	
-	private function setFunctionsBySite(){
-		$functions = array();
-		
-		$functions['changePassword'] = $this->siteConfig['siteType'] == 0;
-		$functions['employeeEdit'] = $this->siteConfig['importType'] != 2;
-		
-		return $functions;
-	}
-	
-	private function setFunctionsByRole(){
-		$functions = array();
-		
-		$functions['changePassword'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER;
-		$functions['employeeEdit'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
-
-		return $functions;
-	}
-	
-	
-	
-    
-    
-    
     
     /**
      * 根据user_id获取当前管理员的个人信息
@@ -234,18 +190,18 @@ class Manager extends Admin_Controller{
     	// 客户编码
     	$customer_code = $this->p_customer_code;
     	// 首级及下一级组织数组
-    	$first_next_org_arr = $this->OrganizeLib->get_first_next_org_arr($customer_code, '1,3,5');
-    	//首级及下一级组织json串
-    	$in_arr = array(
-    			'is_first' => 1 // 是否第一级0不是1是
-    	);
-    	$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr, 1, $in_arr);
+    	//$first_next_org_arr = $this->OrganizeLib->get_first_next_org_arr($customer_code, '1,3,5');
+    	// 首级及下一级组织json串
+    	//$in_arr = array(
+    			//'is_first' => 1 // 是否第一级0不是1是
+    	//);
+    	//$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr, 1, $in_arr);
     	//print_r($org_arr);
-    	$org_json = '[]';
-    	if(is_array($org_arr)){// 如果是数组
-    		$org_json = json_encode($org_arr);
-    	}
-    	$system_must_tags_arr['org_list_json']  = $org_json;
+    	//$org_json = '[]';
+    	//if(is_array($org_arr)){// 如果是数组
+    		//$org_json = json_encode($org_arr);
+    	//}
+    	//$system_must_tags_arr['org_list_json']  = $org_json;
     	// 当前组织id
     	$user_organizationId = arr_unbound_value ( $user_info_arr, 'organizationId', 2, '' );
     	$ns_org_arr = $this->OrganizeLib->get_orgup_arr ( $user_organizationId, array () );
@@ -281,7 +237,6 @@ class Manager extends Admin_Controller{
     	// -----------------------------------------------------组装可选标签和自定义标签--------------------------------------------- 
     	$other_tag_arr = array();
     	if(!isemptyArray($seled_not_must_tag_arr)){
-    		//print_r($seled_not_must_tag_arr);
     		foreach ($seled_not_must_tag_arr as $not_must_tag) {
     			$other_tag_arr[] = array(
     				'tag_name' 	=> $not_must_tag['tag_name'],
@@ -292,10 +247,9 @@ class Manager extends Admin_Controller{
     	}
     	if(!isemptyArray($user_defined_tag_arr)){
     		foreach ($user_defined_tag_arr as $user_define_tag) {
-    			//print_r($user_defined_tag_arr);
     			$other_tag_arr[] = array(
     				'tag_name' 	=> $user_define_tag['tag_name'],
-    				//'tag_key' 	=> $user_define_tag['field'],
+    				'tag_key' 	=> $user_define_tag['field'],
     				'tag_value' => $user_define_tag['tag_value']
     			);
     		}
@@ -309,22 +263,6 @@ class Manager extends Admin_Controller{
 		
 		log_message ( 'info', __FUNCTION__ . " output->\n" . var_export ( $tag_arr, true ) );
 		return $tag_arr;
-    }
-    
-    /**
-     * 根据用户id获得当前管理员的个人信息
-     * 
-     * @param int $user_id 用户id
-     * 
-     * @return array $tag_arr 个人信息数组
-     */
-    public function get_admin_info($user_id) {
-    	log_message('info', 'Into method get_admin_info input --> $user_id = ' . $user_id);
-    	
-    	// 初始化结果数组：个人信息数组
-    	$tag_arr = array();
-    	
-    	return $tag_arr;
     }
     
     /**
@@ -343,15 +281,11 @@ class Manager extends Admin_Controller{
     	
     	// 组装数据
     	$org_name = '';
-    	$new_data = array();
     	if(!isemptyArray($re_data)){
     		foreach($re_data as $admin_role){
     			if($admin_role['scope_level_1'] == 'department'){
     				$org_id_arr = explode(',', $admin_role['scope_level_1_value']);
-    				//print_r($org_id_arr);
     				foreach ($org_id_arr as $org_id){
-    					//$org_id = get_org_id($org_id);
-    					//echo $org_id;
     					$org_info = $this->ums->getOrganizationById($org_id);
     					if(!empty($org_info)){
     						$org_name = $org_info['name'] . ',';
@@ -362,7 +296,6 @@ class Manager extends Admin_Controller{
     			}
     		
     			if($admin_role['scope_level_2'] == 'department'){
-    				//$admin_role['scope_level_2_value'] = get_org_id($admin_role['scope_level_2_value']);
     				$org_info = $this->ums->getOrganizationById($admin_role['scope_level_2_value']);
     				if(!empty($org_info)){
     					$org_name = $org_info['name'];
@@ -376,8 +309,6 @@ class Manager extends Admin_Controller{
     	}
     	
     	log_message('info', 'out method' . __FUNCTION__ . "\n output -->" . var_export($new_data, true));
-    	
-    	//print_r($new_data);die;
     	
     	// 返回结果
     	return $new_data;
@@ -507,13 +438,11 @@ class Manager extends Admin_Controller{
     public function addManager() {
         // 获取参数（json串格式）
         $manager_info_json = $this->input->post('manager_info');
-        //var_dump($manager_info_json);die;
         log_message('info', 'into method' . __FUNCTION__ . "\n input -->" . var_export(array('manager_info' => $manager_info_json), true));
         
         // 将参数json串转换成数组
         $manager_infos = array();
         $manager_info = json_decode($manager_info_json, true);
-        //print_r($manager_info);die;
         $loginName = $manager_info['login_name'];
         $user_id = intval($manager_info['user_id']);
         $role_id = intval($manager_info['role_id']);
@@ -521,22 +450,22 @@ class Manager extends Admin_Controller{
         
         // 当是手动输入的用户名时，要根据loginName判断这个用户是否存在
         if(empty($user_id)){
-	        $loginName = $manager_info['login_name'];
-	        $this->load->library('UmsLib', '', 'ums');
-	        $user_info = $this->ums->getUserByLoginName($loginName);
-	        if($user_info == false){
-	        	form_json_msg(COMMON_PARAM_ERROR, 'user_id', $this->lang->line('username_is_not_exist')); // 该用户不存在
-	        }
-	        	
-	        $user_id = $user_info['id'];
-	        $manager_info['user_id'] = $user_id;
+        	$loginName = $manager_info['login_name'];
+        	$this->load->library('UmsLib', '', 'ums');
+        	$user_info = $this->ums->getUserByLoginName($loginName);
+        	if($user_info == false){
+        		form_json_msg(COMMON_PARAM_ERROR, '', $this->lang->line('admin_param_error')); // 该用户不存在
+        	}
+        	
+        	$user_id = $user_info['id'];
+        	$manager_info['user_id'] = $user_id;
         }
         
          $manager_infos[] = $manager_info;
         
         // 参数检查
         list($flag) = $this->checkManagerInfo($manager_infos);
-        if(!$flag){
+        if(!flag){
             form_json_msg(COMMON_PARAM_ERROR, '', $this->lang->line('admin_param_error')); // 参数错误
         }
         
@@ -552,65 +481,14 @@ class Manager extends Admin_Controller{
             'type'          =>($role_id==ECOLOGY_MANAGER ? 3 : 0),
             'createTime'     =>time()
         );
-        list($flag, $user_id, $id) = $this->admin_role->addManager($manager_infos, $insert_data_admin_part);
+        $ret = $this->admin_role->addManager($manager_infos, $insert_data_admin_part);
         
-        log_message ( 'info', __FUNCTION__ . " output->\n" . var_export ( array('ret' => $flag), true ) );
+        log_message ( 'info', __FUNCTION__ . " output->\n" . var_export ( array('ret' => $ret), true ) );
         
-        if(!$flag){
-            form_json_msg(ADMIN_ADD_FAIL, '', $this->lang->line('add_admin_error'), array()); // 添加管理员失败
+        if(!$ret){
+            form_json_msg(ADMIN_ADD_FAIL, '', $this->lang->line('add_admin_error')); // 添加管理员失败
         }
-        form_json_msg(COMMON_SUCCESS, '', $this->lang->line('add_admin_suc'), array('user_id' => $user_id, 'id' => $id));
-    }
-    
-    /**
-     * 显示确认邮箱页面
-     */
-    public function show_confirm_email_page() {
-    	$user_id = $this->input->get_post('user_id', true);	// 用户id
-    	$id 	 = $this->input->get_post('id', true);		// 管理员id
-    	log_message('info', 'Into method show_confirm_email_page input -> user_id = ' . $user_id);
-    	
-    	// 调用UMS接口获取当前管理员的Email地址
-    	$this->load->library('UmsLib', '', 'ums');
-    	$user_info 	= $this->ums->getUserById($user_id);
-    	$email 		= isset($user_info['email']) ? $user_info['email'] : '';
-    	
-    	// 加载视图页面并传递数据
-    	$this->assign('user_id', $user_id);
-    	$this->assign('id', $id);
-    	$this->assign('email', $email);
-    	$this->display('manage/confirm_email.tpl');
-    }
-    
-    /**
-     * 发送指定管理员的通知邮件
-     */
-    public function send_mail(){
-    	$user_id = $this->input->post('user_id', true);
-    	$email 	 = $this->input->post('email', true);
-    	log_message('info', 'Into method send_mail input -> user_id = ' . $user_id .',email = ' . $email);
-    	
-    	// 调用UMS接口获得用户相关信息
-    	$this->load->library('UmsLib', '', 'ums');
-    	$user_info 	= $this->ums->getUserById($user_id);
-    	$user_name 	= isset($user_info['displayName']) ? $user_info['displayName'] : '';
-    	$loginName 	= isset($user_info['loginName']) ? $user_info['loginName'] : '';
-    	
-    	//TODO 获得公司简称
-    	$cor_name = '全时';
-    	
-    	// 套用模板发送通知邮件
-    	$this->load->library('MssLib', '', 'mss');
-    	$mail_template_set = array(
-    			'user_name' 	=> $user_name, 	// 姓名
-    			'login_name' 	=> $loginName, 	// 用户名
-    			'password' 		=> '',  		// 密码
-    			'cor_name' 		=> $cor_name,  	// 公司简称
-    			'email' 		=> $email, 		// 收件人邮箱
-    	);
-    	$mail_type = MANAGER_SET_MAIL;
-    	$result = $this->mss->save_mail($mail_template_set, $mail_type);
-    	log_message('info', 'the result of send_mail is ' . $result);
+        form_json_msg(COMMON_SUCCESS, '', $this->lang->line('add_admin_suc'));
     }
     
      /**
@@ -618,8 +496,8 @@ class Manager extends Admin_Controller{
       */
     public function modifyManager(){
         // 获取参数
-        $manager_infos_json = $this->input->get_post('manager_infos', true);
-        log_message('info', 'into methodmodifyManager' . "\n input -->manager_info' =>". $manager_infos_json);
+        $manager_infos_json = $this->input->get_post('manager_infos');
+        log_message('info', 'into method' . __FUNCTION__ . "\n input -->" . var_export(array('manager_info' => $manager_info_json), true));
         
         // 将参数json串转换成数组
         $manager_infos      = json_decode($manager_infos_json, true);
@@ -629,7 +507,6 @@ class Manager extends Admin_Controller{
             response_json(COMMON_PARAM_ERROR, $this->lang->line('admin_param_error')); // 参数错误
         }
         $this->load->model('uc_user_admin_role_model', 'admin_role');
-        
         foreach($manager_infos as $manager_info){
             if( !isset($manager_info['id']) || !is_numeric($manager_info['id'])){
                 response_json(COMMON_PARAM_ERROR, $this->lang->line('admin_param_error')); // 参数错误
@@ -640,15 +517,15 @@ class Manager extends Admin_Controller{
                 response_json(COMMON_PARAM_ERROR, $this->lang->line('admin_param_error')); // 参数错误
             }
         }
-        list($flag) = $this->checkManagerInfo($manager_infos);
-        if(!$flag){
-            form_json_msg(COMMON_PARAM_ERROR, '', $this->lang->line('admin_param_error')); 
+        list($flag, $msg) = $this->checkManagerInfo($manager_infos);
+        if(!flag){
+            form_json_msg(COMMON_PARAM_ERROR, '', $msg); 
         }
         
         //修改管理员信息
         $ret_modify = $this->admin_role->modifyManager($manager_infos);
         
-        log_message ( 'info', __FUNCTION__ . " output->\n" . var_export(array('ret_modify' => $ret_modify), true));
+        log_message ( 'info', __FUNCTION__ . " output->\n" . var_export ( array('ret_modify' => $ret_modify), true ) );
         
         if(!$ret_modify){
             form_json_msg(COMMON_FAILURE, '', $this->lang->line('save_admin_error')); // 添加管理员失败
@@ -670,7 +547,6 @@ class Manager extends Admin_Controller{
         
         // 遍历管理员角色信息数组
         foreach($manager_info_arr as $manager_info){
-        	//log_message('info', '11100');
             // 为了统一数据格式，如果role_id为生态管理员，则为其加w1、w2两个空维度
             if( $manager_info['role_id'] == ECOLOGY_MANAGER ){
             	$manager_info['w1'] = array('key'=>'','value'=>'');
@@ -688,25 +564,25 @@ class Manager extends Admin_Controller{
             $w2      = $manager_info['w2'];
             
             //检查user_id是否合法
-//             $user_info = $this->user->getUserInfo($user_id);
-//             if(((isset($user_info['siteId']) ?$user_info['siteId'] : '') != $this->p_site_id) || ((isset($user_info['customerCode']) ? $user_info['customerCode'] : '') != $this->p_customer_code)){
-//             	log_message('error', 'the param 1'.$user_id.' is not illegal!');
-//             	return array(false);
-//             }
+            $user_info = $this->user->getUserInfo($user_id);
+            if($user_info['siteId'] != $this->p_site_id || $user_info['customerCode'] != $this->p_customer_code){
+            	log_message('error', 'the param '.$user_id.' is not illegal!');
+            	return array(false);
+            }
             //检查角色role_id是否合法
             if(!in_array($role_id, $this->allow_role)){
-            	log_message('error', 'the param 2'.$role_id.' is not illegal!');
+            	log_message('error', 'the param '.$role_id.' is not illegal!');
                 return array(false);
             }
 
             //检查维度值是否正确,如果是生态管理员，则不检查
-//             if( ($manager_info['role_id'] != ECOLOGY_MANAGER) && (!$this->OrganizeLib->checkW($w1) || !$this->OrganizeLib->checkW($w2)) ){
-//             	log_message('error', 'the param w1 or w2 is not illegal!');
-//                 return array(false);
-//             }
+            if( ($manager_info['role_id'] != ECOLOGY_MANAGER) && (!$this->OrganizeLib->checkW($w1) || !$this->OrganizeLib->checkW($w2)) ){
+            	log_message('error', 'the param w1 or w2 is not illegal!');
+                return array(false);
+            }
         }
 
-         return array(true);
+        return array(true);
     }
     
     /**
@@ -725,20 +601,12 @@ class Manager extends Admin_Controller{
     	$this->load->model('uc_area_model');
     	$address_info_arr = $this->uc_area_model->get_area_by_customercode($this->p_customer_code);
 		$city_arr = array();
-		$city = '';
 		if(!isemptyArray($address_info_arr)){
-			$count = count($address_info_arr);
 			foreach($address_info_arr as $address_info){
-				$city = isset($address_info['area']) ? $address_info['area'] : '';
-				if(!empty($city)){
-					$city_arr[] = $city;
-				}
+				$city_arr[] = isset($address_info['area']) ? $address_info['area'] : '';
 			}
 		}
 		
-// 		if(isemptyArray($city_arr)){
-// 			$city_arr[] = 0;
-// 		}
 		return_json(COMMON_SUCCESS, '', array('ret_data'=>$city_arr));
     }
        
@@ -771,123 +639,15 @@ class Manager extends Admin_Controller{
     	$user_id = $this->input->post('user_id', true);
     	log_message('info', 'Into method reset_pwd input ----> user_id=' . $user_id );
     	
-    	// 调用UMS接口判断该用户是否存在
-    	$this->load->library('UmsLib', '', 'ums');
-    	$ums_user_info = $this->ums->getUserById($user_id);
-    	if(empty($ums_user_info)){
-    		return_json(USER_NOT_EXIST, $this->lang->line('user_not_exist'), array()); // 用户不存在
-    	}
-    	
     	// 调用UMS接口重置用户密码
-    	$password = '11111111'; //TODO 暂时将密码重置为8个1，将来根据需求而定。
+    	$this->load->library('UmsLib', '', 'ums');
+    	$password = '111111'; //TODO 暂时将密码重置为6个1，将来根据需求而定。
     	$res = $this->ums->resetUserPassword($user_id, $password);
 		if(!$res){
 			return_json(RESET_PWD_FAIL, $this->lang->line('reset_pwd_fail'), array()); // 重置密码失败
 		}
-		
-		$email 		= isset($ums_user_info['email']) ? $ums_user_info['email'] : '';
-		$phone 		= isset($ums_user_info['mobileNumber']) ? $ums_user_info['mobileNumber'] : '';
-		$user_name	= isset($ums_user_info['displayName']) ? $ums_user_info['displayName'] : '';
-		
-		$this->load->model('uc_site_config_model');
-		$site_config = $this->uc_site_config_model->getAllSiteConfig($this->p_site_id);
-		
-		$accountNotifyEmail = isset($site_config['accountNotifyEmail']) ? $site_config['accountNotifyEmail'] : 0;
-		$accountNotifySMS = isset($site_config['accountNotifySMS']) ? $site_config['accountNotifySMS'] : 0;
-		
-		if($accountNotifyEmail == 1){
-			if(empty($email)){
-				log_message('error', '$user_id='.$user_id.' does not have email.');
-			}else{
-				// 根据user_id获得site_id
-				$this->load->model('uc_user_model');
-				$user_info = $this->uc_user_model->getUserInfo($user_id);
-				$site_id = isset($user_info['siteId']) ? $user_info['siteId'] : '';
-				
-				// 根据站点id获得企业简称
-				$this->load->model('uc_site_model');
-				$site_info = $this->uc_site_model->getInfosBySiteId($site_id);
-				$cor_name = isset($site_info['corName']) ? $site_info['corName'] : '';
-				if(empty($cor_name)){
-					$this->load->model('uc_customer_model');
-					$where_arr = array(
-							'siteId' => $site_id
-					);
-					$customer_info = $this->uc_customer_model->getContractid($where_arr);
-					$cor_name = isset($customer_info['name']) ? $customer_info['name'] : '';
-				}
-				
-				$this->load->library('MssLib', '', 'mss');
-				$mail_template_set = array(
-						'user_name' 	=> $user_name,
-						'password' 		=> $password,
-						'cor_name' 		=> $cor_name,  	// 企业简称
-						'email'			=> $email  		// 收件人邮箱
-				);
-				$this->mss->save_mail($mail_template_set, RESET_PWD_SUC_MAIL);
-			}
-		}
-		
-		if($accountNotifySMS == 1){
-			// 载入短信模板
-			$this->lang->load('msg_tpl', 'chinese');
-	
-			// 判断手机号是否为空
-			if(empty($phone)){
-				log_message('error', '$user_id='.$user_id.' does not have phone.');
-			}else{
-				// 调用UCCServer接口发短信
-				$this->load->library('UccLib', '', 'ucc');
-				$content = sprintf($this->lang->line('msg_tpl_reset_pwd'), $password);
-				$this->ucc->sendMobileMsg($user_id, $content, $phone);
-			}
-		}
-		
-// 		if(empty($email)){ // 发短信
-// 			// 载入短信模板
-// 			$this->lang->load('msg_tpl', 'chinese');
-			
-// 			// 判断手机号是否为空
-// 			if(empty($phone)){
-// 				log_message('error', '$user_id='.$user_id.' does not have phone.');
-// 			}else{
-// 				// 调用UCCServer接口发短信
-// 				$this->load->library('UccLib', '', 'ucc');
-// 				$content = sprintf($this->lang->line('msg_tpl_reset_pwd'), $password);
-// 				$this->ucc->sendMobileMsg($user_id, $content, $phone);
-// 			}
-			
-// 		}else{ // 发邮件
-			
-// 			// 根据user_id获得site_id
-// 			$this->load->model('uc_user_model');
-// 			$user_info = $this->uc_user_model->getUserInfo($user_id);
-// 			$site_id = isset($user_info['siteId']) ? $user_info['siteId'] : '';
-			
-// 			// 根据站点id获得企业简称
-// 			$this->load->model('uc_site_model');
-// 			$site_info = $this->uc_site_model->getInfosBySiteId($site_id);
-// 			$cor_name = isset($site_info['corName']) ? $site_info['corName'] : '';
-// 			if(empty($cor_name)){
-// 				$this->load->model('uc_customer_model');
-// 				$where_arr = array(
-// 					'siteId' => $site_id
-// 				);
-// 				$customer_info = $this->uc_customer_model->getContractid($where_arr);
-// 				$cor_name = isset($customer_info['name']) ? $customer_info['name'] : '';
-// 			}
-			
-// 			$this->load->library('MssLib', '', 'mss');
-// 			$mail_template_set = array(
-// 						'user_name' 	=> $user_name,
-// 						'password' 		=> $password,
-// 						'cor_name' 		=> $cor_name,  	// 企业简称
-// 						'email'			=> $email  		// 收件人邮箱
-// 			);
-// 			$this->mss->save_mail($mail_template_set, RESET_PWD_SUC_MAIL);
-// 		}
-		
-		return_json(COMMON_SUCCESS, $this->lang->line('success'), array('p_user_id' => $this->p_user_id));	// 重置密码成功
+    	
+		return_json(COMMON_SUCCESS, $this->lang->line('success'), array('p_user_id' => $this->p_user_id));	// 重置密码失败
     }
     
     /**

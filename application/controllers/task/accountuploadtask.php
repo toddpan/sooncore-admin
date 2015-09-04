@@ -28,14 +28,14 @@ class AccountUploadTask extends  Task_Controller{
 	 */
 	public function scan() {
 		
-		log_message('info', 'Account upload thread start...');
+		log_message('info', 'Account uploaed thread start...');
 		
 		while(true){
 			try{
 				//从数据库里获取一条数据
 				$task = $this->upload_task->getTask();
 				if(!$task) {
-					//log_message('debug', 'Not found upload task to run. Let me have a rest');
+					log_message('debug', 'Not found upload task to run. Let me have a rest');
 					sleep(THREAD_SLEEP_TIME);
 					continue;
 				}

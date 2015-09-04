@@ -4,7 +4,7 @@
     <base href="{$tag_base_url}"/>
     <base target="_blank" />
     <meta charset="utf-8">
-    <title>免费试用蜜蜂</title>
+    <title>免费试用云企</title>
     <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -19,7 +19,7 @@
   </div>
 
   <div class="main">
-    <div class="breadcrumb">免费试用蜜蜂</div>
+    <div class="breadcrumb">免费试用云企</div>
     <h2 style="margin-top: 50px;color:red;">{$error_message}</h2>
   </div>
   <div class="footer">
