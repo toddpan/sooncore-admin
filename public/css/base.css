@@ -1,0 +1,197 @@
+.ele-hidden{
+	display: none;
+}
+
+.message-info{
+	color:#ec6764;
+}
+
+.area-title{
+	font-size: 16px;
+	color: #4f4f4f;
+	line-height: 20px;
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+.required{
+	border: 1px solid #F00 !important;
+}
+
+.top-space{
+	margin-top: 10px;
+}
+
+.left-space{
+	margin-left: 10px;
+}
+
+.right-space{
+	margin-right: 10px;
+}
+
+.bottom-space{
+	margin-bottom: 10px;
+}
+
+.top-mini-space{
+	margin-top: 5px;
+}
+
+.bottom-mini-space{
+	margin-bottom: 5px;
+}
+
+.left-mini-space{
+	margin-left: 5px;
+}
+
+
+.select-list {
+	margin: 0;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 9999;
+	border: 1px solid #aaa;
+  	background-color: #fff;
+}
+
+.select-list ul, .select-list li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.select-list li, .select-list a {
+	line-height: 26px;
+	height: 26px;
+}
+
+.select-list a {
+	margin: 0;  
+	padding: 0 5px;
+	display: block;
+	background-color: #fff;
+	text-decoration: none;
+	font-size: 14px;
+	color: #4f4f4f !important;
+}
+
+.select-list .hover-item {
+	background-color: #eae1a0;
+}
+
+.select-list .selected-item {
+	color: #3ab8ba !important;
+	background-color: #f0f5ff;
+}
+
+.area-container{
+	background: #eff5f6;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+}
+
+.title{
+	color: #2e444a;
+	font-size: 14px;
+	height: 26px;
+}
+
+.normal-text{
+	height: 18px;
+  	padding: 4px;
+  	line-height: 18px;
+  	font-size: 14px;
+  	color: #4f4f4f;
+  	border: 1px solid #b2bdcd;
+}
+
+.spinner-text{
+	width: 25px;
+	height: 10px;
+  	line-height: 10px;
+  	padding: 4px;
+  	font-size: 10px;
+  	color: #4f4f4f;
+  	border: 1px solid #b2bdcd;
+}
+
+.watermark{
+	position: absolute;
+  	padding-left: 5px;
+  	color: #c4c5c6;
+  	height: 30px;
+  	line-height: 30px;
+  	vertical-align: middle;
+  	z-index: 9999;
+}
+
+
+#tagManager .tag-row{
+	border-bottom: 1px solid #e5e5e5;
+	line-height: 40px;
+	height: 40px;
+	vertical-align: middle;
+	padding: 0 5px;
+	background-color: #fff;
+}
+
+#tagManager .tag-row .tag-name{
+	font-size: 14px;
+	color: #4f4f4f;
+	display: inline-block;
+  	position: relative;
+  	height: 26px;
+}
+
+#tagManager .dept-level{
+	width:200px;
+	padding-left:3px;
+	vertical-align:middle;
+	margin-left:100px;
+	line-height: 26px;
+	height: 26px;
+	*margin-top: 7px;
+}
+
+#tagManager .tag-setting{
+	margin-top: -15px;
+	margin-left: 130px;
+	position: relative;
+}
+
+#tagManager .tag-client, #tagManager .tag-actions{
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+#tagManager .tag-client{
+	width: 530px;
+}
+
+#tagManager .btn_addTag{
+	height: 40px;
+	line-height: 40px;
+	background: url(../images/icon.png) 0 -140px no-repeat;
+}
+
+#tagManager .btnBlue, #tagManager .btnGray{
+	vertical-align: middle;
+	*vertical-align: text-bottom;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

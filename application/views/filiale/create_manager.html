@@ -1,0 +1,139 @@
+
+<div class="pop">
+<title>创建管理员</title>
+	<div class="popTitle">创建管理员<a  class="close"></a></div>
+	<div class="Popbox">
+    <div class="PopMain">
+  <div class="shenpiTitle">设置系统管理员：</div>
+  <table class="buildNewcompany2">
+    	<tr>
+        	<td class="left" width="18%">姓氏：</td>
+            <td><input type="text" class="textI w183" value="请输入姓氏" /></td>
+            <td class="left">名字：</td>
+            <td><input type="text" class="textI w183" value="请输入名称"  /></td>
+        </tr>
+        <tr>
+        	<td class="left">显示名称：</td>
+            <td colspan="3"><input type="text" class="textI w183" /> <span class="hui">如果显示名称不是姓氏+名字的组合，请重新填写</span></td>
+        </tr>
+        <tr>
+        	<td class="left">手机号：</td>
+            <td colspan="3"><div class="select w69" id="countrycode"><a >国码</a><ul class="w69"><li>0101</li><li>0945</li><li>094</li></ul></div><input type="text" class="textI w183 marl10" /></td>
+        </tr>
+        <tr>
+        	<td class="left">固定电话：</td>
+            <td colspan="3"><div class="select w69" id="countrycode1"><a >国码</a><ul class="w69"><li>0101</li><li>0945</li><li>094</li></ul></div><input type="text" class="textI w46" value="区号" /><input type="text" class="textI w95" value="电话号码" /><input type="text" class="textI w46" value="分机号" /></td>
+        </tr>
+        
+        <tr>
+        	<td class="left">电子邮箱：</td>
+            <td colspan="3"><input type="text" class="textI w183" /></td>
+        </tr>
+        <tr>
+        	<td class="left">部门名称：</td>
+            <td><input type="text" class="textI w183" value="请输入姓氏" /></td>
+            <td class="left">职位名称：</td>
+            <td><input type="text" class="textI w183" value="请输入名称"  /></td>
+        </tr>
+        
+        <tr>
+        	<td class="left">指定管理员帐号：</td>
+            <td colspan="3"><input type="text" class="textI w183" /> @ <input type="text" class="textI w183" /> .quanshi.com</td>
+        </tr>
+        <tr>
+        	<td class="left">&nbsp;  </td>
+            <td colspan="3" class="hui">管理员初始化可使用这个使用者帐号登录，之后同步或导入公司员工信息后可改用公司定义的帐号</td>
+        </tr>
+    </table>
+  </div>
+</div>
+	<div class="popFooter"><a >取消</a><a href="filiale_list.html">创建管理员</a></div>
+</div>
+<script type="text/javascript" src="js/jquery1.7.2.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.close').click(function()
+	{
+		//alert(2222)
+		hideDialog();
+	})
+	$(".popFooter a:eq(0)").click(function()
+	{
+		hideDialog();
+	})
+	$(".popFooter a:eq(1)").click(function()
+	{
+		//alert(11)
+		
+		//hideDialog();
+	})
+	$(".select a").click(function(event){
+		$(".select ul").hide();
+		$(this).next("ul").show();
+		event.stopPropagation();
+	});
+	$(".select ul li").click(function(){
+		$(this).parent("ul").prev("a").html($(this).text());
+		$(this).parent("ul").hide();
+	});
+	
+	
+	
+	$(".kuaijie input").click(function(){
+		$(".kuaijie input").removeClass("checked");
+		$(this).addClass("checked");
+	});
+	$(document).click(function(){
+		$(".select ul").hide();
+	})
+	$(".select ul li").click(function(){
+		$(".select a").html($(this).text());
+		$(".select a").css("color","#000");
+		$('.select').removeClass("selected");
+	});
+	$(document).click(function(e)
+	{
+		//alert(111)
+		var t=$(e.target);
+		if(!t.hasClass("select"))
+		{
+			$('.select').find("ul").removeClass("selected").css("display","none");	
+		}
+	})
+	$('.select').toggle(function()
+	{
+		//alert(222)
+		if($(this).find("ul").hasClass("selected"))
+		{
+			//alert(1)
+			$(this).find("ul").removeClass("selected").css("display","none");
+		}
+		else
+		{
+			//alert(2)
+			$(this).find("ul").addClass("selected").css("display","block");
+		}
+	},function()
+	{
+		if($(this).find("ul").hasClass("selected"))
+		{
+			//alert(3)
+			$(this).find("ul").removeClass("selected").css("display","none");
+		}
+		else
+		{
+			//alert(4)
+			$(this).find("ul").addClass("selected").css("display","block");
+		}
+	})
+	$("ul li").mouseenter(function()
+	{
+		$(this).addClass("hover");
+	}).mouseleave(function()
+	{
+		$(this).removeClass("hover");
+	})	
+		
+})
+</script>
+

@@ -1,0 +1,175 @@
+
+<div class="setManagemain">
+  <div class="setManagebox">
+      <div class="setManTitle">公司信息</div>
+      <div class="setManTable">
+      <table>
+	  	 <tr>
+        	<td class="left">上级企业：</td>
+            <td colspan="3"><input type="text" class="textI" /></td>
+        </tr>
+        <tr>
+			<td class="left">公司名称：</td>
+			<td colspan="3" >
+				<span class="infoText" id="depart_span" readonly="readonly"></span>
+				<div class="select-box hide">
+					<input style="z-index:2" cl_id="part1" type="text" class="textI" value="" onClick="showMenu(this);" id="departmentSel2" placeholder="请选择公司" id="company"/>
+					<a class="icon" cl_id="part1" onClick="showMenu(this); return false;"></a>
+					<div class="selectOptionBox"   target='0'  style="display: none;z-index:9;width: 489px;">
+						<ul class="ztree" id="ztree">
+						</ul>
+					</div>
+				</div></td>
+        </tr>
+      	<tr>
+        	<td class="left">公司所在国家：</td>
+            <td><div class="select" id="select_country"><a >请选择国家名称</a><ul style="display:none" class=""><li>中国</li><li>美国</li><li>澳大利亚</li><li>新西兰</li></ul></div></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+        	<td class="left">公司网址：</td>
+            <td colspan="3"><input type="text" class="textI" /> <span class="hui">例如：www.abc.com.cn</span></td>
+        </tr>
+		<tr>
+        	<td class="left">全时站点：</td>
+            <td colspan="3"><input type="text" class="textI" /> <span class="hui">例如：abc.quanshi.com</span></td>
+        </tr>
+      </table>
+      </div>
+      <div class="setManTitle">公司管理方式</div>
+      <div class="setManTable">
+      <table>
+        <tr>
+        	<td class="left" width="130">公司形态：</td>
+            <td colspan="3"><label class="radioBox"><input type="button">子公司</label></td>
+        </tr>
+		<tr>
+        	<td class="left" width="130"></td>
+            <td colspan="3"><label class="radioBox"><input type="button">子集团</label></td>
+        </tr>
+		<tr>
+        	<td class="left" width="130" style="left:100px"></td>
+            <td colspan="3">
+			 <div class="setManagePop"><span class="topArrow"></span>
+				<dl>
+                	<dt>管理方式：</dt>
+                     <dd id="ddLast"><label class="radioBox"><input type="button" />集中管理</label><label class="radioBox"><input type="button" />分散式管理</label></dd>
+                </dl>				
+               
+             </div> 
+			</td>
+        </tr>
+		<tr>
+        	<td class="left" width="130" style="left:100px">员工创建方式：</td>
+            <td colspan="3">				
+            	
+                	
+                    <dd id="ddFirst"><label class="radioBox"><input type="button" />LDAP同步</label><label class="radioBox"><input type="button" />批量导入</label></dd>
+               
+				
+			</td>
+        </tr>
+      </table>
+      </div>
+  </div>
+</div>
+<div class="footer">创想空间商务通信服务有限公司<span>/G-Net Integrated Services Co., Ltd.</span> 客服热线: <span>400-810-1919 Email: service@quanshi.com</span></div>
+<script type="text/javascript">
+$(function(){
+	$('.save').click(function()
+	{
+		showDialog("create_manager.html");
+	})
+	$(".topMenuMain li").hover(function(){
+		$(this).addClass("current");
+		},
+	function(){
+		$(this).removeClass("current");
+		});
+		
+	$("#ddFirst input").click(function(){
+		$("#ddFirst input").removeClass("checked");
+		$(this).addClass("checked");
+	});
+	
+	$("#ddLast input").click(function(){
+		if(!$(this).parent().hasClass("disabled"))
+			{
+				$("#ddLast input").removeClass("checked");
+				$(this).addClass("checked");
+			}
+	});
+	
+	$(".radioBox input").click(function(){
+		
+			$(".radioBox input").removeClass("checked");
+			$(this).addClass("checked");
+		//alert($(this).parent().text())
+		if($(this).parent().text()=="单一企业")
+		{
+			//alert(1)
+			$('.setManagePop dl:eq(1) label:eq(1)').addClass("disabled");
+			$('.setManagePop dl:eq(1) label:eq(0) input').addClass("checked");
+		}
+		else
+		{
+			//alert(2)
+			$('.setManagePop dl:eq(1) label:eq(0) input').removeClass("checked");
+			$('.setManagePop dl:eq(1) label:eq(1)').removeClass("disabled");
+		}
+	});
+	
+	/*$(".select a").click(function(){
+		$(".select ul").show();
+	});*/
+	$(".select ul li").click(function(){
+		$(".select a").html($(this).text());
+		$(".select a").css("color","#000");
+		$('.select').removeClass("selected");
+	});
+	$(document).click(function(e)
+	{
+		//alert(111)
+		var t=$(e.target);
+		if(!t.hasClass("select"))
+		{
+			$('.select').find("ul").removeClass("selected").css("display","none");	
+		}
+	})
+	$('.select').toggle(function()
+	{
+		//alert(222)
+		if($(this).find("ul").hasClass("selected"))
+		{
+			//alert(1)
+			$(this).find("ul").removeClass("selected").css("display","none");
+		}
+		else
+		{
+			//alert(2)
+			$(this).find("ul").addClass("selected").css("display","block");
+		}
+	},function()
+	{
+		if($(this).find("ul").hasClass("selected"))
+		{
+			//alert(3)
+			$(this).find("ul").removeClass("selected").css("display","none");
+		}
+		else
+		{
+			//alert(4)
+			$(this).find("ul").addClass("selected").css("display","block");
+		}
+	})
+	$("ul li").mouseenter(function()
+	{
+		$(this).addClass("hover");
+	}).mouseleave(function()
+	{
+		$(this).removeClass("hover");
+	})	
+})
+</script>
+
