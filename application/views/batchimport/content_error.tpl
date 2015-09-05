@@ -26,7 +26,7 @@
 				</span> 
 			</li>
 		</ul>
-		</div>
+		<b class="bgTL"></b><b class="bgTR"></b><b class="bgBL"></b><b class="bgBR"></b> </div>
 	<a onclick="loadCont('{if $operate_type == 0 }{site_url('batchimport/index')}{else}{site_url('staff/batchModifyStaff')}{/if}');" class="linkGoback" style="margin-left:0">&lt;&lt;&nbsp;返回重新导入&nbsp;</a> 
 	<a onclick="loadCont('{site_url('organize/OrgList')}');" class="linkGoback">查看已导入的组织员工&nbsp;&gt;&gt;</a> 
 </div>

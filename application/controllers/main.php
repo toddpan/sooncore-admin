@@ -20,14 +20,6 @@ class Main extends Admin_Controller{
 	 */
 	public function index(){
 		log_message('info', 'Into method index');
-		
-		$this->setFunctions();
-		
-		// 获得公司简称
-		$this->load->model('uc_site_model');
-		$cor_info = $this->uc_site_model->getCorNameBySiteId($this->p_site_id);
-		$cor_name = isset($cor_info['corName']) ? $cor_info['corName'] : '全时';
-		
 		// 获得管理员信息
 		$this->load->library('StaffLib', '', 'StaffLib');
 		$re_user_arr = $this->StaffLib->get_user_by_id($this->p_user_id);
@@ -61,48 +53,11 @@ class Main extends Admin_Controller{
 		$message_sum =  $this->uc_message_model->countMessage($message_where_arr);
 		$msg_sum = $task_sum + $message_sum + $notice_sum;
 		
-		$data['corName'] 	= $cor_name;
-		$data['msg_sum'] 	 = $msg_sum;
+		$data['msg_sum']  = $msg_sum;
 		$data['displayName'] = $user_name;
 		$this->load->view('index.php', $data);
 	}
 
-	private function setFunctions(){
-		$roleFunctions = $this->setFunctionsByRole();
-		$customFunctions = $this->setFunctionsBySite();
-	
-		$functions = array_merge($customFunctions, $roleFunctions);
-	
-		foreach ($customFunctions as $key=>$value){
-			$functions[$key] = $functions[$key] && $value;
-		}
-	
-		$this->functions = $functions;
-	}
-	
-	private function setFunctionsBySite(){
-		$functions = array();
-		 
-		$functions['ChangePassword'] = $this->siteConfig['siteType'] == 0;
-	
-		return $functions;
-	}
-	
-	private function setFunctionsByRole(){
-		$functions = array();
-	
-		$functions['ManagerManage'] = $this->p_role_id == SYSTEM_MANAGER;
-		$functions['OrgManage'] = $this->p_role_id != ECOLOGY_MANAGER;
-		$functions['EcologyCompany'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == ECOLOGY_MANAGER || $this->p_role_id == CHANNEL_MANAGER;
-		$functions['SecurityManage'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		$functions['SystemSetting'] = $this->p_role_id == SYSTEM_MANAGER;
-	
-		return $functions;
-	}
-	
-	
-	
-	
 	/**
 	 * @abstract 将消息和通知列表显示到首页页面上
 	 */
@@ -143,44 +98,33 @@ class Main extends Admin_Controller{
 	/**
 	 * @abstract 统计账号开通情况
 	 */
-	public function countUser() {	
+	public function countUser() {
 		// 载入用户模型
 		$this->load->model('uc_user_model');
 		
-		// 统计开通和未开通的账号
-		$is_open_users = 0;
-		$not_open_users = 0;
-		log_message('info', 'start kaitong.');
-		$res_open_arr = $this->uc_user_model->count_open_user();
-		log_message('info', 'keep kaitong.');
-		foreach ($res_open_arr as $open_and_not_open_user_arr){
-			if($open_and_not_open_user_arr['st'] == UC_USER_STATUS_ENABLE){
-				$is_open_users += $open_and_not_open_user_arr['num']; // 已开通
-			}
-			if($open_and_not_open_user_arr['st'] == UC_USER_STATUS_UNUSED){
-				$not_open_users += $open_and_not_open_user_arr['num']; // 未开通
-			}
-		}
-		log_message('info', 'end kaitong.');
+		// 站点Id
+		$site_id = $this->p_site_id;
 		
-		// 统计启用和未启用的账号
-		$is_used_users = 0;
-		$not_used_user = 0;
-		log_message('info', 'start qiyong.');
-		$res_user_arr = $this->uc_user_model->count_use_user();
-		$is_used_users += isset($res_user_arr['logined_user']) ? $res_user_arr['logined_user'] : 0;
-		$not_used_user += (isset($res_user_arr['all_user']) ? $res_user_arr['all_user'] : 0) - $is_used_users;
+		// 统计已开通账号的个数
+		$where_arr = array(
+			'status' => UC_USER_STATUS_ENABLE,// 已开通
+			'siteId' => $site_id
+		);
+		$is_open_users = $this->uc_user_model->countUser($where_arr);
 		
-		log_message('info', 'keep qiyong.');
-// 		foreach ($res_user_arr as $use_and_not_user_arr){
-// 			if($use_and_not_user_arr['st'] == 0){
-// 				$not_used_user += $use_and_not_user_arr['num'];
-// 			}
-// 			if($use_and_not_user_arr['st'] == 1){
-// 				$is_used_users += $use_and_not_user_arr['num'];
-// 			}
-// 		}
-		log_message('info', 'end qiyong.');
+		// 统计未开通账号的个数
+		unset($where_arr['status']);
+		$in_where_arr = array(
+			UC_USER_STATUS_UNUSED,// 未开通
+			UC_USER_STATUS_DISABLE // 已关闭
+		);
+		$not_open_users = $this->uc_user_model->countUser($where_arr, $in_where_arr);
+		
+		// 统计已启用账号的个数
+		$is_used_users = $this->uc_user_model->count_is_used_user();
+		
+		// 统计未启用账号的个数
+		$not_used_user = $this->uc_user_model->count_not_used_user();
 		
 		// 组装数据
 		$data = array(

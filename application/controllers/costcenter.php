@@ -595,13 +595,12 @@ class CostCenter extends Admin_Controller {
 		}
 	
 		//检查是否重名
-		if(!$this->cc->isUniqueName($p_group_id,$group_name,1)){
+		if(!$this->cc->isUniqueName($p_group_id,$new_title,1)){
 			echo response_json(30000,lang('error_group_already_exist'));return;
 		}
 		
 		//boss标签添加，同步
 		$this->load->library('BossLib', '', 'boss');
-		//echo $this->p_customer_code;
 		$tag_id = $this->boss->createTag($this->p_customer_code, $group_name, $p_group_id);
 		if(!$tag_id){
 			echo response_json(40000,lang('error_boss_sync'));return;

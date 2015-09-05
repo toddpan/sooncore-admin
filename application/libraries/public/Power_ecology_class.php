@@ -42,7 +42,7 @@ class Power_ecology_class {
       
          array(
             'enable' => 1,//是否可用0不可用1可用
-            'name' => '可使用全时蜜蜂 IM 互传文档',//说明 passDoc=>1：不允许2：允许  UC_passDoc
+            'name' => '可使用全时云企 IM 互传文档',//说明 passDoc=>1：不允许2：允许  UC_passDoc
             'boss_name' => 'UC',//boss权限所属名称
             'boss_property' => 'passDoc',//权限在BOSS中的属性名称[注意大小写]
             'value_arr' => array(

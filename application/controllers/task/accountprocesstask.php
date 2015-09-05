@@ -30,7 +30,7 @@ class AccountProcessTask extends  Task_Controller{
 				//从数据库里获取一件任务，如果没有任务，则休眠，然后继续获取
 				$task = $this->process_task->getTask();
 				if(!$task) {
-					//log_message('debug', 'Not found process task to run. Let me have a rest');
+					log_message('debug', 'Not found process task to run. Let me have a rest');
 					sleep(THREAD_SLEEP_TIME);
 					continue;
 				}

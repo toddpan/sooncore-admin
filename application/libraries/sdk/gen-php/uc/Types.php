@@ -36,14 +36,12 @@ final class PresenceType {
   const Away = 3;
   const Meeting = 4;
   const Offline = 5;
-  const Call = 6;
   static public $__names = array(
     1 => 'Online',
     2 => 'Busy',
     3 => 'Away',
     4 => 'Meeting',
     5 => 'Offline',
-    6 => 'Call',
   );
 }
 
@@ -80,21 +78,17 @@ final class AckMessageID {
   const AckSent = 1;
   const AckReceived = 2;
   const AckRead = 3;
-  const AckPlay = 4;
   static public $__names = array(
     1 => 'AckSent',
     2 => 'AckReceived',
     3 => 'AckRead',
-    4 => 'AckPlay',
   );
 }
 
 final class AckMessageType {
   const DefaultType = 1;
-  const BatchAckType = 2;
   static public $__names = array(
     1 => 'DefaultType',
-    2 => 'BatchAckType',
   );
 }
 
@@ -143,21 +137,6 @@ final class ContentType {
   );
 }
 
-final class PriType {
-  const thrift_type = 1;
-  const mime_type = 2;
-  const audio_type = 4;
-  const control_type = 8;
-  const group_type = 16;
-  static public $__names = array(
-    1 => 'thrift_type',
-    2 => 'mime_type',
-    4 => 'audio_type',
-    8 => 'control_type',
-    16 => 'group_type',
-  );
-}
-
 final class ChatMessageType {
   const NormalChat = 1;
   const DiscussionChat = 2;
@@ -172,21 +151,9 @@ final class ChatMessageType {
 final class ChatMessageId {
   const TextContent = 1;
   const MediaContent = 2;
-  const DocumentSend = 3;
-  const DocumentForward = 4;
-  const DocumentDel = 5;
-  const CodeCreate = 6;
-  const CodeForward = 7;
-  const CodeDel = 8;
   static public $__names = array(
     1 => 'TextContent',
     2 => 'MediaContent',
-    3 => 'DocumentSend',
-    4 => 'DocumentForward',
-    5 => 'DocumentDel',
-    6 => 'CodeCreate',
-    7 => 'CodeForward',
-    8 => 'CodeDel',
   );
 }
 
@@ -197,21 +164,6 @@ final class GroupMessageId {
   const DisMemberDel = 4;
   const DisNameUpdate = 5;
   const DiscussionCreate = 6;
-  const DiscussionTop = 7;
-  const SummaryCreate = 8;
-  const DocumentForward = 9;
-  const AlertRuleUpdate = 10;
-  const DiscussionClose = 11;
-  const MsgNotifyUpdate = 12;
-  const DisMemberKick = 13;
-  const DocumentDel = 14;
-  const CodeCreate = 15;
-  const CodeForward = 16;
-  const CodeDel = 17;
-  const CommentCreate = 18;
-  const CommentDel = 19;
-  const DisAvatarUpdate = 20;
-  const DisStateUpdate = 21;
   static public $__names = array(
     1 => 'TextContent',
     2 => 'MediaContent',
@@ -219,64 +171,6 @@ final class GroupMessageId {
     4 => 'DisMemberDel',
     5 => 'DisNameUpdate',
     6 => 'DiscussionCreate',
-    7 => 'DiscussionTop',
-    8 => 'SummaryCreate',
-    9 => 'DocumentForward',
-    10 => 'AlertRuleUpdate',
-    11 => 'DiscussionClose',
-    12 => 'MsgNotifyUpdate',
-    13 => 'DisMemberKick',
-    14 => 'DocumentDel',
-    15 => 'CodeCreate',
-    16 => 'CodeForward',
-    17 => 'CodeDel',
-    18 => 'CommentCreate',
-    19 => 'CommentDel',
-    20 => 'DisAvatarUpdate',
-    21 => 'DisStateUpdate',
-  );
-}
-
-final class ClusterMessageId {
-  const TextContent = 1;
-  const MediaContent = 2;
-  const DisMemberAdd = 3;
-  const DisMemberDel = 4;
-  const DisNameUpdate = 5;
-  const DiscussionCreate = 6;
-  const DiscussionTop = 7;
-  const SummaryCreate = 8;
-  const DocumentForward = 9;
-  const MsgNotifyUpdate = 12;
-  const DisMemberKick = 13;
-  const DocumentDel = 14;
-  const CodeCreate = 15;
-  const CodeForward = 16;
-  const CodeDel = 17;
-  const CommentCreate = 18;
-  const CommentDel = 19;
-  const DisAvatarUpdate = 20;
-  const DisStateUpdate = 21;
-  static public $__names = array(
-    1 => 'TextContent',
-    2 => 'MediaContent',
-    3 => 'DisMemberAdd',
-    4 => 'DisMemberDel',
-    5 => 'DisNameUpdate',
-    6 => 'DiscussionCreate',
-    7 => 'DiscussionTop',
-    8 => 'SummaryCreate',
-    9 => 'DocumentForward',
-    12 => 'MsgNotifyUpdate',
-    13 => 'DisMemberKick',
-    14 => 'DocumentDel',
-    15 => 'CodeCreate',
-    16 => 'CodeForward',
-    17 => 'CodeDel',
-    18 => 'CommentCreate',
-    19 => 'CommentDel',
-    20 => 'DisAvatarUpdate',
-    21 => 'DisStateUpdate',
   );
 }
 
@@ -284,12 +178,10 @@ final class ChatMediaType {
   const MediaTypeAudio = 1;
   const MediaTypeImage = 2;
   const MediaTypeVideo = 3;
-  const MediaTypeEmotion = 4;
   static public $__names = array(
     1 => 'MediaTypeAudio',
     2 => 'MediaTypeImage',
     3 => 'MediaTypeVideo',
-    4 => 'MediaTypeEmotion',
   );
 }
 
@@ -302,27 +194,6 @@ final class TextContentType {
   );
 }
 
-final class AlertRuleType {
-  const NoDay = 0;
-  const Monday = 1;
-  const Tuesday = 2;
-  const Wednesday = 4;
-  const Thursday = 8;
-  const Friday = 16;
-  const Saturday = 32;
-  const Sunday = 64;
-  static public $__names = array(
-    0 => 'NoDay',
-    1 => 'Monday',
-    2 => 'Tuesday',
-    4 => 'Wednesday',
-    8 => 'Thursday',
-    16 => 'Friday',
-    32 => 'Saturday',
-    64 => 'Sunday',
-  );
-}
-
 final class SystemProtoMessageType {
   const SystemWelcome = 1;
   const ClientUpdate = 2;
@@ -330,8 +201,6 @@ final class SystemProtoMessageType {
   const PwdRuleUpdate = 4;
   const clientInstallGuide = 5;
   const PasswordModify = 6;
-  const SensitiveWordDelete = 7;
-  const GroupRemind = 8;
   static public $__names = array(
     1 => 'SystemWelcome',
     2 => 'ClientUpdate',
@@ -339,8 +208,6 @@ final class SystemProtoMessageType {
     4 => 'PwdRuleUpdate',
     5 => 'clientInstallGuide',
     6 => 'PasswordModify',
-    7 => 'SensitiveWordDelete',
-    8 => 'GroupRemind',
   );
 }
 
@@ -363,13 +230,9 @@ final class ClientUpdateProtoMessageId {
 }
 
 final class CompleteInfoMessageId {
-  const tagAdd = 1;
-  const tagUpdate = 2;
-  const tagDel = 3;
+  const DefaultId = 1;
   static public $__names = array(
-    1 => 'tagAdd',
-    2 => 'tagUpdate',
-    3 => 'tagDel',
+    1 => 'DefaultId',
   );
 }
 
@@ -488,9 +351,6 @@ final class ConfMessageType {
   const ConfAlertMsg = 6;
   const ConfShareMsg = 7;
   const DiscussionInstantConfInviteMsg = 8;
-  const ConfChatMsg = 9;
-  const ConfSummaryMsg = 10;
-  const ConfStateMsg = 11;
   static public $__names = array(
     1 => 'NormalInstantConfInviteMsg',
     2 => 'ConfInviteMsg',
@@ -500,9 +360,6 @@ final class ConfMessageType {
     6 => 'ConfAlertMsg',
     7 => 'ConfShareMsg',
     8 => 'DiscussionInstantConfInviteMsg',
-    9 => 'ConfChatMsg',
-    10 => 'ConfSummaryMsg',
-    11 => 'ConfStateMsg',
   );
 }
 
@@ -576,44 +433,6 @@ final class RoleType {
   );
 }
 
-final class ConfChatMessageId {
-  const TextType = 1;
-  const MediaType = 2;
-  static public $__names = array(
-    1 => 'TextType',
-    2 => 'MediaType',
-  );
-}
-
-final class ConfSummaryMessageId {
-  const SummaryCreate = 1;
-  const SummaryUpdate = 2;
-  const SummaryForward = 3;
-  static public $__names = array(
-    1 => 'SummaryCreate',
-    2 => 'SummaryUpdate',
-    3 => 'SummaryForward',
-  );
-}
-
-final class ConfSummaryState {
-  const StateNew = 1;
-  const StatePublish = 2;
-  const StateDelete = 3;
-  static public $__names = array(
-    1 => 'StateNew',
-    2 => 'StatePublish',
-    3 => 'StateDelete',
-  );
-}
-
-final class ConfStateMessageId {
-  const callState = 1;
-  static public $__names = array(
-    1 => 'callState',
-  );
-}
-
 final class CalendarMessageType {
   const CalendarShareType = 7;
   static public $__names = array(
@@ -644,14 +463,10 @@ final class AudioChatMessageType {
   const DefaultType = 1;
   const AudioCallRecord = 2;
   const AudioUnfamiliarCallRecord = 3;
-  const DiscussionType = 4;
-  const GroupType = 5;
   static public $__names = array(
     1 => 'DefaultType',
     2 => 'AudioCallRecord',
     3 => 'AudioUnfamiliarCallRecord',
-    4 => 'DiscussionType',
-    5 => 'GroupType',
   );
 }
 
@@ -660,19 +475,11 @@ final class AudioChatMessageId {
   const AudioReceive = 2;
   const AudioReject = 3;
   const AudioStop = 4;
-  const AudioCancelCall = 5;
-  const AudioBlockCall = 6;
-  const AudioRejectCall = 7;
-  const AudioRecentCall = 8;
   static public $__names = array(
     1 => 'AudioInvite',
     2 => 'AudioReceive',
     3 => 'AudioReject',
     4 => 'AudioStop',
-    5 => 'AudioCancelCall',
-    6 => 'AudioBlockCall',
-    7 => 'AudioRejectCall',
-    8 => 'AudioRecentCall',
   );
 }
 
@@ -712,70 +519,6 @@ final class ContacterRelationUpdateMessageId {
   );
 }
 
-final class TimeNewsMessageType {
-  const DefaultType = 1;
-  static public $__names = array(
-    1 => 'DefaultType',
-  );
-}
-
-final class TimeNewsMessageId {
-  const WB_ATTENTION = 1;
-  const WB_TIMENEWS_PUBLISH = 2;
-  const WB_TIMENEWS_COMMENT = 3;
-  const WB_TIMENEWS_FORWARD = 4;
-  const WB_TIMENEWS_PRAISE = 5;
-  static public $__names = array(
-    1 => 'WB_ATTENTION',
-    2 => 'WB_TIMENEWS_PUBLISH',
-    3 => 'WB_TIMENEWS_COMMENT',
-    4 => 'WB_TIMENEWS_FORWARD',
-    5 => 'WB_TIMENEWS_PRAISE',
-  );
-}
-
-final class CaseMessageType {
-  const DefaultType = 1;
-  static public $__names = array(
-    1 => 'DefaultType',
-  );
-}
-
-final class CaseMessageId {
-  const WB_CASE_PUBLISH = 1;
-  const WB_CASE_COMMENT = 2;
-  const WB_CASE_FORWARD = 3;
-  const WB_CASE_PRAISE = 4;
-  static public $__names = array(
-    1 => 'WB_CASE_PUBLISH',
-    2 => 'WB_CASE_COMMENT',
-    3 => 'WB_CASE_FORWARD',
-    4 => 'WB_CASE_PRAISE',
-  );
-}
-
-final class PollMessageType {
-  const DefaultType = 1;
-  static public $__names = array(
-    1 => 'DefaultType',
-  );
-}
-
-final class PollMessageId {
-  const WB_POLL_PUBLISH = 1;
-  const WB_POLL_COMMENT = 2;
-  const WB_POLL_FORWARD = 3;
-  const WB_POLL_RESPONSE = 4;
-  const WB_POLL_PRAISE = 5;
-  static public $__names = array(
-    1 => 'WB_POLL_PUBLISH',
-    2 => 'WB_POLL_COMMENT',
-    3 => 'WB_POLL_FORWARD',
-    4 => 'WB_POLL_RESPONSE',
-    5 => 'WB_POLL_PRAISE',
-  );
-}
-
 final class AppId {
   const AppChat = 1;
   const AppHeartbeat = 2;
@@ -790,9 +533,6 @@ final class AppId {
   const AppAudio = 11;
   const AppAddressBook = 12;
   const AppSleep = 13;
-  const AppTimeNews = 14;
-  const AppCase = 15;
-  const AppPoll = 16;
   static public $__names = array(
     1 => 'AppChat',
     2 => 'AppHeartbeat',
@@ -807,9 +547,6 @@ final class AppId {
     11 => 'AppAudio',
     12 => 'AppAddressBook',
     13 => 'AppSleep',
-    14 => 'AppTimeNews',
-    15 => 'AppCase',
-    16 => 'AppPoll',
   );
 }
 
@@ -1333,103 +1070,10 @@ class AckRead {
 
 }
 
-class AckPlay {
-  static $_TSPEC;
-
-  public $id = null;
-  public $seq = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'id',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'seq',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['id'])) {
-        $this->id = $vals['id'];
-      }
-      if (isset($vals['seq'])) {
-        $this->seq = $vals['seq'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'AckPlay';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->seq);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('AckPlay');
-    if ($this->id !== null) {
-      $xfer += $output->writeFieldBegin('id', TType::I32, 1);
-      $xfer += $output->writeI32($this->id);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->seq !== null) {
-      $xfer += $output->writeFieldBegin('seq', TType::I64, 2);
-      $xfer += $output->writeI64($this->seq);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class SleepSet {
   static $_TSPEC;
 
   public $mode = null;
-  public $unreadCount = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1438,18 +1082,11 @@ class SleepSet {
           'var' => 'mode',
           'type' => TType::I32,
           ),
-        2 => array(
-          'var' => 'unreadCount',
-          'type' => TType::I32,
-          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['mode'])) {
         $this->mode = $vals['mode'];
-      }
-      if (isset($vals['unreadCount'])) {
-        $this->unreadCount = $vals['unreadCount'];
       }
     }
   }
@@ -1480,13 +1117,6 @@ class SleepSet {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->unreadCount);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1503,11 +1133,6 @@ class SleepSet {
     if ($this->mode !== null) {
       $xfer += $output->writeFieldBegin('mode', TType::I32, 1);
       $xfer += $output->writeI32($this->mode);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->unreadCount !== null) {
-      $xfer += $output->writeFieldBegin('unreadCount', TType::I32, 2);
-      $xfer += $output->writeI32($this->unreadCount);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1831,128 +1456,12 @@ class MediaContent {
 
 }
 
-class GroupMemberInfo {
-  static $_TSPEC;
-
-  public $memberId = null;
-  public $join_time = null;
-  public $join_state = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'memberId',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'join_time',
-          'type' => TType::I32,
-          ),
-        3 => array(
-          'var' => 'join_state',
-          'type' => TType::BYTE,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['memberId'])) {
-        $this->memberId = $vals['memberId'];
-      }
-      if (isset($vals['join_time'])) {
-        $this->join_time = $vals['join_time'];
-      }
-      if (isset($vals['join_state'])) {
-        $this->join_state = $vals['join_state'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'GroupMemberInfo';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->memberId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->join_time);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->join_state);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupMemberInfo');
-    if ($this->memberId !== null) {
-      $xfer += $output->writeFieldBegin('memberId', TType::I32, 1);
-      $xfer += $output->writeI32($this->memberId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->join_time !== null) {
-      $xfer += $output->writeFieldBegin('join_time', TType::I32, 2);
-      $xfer += $output->writeI32($this->join_time);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->join_state !== null) {
-      $xfer += $output->writeFieldBegin('join_state', TType::BYTE, 3);
-      $xfer += $output->writeByte($this->join_state);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class GroupMemberAddContent {
   static $_TSPEC;
 
   public $operatorid = null;
   public $groupid = null;
-  public $memberList = null;
-  public $avatar = null;
-  public $group_name = null;
-  public $name_pinyin = null;
-  public $name_flag = null;
+  public $memberIds = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1966,29 +1475,12 @@ class GroupMemberAddContent {
           'type' => TType::I32,
           ),
         3 => array(
-          'var' => 'memberList',
+          'var' => 'memberIds',
           'type' => TType::LST,
-          'etype' => TType::STRUCT,
+          'etype' => TType::I32,
           'elem' => array(
-            'type' => TType::STRUCT,
-            'class' => '\uc\GroupMemberInfo',
+            'type' => TType::I32,
             ),
-          ),
-        4 => array(
-          'var' => 'avatar',
-          'type' => TType::STRING,
-          ),
-        5 => array(
-          'var' => 'group_name',
-          'type' => TType::STRING,
-          ),
-        6 => array(
-          'var' => 'name_pinyin',
-          'type' => TType::STRING,
-          ),
-        7 => array(
-          'var' => 'name_flag',
-          'type' => TType::BYTE,
           ),
         );
     }
@@ -1999,20 +1491,8 @@ class GroupMemberAddContent {
       if (isset($vals['groupid'])) {
         $this->groupid = $vals['groupid'];
       }
-      if (isset($vals['memberList'])) {
-        $this->memberList = $vals['memberList'];
-      }
-      if (isset($vals['avatar'])) {
-        $this->avatar = $vals['avatar'];
-      }
-      if (isset($vals['group_name'])) {
-        $this->group_name = $vals['group_name'];
-      }
-      if (isset($vals['name_pinyin'])) {
-        $this->name_pinyin = $vals['name_pinyin'];
-      }
-      if (isset($vals['name_flag'])) {
-        $this->name_flag = $vals['name_flag'];
+      if (isset($vals['memberIds'])) {
+        $this->memberIds = $vals['memberIds'];
       }
     }
   }
@@ -2052,46 +1532,17 @@ class GroupMemberAddContent {
           break;
         case 3:
           if ($ftype == TType::LST) {
-            $this->memberList = array();
+            $this->memberIds = array();
             $_size0 = 0;
             $_etype3 = 0;
             $xfer += $input->readListBegin($_etype3, $_size0);
             for ($_i4 = 0; $_i4 < $_size0; ++$_i4)
             {
               $elem5 = null;
-              $elem5 = new \uc\GroupMemberInfo();
-              $xfer += $elem5->read($input);
-              $this->memberList []= $elem5;
+              $xfer += $input->readI32($elem5);
+              $this->memberIds []= $elem5;
             }
             $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->avatar);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->group_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->name_pinyin);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->name_flag);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -2119,41 +1570,21 @@ class GroupMemberAddContent {
       $xfer += $output->writeI32($this->groupid);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->memberList !== null) {
-      if (!is_array($this->memberList)) {
+    if ($this->memberIds !== null) {
+      if (!is_array($this->memberIds)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('memberList', TType::LST, 3);
+      $xfer += $output->writeFieldBegin('memberIds', TType::LST, 3);
       {
-        $output->writeListBegin(TType::STRUCT, count($this->memberList));
+        $output->writeListBegin(TType::I32, count($this->memberIds));
         {
-          foreach ($this->memberList as $iter6)
+          foreach ($this->memberIds as $iter6)
           {
-            $xfer += $iter6->write($output);
+            $xfer += $output->writeI32($iter6);
           }
         }
         $output->writeListEnd();
       }
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->avatar !== null) {
-      $xfer += $output->writeFieldBegin('avatar', TType::STRING, 4);
-      $xfer += $output->writeString($this->avatar);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->group_name !== null) {
-      $xfer += $output->writeFieldBegin('group_name', TType::STRING, 5);
-      $xfer += $output->writeString($this->group_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_pinyin !== null) {
-      $xfer += $output->writeFieldBegin('name_pinyin', TType::STRING, 6);
-      $xfer += $output->writeString($this->name_pinyin);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_flag !== null) {
-      $xfer += $output->writeFieldBegin('name_flag', TType::BYTE, 7);
-      $xfer += $output->writeByte($this->name_flag);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -2169,10 +1600,6 @@ class GroupMemberDelContent {
   public $operatorid = null;
   public $groupid = null;
   public $memberId = null;
-  public $avatar = null;
-  public $group_name = null;
-  public $name_pinyin = null;
-  public $name_flag = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -2189,22 +1616,6 @@ class GroupMemberDelContent {
           'var' => 'memberId',
           'type' => TType::I32,
           ),
-        4 => array(
-          'var' => 'avatar',
-          'type' => TType::STRING,
-          ),
-        5 => array(
-          'var' => 'group_name',
-          'type' => TType::STRING,
-          ),
-        6 => array(
-          'var' => 'name_pinyin',
-          'type' => TType::STRING,
-          ),
-        7 => array(
-          'var' => 'name_flag',
-          'type' => TType::BYTE,
-          ),
         );
     }
     if (is_array($vals)) {
@@ -2216,18 +1627,6 @@ class GroupMemberDelContent {
       }
       if (isset($vals['memberId'])) {
         $this->memberId = $vals['memberId'];
-      }
-      if (isset($vals['avatar'])) {
-        $this->avatar = $vals['avatar'];
-      }
-      if (isset($vals['group_name'])) {
-        $this->group_name = $vals['group_name'];
-      }
-      if (isset($vals['name_pinyin'])) {
-        $this->name_pinyin = $vals['name_pinyin'];
-      }
-      if (isset($vals['name_flag'])) {
-        $this->name_flag = $vals['name_flag'];
       }
     }
   }
@@ -2272,34 +1671,6 @@ class GroupMemberDelContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->avatar);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->group_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->name_pinyin);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->name_flag);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -2328,26 +1699,6 @@ class GroupMemberDelContent {
       $xfer += $output->writeI32($this->memberId);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->avatar !== null) {
-      $xfer += $output->writeFieldBegin('avatar', TType::STRING, 4);
-      $xfer += $output->writeString($this->avatar);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->group_name !== null) {
-      $xfer += $output->writeFieldBegin('group_name', TType::STRING, 5);
-      $xfer += $output->writeString($this->group_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_pinyin !== null) {
-      $xfer += $output->writeFieldBegin('name_pinyin', TType::STRING, 6);
-      $xfer += $output->writeString($this->name_pinyin);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_flag !== null) {
-      $xfer += $output->writeFieldBegin('name_flag', TType::BYTE, 7);
-      $xfer += $output->writeByte($this->name_flag);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -2362,7 +1713,6 @@ class GroupNameUpdateContent {
   public $groupid = null;
   public $group_name = null;
   public $name_pinyin = null;
-  public $name_flag = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -2383,10 +1733,6 @@ class GroupNameUpdateContent {
           'var' => 'name_pinyin',
           'type' => TType::STRING,
           ),
-        5 => array(
-          'var' => 'name_flag',
-          'type' => TType::BYTE,
-          ),
         );
     }
     if (is_array($vals)) {
@@ -2401,9 +1747,6 @@ class GroupNameUpdateContent {
       }
       if (isset($vals['name_pinyin'])) {
         $this->name_pinyin = $vals['name_pinyin'];
-      }
-      if (isset($vals['name_flag'])) {
-        $this->name_flag = $vals['name_flag'];
       }
     }
   }
@@ -2455,13 +1798,6 @@ class GroupNameUpdateContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 5:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->name_flag);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -2495,11 +1831,6 @@ class GroupNameUpdateContent {
       $xfer += $output->writeString($this->name_pinyin);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->name_flag !== null) {
-      $xfer += $output->writeFieldBegin('name_flag', TType::BYTE, 5);
-      $xfer += $output->writeByte($this->name_flag);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -2512,17 +1843,11 @@ class GroupCreateContent {
 
   public $operatorid = null;
   public $groupid = null;
-  public $memberList = null;
+  public $memberIds = null;
   public $avatar = null;
   public $group_name = null;
   public $name_pinyin = null;
   public $create_time = null;
-  public $siteID = null;
-  public $name_flag = null;
-  public $group_type = null;
-  public $memberCount = null;
-  public $group_status = null;
-  public $status_info = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -2536,12 +1861,11 @@ class GroupCreateContent {
           'type' => TType::I32,
           ),
         3 => array(
-          'var' => 'memberList',
+          'var' => 'memberIds',
           'type' => TType::LST,
-          'etype' => TType::STRUCT,
+          'etype' => TType::I32,
           'elem' => array(
-            'type' => TType::STRUCT,
-            'class' => '\uc\GroupMemberInfo',
+            'type' => TType::I32,
             ),
           ),
         4 => array(
@@ -2560,30 +1884,6 @@ class GroupCreateContent {
           'var' => 'create_time',
           'type' => TType::I32,
           ),
-        8 => array(
-          'var' => 'siteID',
-          'type' => TType::I32,
-          ),
-        9 => array(
-          'var' => 'name_flag',
-          'type' => TType::BYTE,
-          ),
-        10 => array(
-          'var' => 'group_type',
-          'type' => TType::BYTE,
-          ),
-        11 => array(
-          'var' => 'memberCount',
-          'type' => TType::I32,
-          ),
-        12 => array(
-          'var' => 'group_status',
-          'type' => TType::I32,
-          ),
-        13 => array(
-          'var' => 'status_info',
-          'type' => TType::STRING,
-          ),
         );
     }
     if (is_array($vals)) {
@@ -2593,8 +1893,8 @@ class GroupCreateContent {
       if (isset($vals['groupid'])) {
         $this->groupid = $vals['groupid'];
       }
-      if (isset($vals['memberList'])) {
-        $this->memberList = $vals['memberList'];
+      if (isset($vals['memberIds'])) {
+        $this->memberIds = $vals['memberIds'];
       }
       if (isset($vals['avatar'])) {
         $this->avatar = $vals['avatar'];
@@ -2607,24 +1907,6 @@ class GroupCreateContent {
       }
       if (isset($vals['create_time'])) {
         $this->create_time = $vals['create_time'];
-      }
-      if (isset($vals['siteID'])) {
-        $this->siteID = $vals['siteID'];
-      }
-      if (isset($vals['name_flag'])) {
-        $this->name_flag = $vals['name_flag'];
-      }
-      if (isset($vals['group_type'])) {
-        $this->group_type = $vals['group_type'];
-      }
-      if (isset($vals['memberCount'])) {
-        $this->memberCount = $vals['memberCount'];
-      }
-      if (isset($vals['group_status'])) {
-        $this->group_status = $vals['group_status'];
-      }
-      if (isset($vals['status_info'])) {
-        $this->status_info = $vals['status_info'];
       }
     }
   }
@@ -2664,16 +1946,15 @@ class GroupCreateContent {
           break;
         case 3:
           if ($ftype == TType::LST) {
-            $this->memberList = array();
+            $this->memberIds = array();
             $_size7 = 0;
             $_etype10 = 0;
             $xfer += $input->readListBegin($_etype10, $_size7);
             for ($_i11 = 0; $_i11 < $_size7; ++$_i11)
             {
               $elem12 = null;
-              $elem12 = new \uc\GroupMemberInfo();
-              $xfer += $elem12->read($input);
-              $this->memberList []= $elem12;
+              $xfer += $input->readI32($elem12);
+              $this->memberIds []= $elem12;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -2708,48 +1989,6 @@ class GroupCreateContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 8:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->siteID);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 9:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->name_flag);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 10:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->group_type);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 11:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->memberCount);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 12:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->group_status);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 13:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->status_info);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -2773,17 +2012,17 @@ class GroupCreateContent {
       $xfer += $output->writeI32($this->groupid);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->memberList !== null) {
-      if (!is_array($this->memberList)) {
+    if ($this->memberIds !== null) {
+      if (!is_array($this->memberIds)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('memberList', TType::LST, 3);
+      $xfer += $output->writeFieldBegin('memberIds', TType::LST, 3);
       {
-        $output->writeListBegin(TType::STRUCT, count($this->memberList));
+        $output->writeListBegin(TType::I32, count($this->memberIds));
         {
-          foreach ($this->memberList as $iter13)
+          foreach ($this->memberIds as $iter13)
           {
-            $xfer += $iter13->write($output);
+            $xfer += $output->writeI32($iter13);
           }
         }
         $output->writeListEnd();
@@ -2808,2003 +2047,6 @@ class GroupCreateContent {
     if ($this->create_time !== null) {
       $xfer += $output->writeFieldBegin('create_time', TType::I32, 7);
       $xfer += $output->writeI32($this->create_time);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->siteID !== null) {
-      $xfer += $output->writeFieldBegin('siteID', TType::I32, 8);
-      $xfer += $output->writeI32($this->siteID);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_flag !== null) {
-      $xfer += $output->writeFieldBegin('name_flag', TType::BYTE, 9);
-      $xfer += $output->writeByte($this->name_flag);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->group_type !== null) {
-      $xfer += $output->writeFieldBegin('group_type', TType::BYTE, 10);
-      $xfer += $output->writeByte($this->group_type);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->memberCount !== null) {
-      $xfer += $output->writeFieldBegin('memberCount', TType::I32, 11);
-      $xfer += $output->writeI32($this->memberCount);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->group_status !== null) {
-      $xfer += $output->writeFieldBegin('group_status', TType::I32, 12);
-      $xfer += $output->writeI32($this->group_status);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->status_info !== null) {
-      $xfer += $output->writeFieldBegin('status_info', TType::STRING, 13);
-      $xfer += $output->writeString($this->status_info);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class GroupMemberKickContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $groupid = null;
-  public $memberList = null;
-  public $avatar = null;
-  public $group_name = null;
-  public $name_pinyin = null;
-  public $name_flag = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'groupid',
-          'type' => TType::I32,
-          ),
-        3 => array(
-          'var' => 'memberList',
-          'type' => TType::LST,
-          'etype' => TType::I32,
-          'elem' => array(
-            'type' => TType::I32,
-            ),
-          ),
-        4 => array(
-          'var' => 'avatar',
-          'type' => TType::STRING,
-          ),
-        5 => array(
-          'var' => 'group_name',
-          'type' => TType::STRING,
-          ),
-        6 => array(
-          'var' => 'name_pinyin',
-          'type' => TType::STRING,
-          ),
-        7 => array(
-          'var' => 'name_flag',
-          'type' => TType::BYTE,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['groupid'])) {
-        $this->groupid = $vals['groupid'];
-      }
-      if (isset($vals['memberList'])) {
-        $this->memberList = $vals['memberList'];
-      }
-      if (isset($vals['avatar'])) {
-        $this->avatar = $vals['avatar'];
-      }
-      if (isset($vals['group_name'])) {
-        $this->group_name = $vals['group_name'];
-      }
-      if (isset($vals['name_pinyin'])) {
-        $this->name_pinyin = $vals['name_pinyin'];
-      }
-      if (isset($vals['name_flag'])) {
-        $this->name_flag = $vals['name_flag'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'GroupMemberKickContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->groupid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::LST) {
-            $this->memberList = array();
-            $_size14 = 0;
-            $_etype17 = 0;
-            $xfer += $input->readListBegin($_etype17, $_size14);
-            for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
-            {
-              $elem19 = null;
-              $xfer += $input->readI32($elem19);
-              $this->memberList []= $elem19;
-            }
-            $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->avatar);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->group_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->name_pinyin);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->name_flag);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupMemberKickContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupid !== null) {
-      $xfer += $output->writeFieldBegin('groupid', TType::I32, 2);
-      $xfer += $output->writeI32($this->groupid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->memberList !== null) {
-      if (!is_array($this->memberList)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('memberList', TType::LST, 3);
-      {
-        $output->writeListBegin(TType::I32, count($this->memberList));
-        {
-          foreach ($this->memberList as $iter20)
-          {
-            $xfer += $output->writeI32($iter20);
-          }
-        }
-        $output->writeListEnd();
-      }
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->avatar !== null) {
-      $xfer += $output->writeFieldBegin('avatar', TType::STRING, 4);
-      $xfer += $output->writeString($this->avatar);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->group_name !== null) {
-      $xfer += $output->writeFieldBegin('group_name', TType::STRING, 5);
-      $xfer += $output->writeString($this->group_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_pinyin !== null) {
-      $xfer += $output->writeFieldBegin('name_pinyin', TType::STRING, 6);
-      $xfer += $output->writeString($this->name_pinyin);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->name_flag !== null) {
-      $xfer += $output->writeFieldBegin('name_flag', TType::BYTE, 7);
-      $xfer += $output->writeByte($this->name_flag);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class GroupAvatarUpdateContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $avatar = null;
-  public $groupid = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'avatar',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'groupid',
-          'type' => TType::I32,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['avatar'])) {
-        $this->avatar = $vals['avatar'];
-      }
-      if (isset($vals['groupid'])) {
-        $this->groupid = $vals['groupid'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'GroupAvatarUpdateContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->avatar);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->groupid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupAvatarUpdateContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->avatar !== null) {
-      $xfer += $output->writeFieldBegin('avatar', TType::STRING, 2);
-      $xfer += $output->writeString($this->avatar);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupid !== null) {
-      $xfer += $output->writeFieldBegin('groupid', TType::I32, 3);
-      $xfer += $output->writeI32($this->groupid);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class GroupStateUpdateContent {
-  static $_TSPEC;
-  public $group_status = null;
-  public $status_info = null;
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'group_status',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'status_info',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['group_status'])) {
-        $this->group_status = $vals['group_status'];
-      }
-      if (isset($vals['status_info'])) {
-        $this->status_info = $vals['status_info'];
-      }
-    }
-  }
-  public function getName() {
-    return 'GroupStateUpdateContent';
-  }
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->group_status);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->status_info);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupStateUpdateContent');
-    if ($this->group_status !== null) {
-      $xfer += $output->writeFieldBegin('group_status', TType::I32, 1);
-      $xfer += $output->writeI32($this->group_status);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->status_info !== null) {
-      $xfer += $output->writeFieldBegin('status_info', TType::STRING, 2);
-      $xfer += $output->writeString($this->status_info);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-}
-class GroupTopContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $groupid = null;
-  public $isTop = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'groupid',
-          'type' => TType::I32,
-          ),
-        3 => array(
-          'var' => 'isTop',
-          'type' => TType::BYTE,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['groupid'])) {
-        $this->groupid = $vals['groupid'];
-      }
-      if (isset($vals['isTop'])) {
-        $this->isTop = $vals['isTop'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'GroupTopContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->groupid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->isTop);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupTopContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupid !== null) {
-      $xfer += $output->writeFieldBegin('groupid', TType::I32, 2);
-      $xfer += $output->writeI32($this->groupid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->isTop !== null) {
-      $xfer += $output->writeFieldBegin('isTop', TType::BYTE, 3);
-      $xfer += $output->writeByte($this->isTop);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class SummaryCreateContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $summary_name = null;
-  public $down_url = null;
-  public $size = null;
-  public $contentId = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'summary_name',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'down_url',
-          'type' => TType::STRING,
-          ),
-        4 => array(
-          'var' => 'size',
-          'type' => TType::I32,
-          ),
-        5 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['summary_name'])) {
-        $this->summary_name = $vals['summary_name'];
-      }
-      if (isset($vals['down_url'])) {
-        $this->down_url = $vals['down_url'];
-      }
-      if (isset($vals['size'])) {
-        $this->size = $vals['size'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'SummaryCreateContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->summary_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->down_url);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->size);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('SummaryCreateContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->summary_name !== null) {
-      $xfer += $output->writeFieldBegin('summary_name', TType::STRING, 2);
-      $xfer += $output->writeString($this->summary_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->down_url !== null) {
-      $xfer += $output->writeFieldBegin('down_url', TType::STRING, 3);
-      $xfer += $output->writeString($this->down_url);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->size !== null) {
-      $xfer += $output->writeFieldBegin('size', TType::I32, 4);
-      $xfer += $output->writeI32($this->size);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 5);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class DocumentContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $doc_name = null;
-  public $down_url = null;
-  public $size = null;
-  public $contentId = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'doc_name',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'down_url',
-          'type' => TType::STRING,
-          ),
-        4 => array(
-          'var' => 'size',
-          'type' => TType::I32,
-          ),
-        5 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['doc_name'])) {
-        $this->doc_name = $vals['doc_name'];
-      }
-      if (isset($vals['down_url'])) {
-        $this->down_url = $vals['down_url'];
-      }
-      if (isset($vals['size'])) {
-        $this->size = $vals['size'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'DocumentContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->doc_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->down_url);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->size);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('DocumentContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->doc_name !== null) {
-      $xfer += $output->writeFieldBegin('doc_name', TType::STRING, 2);
-      $xfer += $output->writeString($this->doc_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->down_url !== null) {
-      $xfer += $output->writeFieldBegin('down_url', TType::STRING, 3);
-      $xfer += $output->writeString($this->down_url);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->size !== null) {
-      $xfer += $output->writeFieldBegin('size', TType::I32, 4);
-      $xfer += $output->writeI32($this->size);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 5);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class DocumentDelContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $contentId = null;
-  public $doc_name = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        3 => array(
-          'var' => 'doc_name',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-      if (isset($vals['doc_name'])) {
-        $this->doc_name = $vals['doc_name'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'DocumentDelContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->doc_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('DocumentDelContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 2);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->doc_name !== null) {
-      $xfer += $output->writeFieldBegin('doc_name', TType::STRING, 3);
-      $xfer += $output->writeString($this->doc_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class CodeCreateContent {
-  static $_TSPEC;
-
-  public $contentId = null;
-  public $title = null;
-  public $langType = null;
-  public $contentHead = null;
-  public $desc = null;
-  public $size = null;
-  public $operatorid = null;
-  public $operatorName = null;
-  public $downUrl = null;
-  public $totalLines = null;
-  public $createTime = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        2 => array(
-          'var' => 'title',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'langType',
-          'type' => TType::STRING,
-          ),
-        4 => array(
-          'var' => 'contentHead',
-          'type' => TType::STRING,
-          ),
-        5 => array(
-          'var' => 'desc',
-          'type' => TType::STRING,
-          ),
-        6 => array(
-          'var' => 'size',
-          'type' => TType::I32,
-          ),
-        7 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        8 => array(
-          'var' => 'operatorName',
-          'type' => TType::STRING,
-          ),
-        9 => array(
-          'var' => 'downUrl',
-          'type' => TType::STRING,
-          ),
-        10 => array(
-          'var' => 'totalLines',
-          'type' => TType::I32,
-          ),
-        11 => array(
-          'var' => 'createTime',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-      if (isset($vals['title'])) {
-        $this->title = $vals['title'];
-      }
-      if (isset($vals['langType'])) {
-        $this->langType = $vals['langType'];
-      }
-      if (isset($vals['contentHead'])) {
-        $this->contentHead = $vals['contentHead'];
-      }
-      if (isset($vals['desc'])) {
-        $this->desc = $vals['desc'];
-      }
-      if (isset($vals['size'])) {
-        $this->size = $vals['size'];
-      }
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['operatorName'])) {
-        $this->operatorName = $vals['operatorName'];
-      }
-      if (isset($vals['downUrl'])) {
-        $this->downUrl = $vals['downUrl'];
-      }
-      if (isset($vals['totalLines'])) {
-        $this->totalLines = $vals['totalLines'];
-      }
-      if (isset($vals['createTime'])) {
-        $this->createTime = $vals['createTime'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'CodeCreateContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->title);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->langType);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->contentHead);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->desc);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->size);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 8:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->operatorName);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 9:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->downUrl);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 10:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->totalLines);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 11:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->createTime);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('CodeCreateContent');
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 1);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->title !== null) {
-      $xfer += $output->writeFieldBegin('title', TType::STRING, 2);
-      $xfer += $output->writeString($this->title);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->langType !== null) {
-      $xfer += $output->writeFieldBegin('langType', TType::STRING, 3);
-      $xfer += $output->writeString($this->langType);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentHead !== null) {
-      $xfer += $output->writeFieldBegin('contentHead', TType::STRING, 4);
-      $xfer += $output->writeString($this->contentHead);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->desc !== null) {
-      $xfer += $output->writeFieldBegin('desc', TType::STRING, 5);
-      $xfer += $output->writeString($this->desc);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->size !== null) {
-      $xfer += $output->writeFieldBegin('size', TType::I32, 6);
-      $xfer += $output->writeI32($this->size);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 7);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->operatorName !== null) {
-      $xfer += $output->writeFieldBegin('operatorName', TType::STRING, 8);
-      $xfer += $output->writeString($this->operatorName);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->downUrl !== null) {
-      $xfer += $output->writeFieldBegin('downUrl', TType::STRING, 9);
-      $xfer += $output->writeString($this->downUrl);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->totalLines !== null) {
-      $xfer += $output->writeFieldBegin('totalLines', TType::I32, 10);
-      $xfer += $output->writeI32($this->totalLines);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->createTime !== null) {
-      $xfer += $output->writeFieldBegin('createTime', TType::I64, 11);
-      $xfer += $output->writeI64($this->createTime);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class CodeDelContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $contentId = null;
-  public $title = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        3 => array(
-          'var' => 'title',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-      if (isset($vals['title'])) {
-        $this->title = $vals['title'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'CodeDelContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->title);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('CodeDelContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 2);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->title !== null) {
-      $xfer += $output->writeFieldBegin('title', TType::STRING, 3);
-      $xfer += $output->writeString($this->title);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class CommentCreateContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $operatorName = null;
-  public $commentId = null;
-  public $commentDesc = null;
-  public $contentId = null;
-  public $contentName = null;
-  public $contentType = null;
-  public $createTime = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'operatorName',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'commentId',
-          'type' => TType::I64,
-          ),
-        4 => array(
-          'var' => 'commentDesc',
-          'type' => TType::STRING,
-          ),
-        5 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        6 => array(
-          'var' => 'contentName',
-          'type' => TType::STRING,
-          ),
-        7 => array(
-          'var' => 'contentType',
-          'type' => TType::BYTE,
-          ),
-        8 => array(
-          'var' => 'createTime',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['operatorName'])) {
-        $this->operatorName = $vals['operatorName'];
-      }
-      if (isset($vals['commentId'])) {
-        $this->commentId = $vals['commentId'];
-      }
-      if (isset($vals['commentDesc'])) {
-        $this->commentDesc = $vals['commentDesc'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-      if (isset($vals['contentName'])) {
-        $this->contentName = $vals['contentName'];
-      }
-      if (isset($vals['contentType'])) {
-        $this->contentType = $vals['contentType'];
-      }
-      if (isset($vals['createTime'])) {
-        $this->createTime = $vals['createTime'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'CommentCreateContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->operatorName);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->commentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->commentDesc);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->contentName);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->contentType);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 8:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->createTime);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('CommentCreateContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->operatorName !== null) {
-      $xfer += $output->writeFieldBegin('operatorName', TType::STRING, 2);
-      $xfer += $output->writeString($this->operatorName);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->commentId !== null) {
-      $xfer += $output->writeFieldBegin('commentId', TType::I64, 3);
-      $xfer += $output->writeI64($this->commentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->commentDesc !== null) {
-      $xfer += $output->writeFieldBegin('commentDesc', TType::STRING, 4);
-      $xfer += $output->writeString($this->commentDesc);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 5);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentName !== null) {
-      $xfer += $output->writeFieldBegin('contentName', TType::STRING, 6);
-      $xfer += $output->writeString($this->contentName);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentType !== null) {
-      $xfer += $output->writeFieldBegin('contentType', TType::BYTE, 7);
-      $xfer += $output->writeByte($this->contentType);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->createTime !== null) {
-      $xfer += $output->writeFieldBegin('createTime', TType::I64, 8);
-      $xfer += $output->writeI64($this->createTime);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class CommentDelContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $commentId = null;
-  public $contentId = null;
-  public $contentName = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'commentId',
-          'type' => TType::I64,
-          ),
-        3 => array(
-          'var' => 'contentId',
-          'type' => TType::I64,
-          ),
-        4 => array(
-          'var' => 'contentName',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['commentId'])) {
-        $this->commentId = $vals['commentId'];
-      }
-      if (isset($vals['contentId'])) {
-        $this->contentId = $vals['contentId'];
-      }
-      if (isset($vals['contentName'])) {
-        $this->contentName = $vals['contentName'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'CommentDelContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->commentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->contentId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->contentName);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('CommentDelContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->commentId !== null) {
-      $xfer += $output->writeFieldBegin('commentId', TType::I64, 2);
-      $xfer += $output->writeI64($this->commentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentId !== null) {
-      $xfer += $output->writeFieldBegin('contentId', TType::I64, 3);
-      $xfer += $output->writeI64($this->contentId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->contentName !== null) {
-      $xfer += $output->writeFieldBegin('contentName', TType::STRING, 4);
-      $xfer += $output->writeString($this->contentName);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class AlertRuleContent {
-  static $_TSPEC;
-
-  public $groupid = null;
-  public $state = null;
-  public $rule = null;
-  public $time = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'groupid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'state',
-          'type' => TType::BYTE,
-          ),
-        3 => array(
-          'var' => 'rule',
-          'type' => TType::I32,
-          ),
-        4 => array(
-          'var' => 'time',
-          'type' => TType::I32,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['groupid'])) {
-        $this->groupid = $vals['groupid'];
-      }
-      if (isset($vals['state'])) {
-        $this->state = $vals['state'];
-      }
-      if (isset($vals['rule'])) {
-        $this->rule = $vals['rule'];
-      }
-      if (isset($vals['time'])) {
-        $this->time = $vals['time'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'AlertRuleContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->groupid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->state);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->rule);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->time);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('AlertRuleContent');
-    if ($this->groupid !== null) {
-      $xfer += $output->writeFieldBegin('groupid', TType::I32, 1);
-      $xfer += $output->writeI32($this->groupid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->state !== null) {
-      $xfer += $output->writeFieldBegin('state', TType::BYTE, 2);
-      $xfer += $output->writeByte($this->state);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->rule !== null) {
-      $xfer += $output->writeFieldBegin('rule', TType::I32, 3);
-      $xfer += $output->writeI32($this->rule);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->time !== null) {
-      $xfer += $output->writeFieldBegin('time', TType::I32, 4);
-      $xfer += $output->writeI32($this->time);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class DiscussionClose {
-  static $_TSPEC;
-
-  public $operatorId = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorId',
-          'type' => TType::I32,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorId'])) {
-        $this->operatorId = $vals['operatorId'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'DiscussionClose';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('DiscussionClose');
-    if ($this->operatorId !== null) {
-      $xfer += $output->writeFieldBegin('operatorId', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorId);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class MsgNotifyContent {
-  static $_TSPEC;
-
-  public $groupid = null;
-  public $state = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'groupid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'state',
-          'type' => TType::BYTE,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['groupid'])) {
-        $this->groupid = $vals['groupid'];
-      }
-      if (isset($vals['state'])) {
-        $this->state = $vals['state'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'MsgNotifyContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->groupid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->state);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MsgNotifyContent');
-    if ($this->groupid !== null) {
-      $xfer += $output->writeFieldBegin('groupid', TType::I32, 1);
-      $xfer += $output->writeI32($this->groupid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->state !== null) {
-      $xfer += $output->writeFieldBegin('state', TType::BYTE, 2);
-      $xfer += $output->writeByte($this->state);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -5213,68 +2455,44 @@ class ClientUpdateContent {
 class InfoCell {
   static $_TSPEC;
 
-  public $tagId = null;
+  public $name = null;
   public $label = null;
-  public $inputType = null;
-  public $scope = null;
   public $type = null;
-  public $state = null;
-  public $value = null;
+  public $not_null = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
-          'var' => 'tagId',
-          'type' => TType::I32,
+          'var' => 'name',
+          'type' => TType::STRING,
           ),
         2 => array(
           'var' => 'label',
           'type' => TType::STRING,
           ),
         3 => array(
-          'var' => 'inputType',
-          'type' => TType::I16,
-          ),
-        4 => array(
-          'var' => 'scope',
-          'type' => TType::I16,
-          ),
-        5 => array(
           'var' => 'type',
           'type' => TType::I16,
           ),
-        6 => array(
-          'var' => 'state',
+        4 => array(
+          'var' => 'not_null',
           'type' => TType::I16,
-          ),
-        7 => array(
-          'var' => 'value',
-          'type' => TType::STRING,
           ),
         );
     }
     if (is_array($vals)) {
-      if (isset($vals['tagId'])) {
-        $this->tagId = $vals['tagId'];
+      if (isset($vals['name'])) {
+        $this->name = $vals['name'];
       }
       if (isset($vals['label'])) {
         $this->label = $vals['label'];
       }
-      if (isset($vals['inputType'])) {
-        $this->inputType = $vals['inputType'];
-      }
-      if (isset($vals['scope'])) {
-        $this->scope = $vals['scope'];
-      }
       if (isset($vals['type'])) {
         $this->type = $vals['type'];
       }
-      if (isset($vals['state'])) {
-        $this->state = $vals['state'];
-      }
-      if (isset($vals['value'])) {
-        $this->value = $vals['value'];
+      if (isset($vals['not_null'])) {
+        $this->not_null = $vals['not_null'];
       }
     }
   }
@@ -5299,8 +2517,8 @@ class InfoCell {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->tagId);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->name);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -5314,35 +2532,14 @@ class InfoCell {
           break;
         case 3:
           if ($ftype == TType::I16) {
-            $xfer += $input->readI16($this->inputType);
+            $xfer += $input->readI16($this->type);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
           if ($ftype == TType::I16) {
-            $xfer += $input->readI16($this->scope);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I16) {
-            $xfer += $input->readI16($this->type);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::I16) {
-            $xfer += $input->readI16($this->state);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->value);
+            $xfer += $input->readI16($this->not_null);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -5360,9 +2557,9 @@ class InfoCell {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('InfoCell');
-    if ($this->tagId !== null) {
-      $xfer += $output->writeFieldBegin('tagId', TType::I32, 1);
-      $xfer += $output->writeI32($this->tagId);
+    if ($this->name !== null) {
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 1);
+      $xfer += $output->writeString($this->name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->label !== null) {
@@ -5370,29 +2567,14 @@ class InfoCell {
       $xfer += $output->writeString($this->label);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->inputType !== null) {
-      $xfer += $output->writeFieldBegin('inputType', TType::I16, 3);
-      $xfer += $output->writeI16($this->inputType);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->scope !== null) {
-      $xfer += $output->writeFieldBegin('scope', TType::I16, 4);
-      $xfer += $output->writeI16($this->scope);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->type !== null) {
-      $xfer += $output->writeFieldBegin('type', TType::I16, 5);
+      $xfer += $output->writeFieldBegin('type', TType::I16, 3);
       $xfer += $output->writeI16($this->type);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->state !== null) {
-      $xfer += $output->writeFieldBegin('state', TType::I16, 6);
-      $xfer += $output->writeI16($this->state);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->value !== null) {
-      $xfer += $output->writeFieldBegin('value', TType::STRING, 7);
-      $xfer += $output->writeString($this->value);
+    if ($this->not_null !== null) {
+      $xfer += $output->writeFieldBegin('not_null', TType::I16, 4);
+      $xfer += $output->writeI16($this->not_null);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -5458,15 +2640,15 @@ class CompleteInfoContent {
         case 1:
           if ($ftype == TType::LST) {
             $this->info_cell_list = array();
-            $_size21 = 0;
-            $_etype24 = 0;
-            $xfer += $input->readListBegin($_etype24, $_size21);
-            for ($_i25 = 0; $_i25 < $_size21; ++$_i25)
+            $_size14 = 0;
+            $_etype17 = 0;
+            $xfer += $input->readListBegin($_etype17, $_size14);
+            for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
             {
-              $elem26 = null;
-              $elem26 = new \uc\InfoCell();
-              $xfer += $elem26->read($input);
-              $this->info_cell_list []= $elem26;
+              $elem19 = null;
+              $elem19 = new \uc\InfoCell();
+              $xfer += $elem19->read($input);
+              $this->info_cell_list []= $elem19;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -5501,9 +2683,9 @@ class CompleteInfoContent {
       {
         $output->writeListBegin(TType::STRUCT, count($this->info_cell_list));
         {
-          foreach ($this->info_cell_list as $iter27)
+          foreach ($this->info_cell_list as $iter20)
           {
-            $xfer += $iter27->write($output);
+            $xfer += $iter20->write($output);
           }
         }
         $output->writeListEnd();
@@ -5513,104 +2695,6 @@ class CompleteInfoContent {
     if ($this->desc !== null) {
       $xfer += $output->writeFieldBegin('desc', TType::STRING, 2);
       $xfer += $output->writeString($this->desc);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class TagDelContent {
-  static $_TSPEC;
-
-  public $delTagIds = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'delTagIds',
-          'type' => TType::LST,
-          'etype' => TType::I32,
-          'elem' => array(
-            'type' => TType::I32,
-            ),
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['delTagIds'])) {
-        $this->delTagIds = $vals['delTagIds'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'TagDelContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::LST) {
-            $this->delTagIds = array();
-            $_size28 = 0;
-            $_etype31 = 0;
-            $xfer += $input->readListBegin($_etype31, $_size28);
-            for ($_i32 = 0; $_i32 < $_size28; ++$_i32)
-            {
-              $elem33 = null;
-              $xfer += $input->readI32($elem33);
-              $this->delTagIds []= $elem33;
-            }
-            $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('TagDelContent');
-    if ($this->delTagIds !== null) {
-      if (!is_array($this->delTagIds)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('delTagIds', TType::LST, 1);
-      {
-        $output->writeListBegin(TType::I32, count($this->delTagIds));
-        {
-          foreach ($this->delTagIds as $iter34)
-          {
-            $xfer += $output->writeI32($iter34);
-          }
-        }
-        $output->writeListEnd();
-      }
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -5928,104 +3012,6 @@ class MobileClientGuide {
 
 }
 
-class GroupRemindContent {
-  static $_TSPEC;
-
-  public $groupIdList = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'groupIdList',
-          'type' => TType::LST,
-          'etype' => TType::I32,
-          'elem' => array(
-            'type' => TType::I32,
-            ),
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['groupIdList'])) {
-        $this->groupIdList = $vals['groupIdList'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'GroupRemindContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::LST) {
-            $this->groupIdList = array();
-            $_size35 = 0;
-            $_etype38 = 0;
-            $xfer += $input->readListBegin($_etype38, $_size35);
-            for ($_i39 = 0; $_i39 < $_size35; ++$_i39)
-            {
-              $elem40 = null;
-              $xfer += $input->readI32($elem40);
-              $this->groupIdList []= $elem40;
-            }
-            $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('GroupRemindContent');
-    if ($this->groupIdList !== null) {
-      if (!is_array($this->groupIdList)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupIdList', TType::LST, 1);
-      {
-        $output->writeListBegin(TType::I32, count($this->groupIdList));
-        {
-          foreach ($this->groupIdList as $iter41)
-          {
-            $xfer += $output->writeI32($iter41);
-          }
-        }
-        $output->writeListEnd();
-      }
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class FileTransmissionInviteContent {
   static $_TSPEC;
 
@@ -6033,7 +3019,7 @@ class FileTransmissionInviteContent {
   public $fileName = null;
   public $fileSize = null;
   public $blockSize = null;
-  public $nZip = null;
+  public $bZip = null;
   public $taskId = null;
 
   public function __construct($vals=null) {
@@ -6056,12 +3042,12 @@ class FileTransmissionInviteContent {
           'type' => TType::I64,
           ),
         5 => array(
-          'var' => 'nZip',
+          'var' => 'bZip',
           'type' => TType::BYTE,
           ),
         6 => array(
           'var' => 'taskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         );
     }
@@ -6078,8 +3064,8 @@ class FileTransmissionInviteContent {
       if (isset($vals['blockSize'])) {
         $this->blockSize = $vals['blockSize'];
       }
-      if (isset($vals['nZip'])) {
-        $this->nZip = $vals['nZip'];
+      if (isset($vals['bZip'])) {
+        $this->bZip = $vals['bZip'];
       }
       if (isset($vals['taskId'])) {
         $this->taskId = $vals['taskId'];
@@ -6136,14 +3122,14 @@ class FileTransmissionInviteContent {
           break;
         case 5:
           if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->nZip);
+            $xfer += $input->readByte($this->bZip);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 6:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->taskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->taskId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6181,14 +3167,14 @@ class FileTransmissionInviteContent {
       $xfer += $output->writeI64($this->blockSize);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->nZip !== null) {
-      $xfer += $output->writeFieldBegin('nZip', TType::BYTE, 5);
-      $xfer += $output->writeByte($this->nZip);
+    if ($this->bZip !== null) {
+      $xfer += $output->writeFieldBegin('bZip', TType::BYTE, 5);
+      $xfer += $output->writeByte($this->bZip);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->taskId !== null) {
-      $xfer += $output->writeFieldBegin('taskId', TType::I64, 6);
-      $xfer += $output->writeI64($this->taskId);
+      $xfer += $output->writeFieldBegin('taskId', TType::I32, 6);
+      $xfer += $output->writeI32($this->taskId);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -6207,18 +3193,19 @@ class FileTransmissionReceiveContent {
   public $port = null;
   public $serverList = null;
   public $transType = null;
-  public $transPoint = null;
+  public $pointNum = null;
+  public $breakPointInfo = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'sendTaskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         2 => array(
           'var' => 'receiveTaskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         3 => array(
           'var' => 'ip',
@@ -6226,7 +3213,7 @@ class FileTransmissionReceiveContent {
           ),
         4 => array(
           'var' => 'port',
-          'type' => TType::I16,
+          'type' => TType::I32,
           ),
         5 => array(
           'var' => 'serverList',
@@ -6237,8 +3224,12 @@ class FileTransmissionReceiveContent {
           'type' => TType::BYTE,
           ),
         7 => array(
-          'var' => 'transPoint',
-          'type' => TType::I64,
+          'var' => 'pointNum',
+          'type' => TType::I32,
+          ),
+        8 => array(
+          'var' => 'breakPointInfo',
+          'type' => TType::STRING,
           ),
         );
     }
@@ -6261,8 +3252,11 @@ class FileTransmissionReceiveContent {
       if (isset($vals['transType'])) {
         $this->transType = $vals['transType'];
       }
-      if (isset($vals['transPoint'])) {
-        $this->transPoint = $vals['transPoint'];
+      if (isset($vals['pointNum'])) {
+        $this->pointNum = $vals['pointNum'];
+      }
+      if (isset($vals['breakPointInfo'])) {
+        $this->breakPointInfo = $vals['breakPointInfo'];
       }
     }
   }
@@ -6287,15 +3281,15 @@ class FileTransmissionReceiveContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->sendTaskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->sendTaskId);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->receiveTaskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->receiveTaskId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6308,8 +3302,8 @@ class FileTransmissionReceiveContent {
           }
           break;
         case 4:
-          if ($ftype == TType::I16) {
-            $xfer += $input->readI16($this->port);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->port);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6329,8 +3323,15 @@ class FileTransmissionReceiveContent {
           }
           break;
         case 7:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->transPoint);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->pointNum);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->breakPointInfo);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6349,13 +3350,13 @@ class FileTransmissionReceiveContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('FileTransmissionReceiveContent');
     if ($this->sendTaskId !== null) {
-      $xfer += $output->writeFieldBegin('sendTaskId', TType::I64, 1);
-      $xfer += $output->writeI64($this->sendTaskId);
+      $xfer += $output->writeFieldBegin('sendTaskId', TType::I32, 1);
+      $xfer += $output->writeI32($this->sendTaskId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->receiveTaskId !== null) {
-      $xfer += $output->writeFieldBegin('receiveTaskId', TType::I64, 2);
-      $xfer += $output->writeI64($this->receiveTaskId);
+      $xfer += $output->writeFieldBegin('receiveTaskId', TType::I32, 2);
+      $xfer += $output->writeI32($this->receiveTaskId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->ip !== null) {
@@ -6364,8 +3365,8 @@ class FileTransmissionReceiveContent {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->port !== null) {
-      $xfer += $output->writeFieldBegin('port', TType::I16, 4);
-      $xfer += $output->writeI16($this->port);
+      $xfer += $output->writeFieldBegin('port', TType::I32, 4);
+      $xfer += $output->writeI32($this->port);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->serverList !== null) {
@@ -6378,9 +3379,14 @@ class FileTransmissionReceiveContent {
       $xfer += $output->writeByte($this->transType);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->transPoint !== null) {
-      $xfer += $output->writeFieldBegin('transPoint', TType::I64, 7);
-      $xfer += $output->writeI64($this->transPoint);
+    if ($this->pointNum !== null) {
+      $xfer += $output->writeFieldBegin('pointNum', TType::I32, 7);
+      $xfer += $output->writeI32($this->pointNum);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->breakPointInfo !== null) {
+      $xfer += $output->writeFieldBegin('breakPointInfo', TType::STRING, 8);
+      $xfer += $output->writeString($this->breakPointInfo);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -6402,7 +3408,7 @@ class FileTransmissionRejectContent {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'taskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         2 => array(
           'var' => 'fileName',
@@ -6447,8 +3453,8 @@ class FileTransmissionRejectContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->taskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->taskId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6481,8 +3487,8 @@ class FileTransmissionRejectContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('FileTransmissionRejectContent');
     if ($this->taskId !== null) {
-      $xfer += $output->writeFieldBegin('taskId', TType::I64, 1);
-      $xfer += $output->writeI64($this->taskId);
+      $xfer += $output->writeFieldBegin('taskId', TType::I32, 1);
+      $xfer += $output->writeI32($this->taskId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->fileName !== null) {
@@ -6516,11 +3522,11 @@ class FileTransmissionStopContent {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'sendTaskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         2 => array(
           'var' => 'receiveTaskId',
-          'type' => TType::I64,
+          'type' => TType::I32,
           ),
         3 => array(
           'var' => 'fileName',
@@ -6575,15 +3581,15 @@ class FileTransmissionStopContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->sendTaskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->sendTaskId);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->receiveTaskId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->receiveTaskId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -6623,13 +3629,13 @@ class FileTransmissionStopContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('FileTransmissionStopContent');
     if ($this->sendTaskId !== null) {
-      $xfer += $output->writeFieldBegin('sendTaskId', TType::I64, 1);
-      $xfer += $output->writeI64($this->sendTaskId);
+      $xfer += $output->writeFieldBegin('sendTaskId', TType::I32, 1);
+      $xfer += $output->writeI32($this->sendTaskId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->receiveTaskId !== null) {
-      $xfer += $output->writeFieldBegin('receiveTaskId', TType::I64, 2);
-      $xfer += $output->writeI64($this->receiveTaskId);
+      $xfer += $output->writeFieldBegin('receiveTaskId', TType::I32, 2);
+      $xfer += $output->writeI32($this->receiveTaskId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->fileName !== null) {
@@ -7499,7 +4505,6 @@ class DeptParentChangeContent {
 
   public $operator_id = null;
   public $dept_id = null;
-  public $dept_name = null;
   public $old_dept_name = null;
   public $new_dept_name = null;
   public $desc = null;
@@ -7516,18 +4521,14 @@ class DeptParentChangeContent {
           'type' => TType::I32,
           ),
         3 => array(
-          'var' => 'dept_name',
-          'type' => TType::STRING,
-          ),
-        4 => array(
           'var' => 'old_dept_name',
           'type' => TType::STRING,
           ),
-        5 => array(
+        4 => array(
           'var' => 'new_dept_name',
           'type' => TType::STRING,
           ),
-        6 => array(
+        5 => array(
           'var' => 'desc',
           'type' => TType::STRING,
           ),
@@ -7539,9 +4540,6 @@ class DeptParentChangeContent {
       }
       if (isset($vals['dept_id'])) {
         $this->dept_id = $vals['dept_id'];
-      }
-      if (isset($vals['dept_name'])) {
-        $this->dept_name = $vals['dept_name'];
       }
       if (isset($vals['old_dept_name'])) {
         $this->old_dept_name = $vals['old_dept_name'];
@@ -7590,26 +4588,19 @@ class DeptParentChangeContent {
           break;
         case 3:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->dept_name);
+            $xfer += $input->readString($this->old_dept_name);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->old_dept_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->new_dept_name);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 6:
+        case 5:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->desc);
           } else {
@@ -7639,23 +4630,18 @@ class DeptParentChangeContent {
       $xfer += $output->writeI32($this->dept_id);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->dept_name !== null) {
-      $xfer += $output->writeFieldBegin('dept_name', TType::STRING, 3);
-      $xfer += $output->writeString($this->dept_name);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->old_dept_name !== null) {
-      $xfer += $output->writeFieldBegin('old_dept_name', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('old_dept_name', TType::STRING, 3);
       $xfer += $output->writeString($this->old_dept_name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->new_dept_name !== null) {
-      $xfer += $output->writeFieldBegin('new_dept_name', TType::STRING, 5);
+      $xfer += $output->writeFieldBegin('new_dept_name', TType::STRING, 4);
       $xfer += $output->writeString($this->new_dept_name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->desc !== null) {
-      $xfer += $output->writeFieldBegin('desc', TType::STRING, 6);
+      $xfer += $output->writeFieldBegin('desc', TType::STRING, 5);
       $xfer += $output->writeString($this->desc);
       $xfer += $output->writeFieldEnd();
     }
@@ -8724,7 +5710,6 @@ class InstantIQInviteContent {
   public $confId = null;
   public $hostId = null;
   public $confPwd = null;
-  public $isReserve = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -8741,10 +5726,6 @@ class InstantIQInviteContent {
           'var' => 'confPwd',
           'type' => TType::STRING,
           ),
-        4 => array(
-          'var' => 'isReserve',
-          'type' => TType::BYTE,
-          ),
         );
     }
     if (is_array($vals)) {
@@ -8756,9 +5737,6 @@ class InstantIQInviteContent {
       }
       if (isset($vals['confPwd'])) {
         $this->confPwd = $vals['confPwd'];
-      }
-      if (isset($vals['isReserve'])) {
-        $this->isReserve = $vals['isReserve'];
       }
     }
   }
@@ -8803,13 +5781,6 @@ class InstantIQInviteContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 4:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->isReserve);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -8838,11 +5809,6 @@ class InstantIQInviteContent {
       $xfer += $output->writeString($this->confPwd);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->isReserve !== null) {
-      $xfer += $output->writeFieldBegin('isReserve', TType::BYTE, 4);
-      $xfer += $output->writeByte($this->isReserve);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -8854,7 +5820,6 @@ class InstantIQReceiveContent {
   static $_TSPEC;
 
   public $confId = null;
-  public $isReserve = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -8863,18 +5828,11 @@ class InstantIQReceiveContent {
           'var' => 'confId',
           'type' => TType::I32,
           ),
-        2 => array(
-          'var' => 'isReserve',
-          'type' => TType::BYTE,
-          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['confId'])) {
         $this->confId = $vals['confId'];
-      }
-      if (isset($vals['isReserve'])) {
-        $this->isReserve = $vals['isReserve'];
       }
     }
   }
@@ -8905,13 +5863,6 @@ class InstantIQReceiveContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->isReserve);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -8930,11 +5881,6 @@ class InstantIQReceiveContent {
       $xfer += $output->writeI32($this->confId);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->isReserve !== null) {
-      $xfer += $output->writeFieldBegin('isReserve', TType::BYTE, 2);
-      $xfer += $output->writeByte($this->isReserve);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -8946,7 +5892,6 @@ class InstantIQRejectContent {
   static $_TSPEC;
 
   public $confId = null;
-  public $isReserve = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -8955,18 +5900,11 @@ class InstantIQRejectContent {
           'var' => 'confId',
           'type' => TType::I32,
           ),
-        2 => array(
-          'var' => 'isReserve',
-          'type' => TType::BYTE,
-          ),
         );
     }
     if (is_array($vals)) {
       if (isset($vals['confId'])) {
         $this->confId = $vals['confId'];
-      }
-      if (isset($vals['isReserve'])) {
-        $this->isReserve = $vals['isReserve'];
       }
     }
   }
@@ -8997,13 +5935,6 @@ class InstantIQRejectContent {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->isReserve);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -9020,11 +5951,6 @@ class InstantIQRejectContent {
     if ($this->confId !== null) {
       $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
       $xfer += $output->writeI32($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->isReserve !== null) {
-      $xfer += $output->writeFieldBegin('isReserve', TType::BYTE, 2);
-      $xfer += $output->writeByte($this->isReserve);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -9874,512 +6800,6 @@ class ConfAlertContent {
 
 }
 
-class ConfChatContent {
-  static $_TSPEC;
-
-  public $confId = null;
-  public $startTime = null;
-  public $text = null;
-  public $media = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'confId',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'startTime',
-          'type' => TType::I32,
-          ),
-        3 => array(
-          'var' => 'text',
-          'type' => TType::STRUCT,
-          'class' => '\uc\TextContent',
-          ),
-        4 => array(
-          'var' => 'media',
-          'type' => TType::STRUCT,
-          'class' => '\uc\MediaContent',
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['confId'])) {
-        $this->confId = $vals['confId'];
-      }
-      if (isset($vals['startTime'])) {
-        $this->startTime = $vals['startTime'];
-      }
-      if (isset($vals['text'])) {
-        $this->text = $vals['text'];
-      }
-      if (isset($vals['media'])) {
-        $this->media = $vals['media'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'ConfChatContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->confId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->startTime);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRUCT) {
-            $this->text = new \uc\TextContent();
-            $xfer += $this->text->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::STRUCT) {
-            $this->media = new \uc\MediaContent();
-            $xfer += $this->media->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ConfChatContent');
-    if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
-      $xfer += $output->writeI32($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->startTime !== null) {
-      $xfer += $output->writeFieldBegin('startTime', TType::I32, 2);
-      $xfer += $output->writeI32($this->startTime);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->text !== null) {
-      if (!is_object($this->text)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('text', TType::STRUCT, 3);
-      $xfer += $this->text->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->media !== null) {
-      if (!is_object($this->media)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('media', TType::STRUCT, 4);
-      $xfer += $this->media->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class ConfSummaryContent {
-  static $_TSPEC;
-
-  public $operatorid = null;
-  public $summary_id = null;
-  public $summary_name = null;
-  public $state = null;
-  public $confId = null;
-  public $confName = null;
-  public $startTime = null;
-  public $updateTime = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'operatorid',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'summary_id',
-          'type' => TType::I32,
-          ),
-        3 => array(
-          'var' => 'summary_name',
-          'type' => TType::STRING,
-          ),
-        4 => array(
-          'var' => 'state',
-          'type' => TType::BYTE,
-          ),
-        5 => array(
-          'var' => 'confId',
-          'type' => TType::I32,
-          ),
-        6 => array(
-          'var' => 'confName',
-          'type' => TType::STRING,
-          ),
-        7 => array(
-          'var' => 'startTime',
-          'type' => TType::I32,
-          ),
-        8 => array(
-          'var' => 'updateTime',
-          'type' => TType::I32,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['operatorid'])) {
-        $this->operatorid = $vals['operatorid'];
-      }
-      if (isset($vals['summary_id'])) {
-        $this->summary_id = $vals['summary_id'];
-      }
-      if (isset($vals['summary_name'])) {
-        $this->summary_name = $vals['summary_name'];
-      }
-      if (isset($vals['state'])) {
-        $this->state = $vals['state'];
-      }
-      if (isset($vals['confId'])) {
-        $this->confId = $vals['confId'];
-      }
-      if (isset($vals['confName'])) {
-        $this->confName = $vals['confName'];
-      }
-      if (isset($vals['startTime'])) {
-        $this->startTime = $vals['startTime'];
-      }
-      if (isset($vals['updateTime'])) {
-        $this->updateTime = $vals['updateTime'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'ConfSummaryContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->operatorid);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->summary_id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->summary_name);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::BYTE) {
-            $xfer += $input->readByte($this->state);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->confId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->confName);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 7:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->startTime);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 8:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->updateTime);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ConfSummaryContent');
-    if ($this->operatorid !== null) {
-      $xfer += $output->writeFieldBegin('operatorid', TType::I32, 1);
-      $xfer += $output->writeI32($this->operatorid);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->summary_id !== null) {
-      $xfer += $output->writeFieldBegin('summary_id', TType::I32, 2);
-      $xfer += $output->writeI32($this->summary_id);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->summary_name !== null) {
-      $xfer += $output->writeFieldBegin('summary_name', TType::STRING, 3);
-      $xfer += $output->writeString($this->summary_name);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->state !== null) {
-      $xfer += $output->writeFieldBegin('state', TType::BYTE, 4);
-      $xfer += $output->writeByte($this->state);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::I32, 5);
-      $xfer += $output->writeI32($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->confName !== null) {
-      $xfer += $output->writeFieldBegin('confName', TType::STRING, 6);
-      $xfer += $output->writeString($this->confName);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->startTime !== null) {
-      $xfer += $output->writeFieldBegin('startTime', TType::I32, 7);
-      $xfer += $output->writeI32($this->startTime);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->updateTime !== null) {
-      $xfer += $output->writeFieldBegin('updateTime', TType::I32, 8);
-      $xfer += $output->writeI32($this->updateTime);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class CallStateContent {
-  static $_TSPEC;
-
-  public $userId = null;
-  public $partyId = null;
-  public $callSeq = null;
-  public $oldCallState = null;
-  public $newCallState = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'userId',
-          'type' => TType::I32,
-          ),
-        2 => array(
-          'var' => 'partyId',
-          'type' => TType::STRING,
-          ),
-        3 => array(
-          'var' => 'callSeq',
-          'type' => TType::STRING,
-          ),
-        4 => array(
-          'var' => 'oldCallState',
-          'type' => TType::I32,
-          ),
-        5 => array(
-          'var' => 'newCallState',
-          'type' => TType::I32,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['userId'])) {
-        $this->userId = $vals['userId'];
-      }
-      if (isset($vals['partyId'])) {
-        $this->partyId = $vals['partyId'];
-      }
-      if (isset($vals['callSeq'])) {
-        $this->callSeq = $vals['callSeq'];
-      }
-      if (isset($vals['oldCallState'])) {
-        $this->oldCallState = $vals['oldCallState'];
-      }
-      if (isset($vals['newCallState'])) {
-        $this->newCallState = $vals['newCallState'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'CallStateContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->userId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->partyId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->callSeq);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 4:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->oldCallState);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 5:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->newCallState);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('CallStateContent');
-    if ($this->userId !== null) {
-      $xfer += $output->writeFieldBegin('userId', TType::I32, 1);
-      $xfer += $output->writeI32($this->userId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->partyId !== null) {
-      $xfer += $output->writeFieldBegin('partyId', TType::STRING, 2);
-      $xfer += $output->writeString($this->partyId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->callSeq !== null) {
-      $xfer += $output->writeFieldBegin('callSeq', TType::STRING, 3);
-      $xfer += $output->writeString($this->callSeq);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->oldCallState !== null) {
-      $xfer += $output->writeFieldBegin('oldCallState', TType::I32, 4);
-      $xfer += $output->writeI32($this->oldCallState);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->newCallState !== null) {
-      $xfer += $output->writeFieldBegin('newCallState', TType::I32, 5);
-      $xfer += $output->writeI32($this->newCallState);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class ConfShareContent {
   static $_TSPEC;
 
@@ -10442,7 +6862,7 @@ class AudioInviteContent {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'confId',
-          'type' => TType::STRING,
+          'type' => TType::I32,
           ),
         2 => array(
           'var' => 'hostId',
@@ -10487,8 +6907,8 @@ class AudioInviteContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->confId);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->confId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -10521,8 +6941,8 @@ class AudioInviteContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('AudioInviteContent');
     if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::STRING, 1);
-      $xfer += $output->writeString($this->confId);
+      $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
+      $xfer += $output->writeI32($this->confId);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->hostId !== null) {
@@ -10546,17 +6966,12 @@ class AudioReceiveContent {
   static $_TSPEC;
 
   public $confId = null;
-  public $hostId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'confId',
-          'type' => TType::STRING,
-          ),
-        2 => array(
-          'var' => 'hostId',
           'type' => TType::I32,
           ),
         );
@@ -10564,9 +6979,6 @@ class AudioReceiveContent {
     if (is_array($vals)) {
       if (isset($vals['confId'])) {
         $this->confId = $vals['confId'];
-      }
-      if (isset($vals['hostId'])) {
-        $this->hostId = $vals['hostId'];
       }
     }
   }
@@ -10591,15 +7003,8 @@ class AudioReceiveContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->confId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
           if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->hostId);
+            $xfer += $input->readI32($this->confId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -10618,13 +7023,8 @@ class AudioReceiveContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('AudioReceiveContent');
     if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::STRING, 1);
-      $xfer += $output->writeString($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->hostId !== null) {
-      $xfer += $output->writeFieldBegin('hostId', TType::I32, 2);
-      $xfer += $output->writeI32($this->hostId);
+      $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
+      $xfer += $output->writeI32($this->confId);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -10638,17 +7038,12 @@ class AudioRejectContent {
   static $_TSPEC;
 
   public $confId = null;
-  public $hostId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'confId',
-          'type' => TType::STRING,
-          ),
-        2 => array(
-          'var' => 'hostId',
           'type' => TType::I32,
           ),
         );
@@ -10656,9 +7051,6 @@ class AudioRejectContent {
     if (is_array($vals)) {
       if (isset($vals['confId'])) {
         $this->confId = $vals['confId'];
-      }
-      if (isset($vals['hostId'])) {
-        $this->hostId = $vals['hostId'];
       }
     }
   }
@@ -10683,15 +7075,8 @@ class AudioRejectContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->confId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
           if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->hostId);
+            $xfer += $input->readI32($this->confId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -10710,13 +7095,8 @@ class AudioRejectContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('AudioRejectContent');
     if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::STRING, 1);
-      $xfer += $output->writeString($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->hostId !== null) {
-      $xfer += $output->writeFieldBegin('hostId', TType::I32, 2);
-      $xfer += $output->writeI32($this->hostId);
+      $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
+      $xfer += $output->writeI32($this->confId);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -10730,17 +7110,12 @@ class AudioStopContent {
   static $_TSPEC;
 
   public $confId = null;
-  public $hostId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
           'var' => 'confId',
-          'type' => TType::STRING,
-          ),
-        2 => array(
-          'var' => 'hostId',
           'type' => TType::I32,
           ),
         );
@@ -10748,9 +7123,6 @@ class AudioStopContent {
     if (is_array($vals)) {
       if (isset($vals['confId'])) {
         $this->confId = $vals['confId'];
-      }
-      if (isset($vals['hostId'])) {
-        $this->hostId = $vals['hostId'];
       }
     }
   }
@@ -10775,15 +7147,8 @@ class AudioStopContent {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->confId);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
           if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->hostId);
+            $xfer += $input->readI32($this->confId);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -10802,13 +7167,8 @@ class AudioStopContent {
     $xfer = 0;
     $xfer += $output->writeStructBegin('AudioStopContent');
     if ($this->confId !== null) {
-      $xfer += $output->writeFieldBegin('confId', TType::STRING, 1);
-      $xfer += $output->writeString($this->confId);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->hostId !== null) {
-      $xfer += $output->writeFieldBegin('hostId', TType::I32, 2);
-      $xfer += $output->writeI32($this->hostId);
+      $xfer += $output->writeFieldBegin('confId', TType::I32, 1);
+      $xfer += $output->writeI32($this->confId);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -11054,78 +7414,6 @@ class AudioRecentCallContent {
 
 }
 
-class AudioCancelCallContent {
-  static $_TSPEC;
-
-  public $phoneNum = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'phoneNum',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['phoneNum'])) {
-        $this->phoneNum = $vals['phoneNum'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'AudioCancelCallContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->phoneNum);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('AudioCancelCallContent');
-    if ($this->phoneNum !== null) {
-      $xfer += $output->writeFieldBegin('phoneNum', TType::STRING, 1);
-      $xfer += $output->writeString($this->phoneNum);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class CardUpdateContent {
   static $_TSPEC;
 
@@ -11318,78 +7606,6 @@ class ContacterDelContent {
 
 }
 
-class WBMessageContent {
-  static $_TSPEC;
-
-  public $text = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'text',
-          'type' => TType::STRING,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['text'])) {
-        $this->text = $vals['text'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'WBMessageContent';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->text);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('WBMessageContent');
-    if ($this->text !== null) {
-      $xfer += $output->writeFieldBegin('text', TType::STRING, 1);
-      $xfer += $output->writeString($this->text);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
 class JID {
   static $_TSPEC;
 
@@ -11517,7 +7733,6 @@ class UcMessageHead {
   public $to = null;
   public $conversation = null;
   public $length = null;
-  public $toPrivate = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -11572,11 +7787,6 @@ class UcMessageHead {
           'var' => 'length',
           'type' => TType::I32,
           ),
-        14 => array(
-          'var' => 'toPrivate',
-          'type' => TType::STRUCT,
-          'class' => '\uc\JID',
-          ),
         );
     }
     if (is_array($vals)) {
@@ -11615,9 +7825,6 @@ class UcMessageHead {
       }
       if (isset($vals['length'])) {
         $this->length = $vals['length'];
-      }
-      if (isset($vals['toPrivate'])) {
-        $this->toPrivate = $vals['toPrivate'];
       }
     }
   }
@@ -11727,14 +7934,6 @@ class UcMessageHead {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 14:
-          if ($ftype == TType::STRUCT) {
-            $this->toPrivate = new \uc\JID();
-            $xfer += $this->toPrivate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -11814,14 +8013,6 @@ class UcMessageHead {
       $xfer += $output->writeI32($this->length);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->toPrivate !== null) {
-      if (!is_object($this->toPrivate)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('toPrivate', TType::STRUCT, 14);
-      $xfer += $this->toPrivate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -11839,27 +8030,12 @@ class UcMessageBody {
   public $ackRead = null;
   public $sleep = null;
   public $wakeupConfirm = null;
-  public $ackPlay = null;
   public $text = null;
   public $media = null;
   public $groupAdd = null;
   public $groupDel = null;
   public $groupUpdate = null;
   public $groupCreate = null;
-  public $groupTop = null;
-  public $summaryCreate = null;
-  public $docSend = null;
-  public $alertRule = null;
-  public $groupClose = null;
-  public $msgNotify = null;
-  public $groupKick = null;
-  public $codeCreate = null;
-  public $codeDel = null;
-  public $docDel = null;
-  public $commentCreate = null;
-  public $commentDel = null;
-  public $groupAvatarUpdate = null;
-  public $groupState = null;
   public $welcome = null;
   public $clientUpdate = null;
   public $completeInfo = null;
@@ -11868,8 +8044,6 @@ class UcMessageBody {
   public $pcGuide = null;
   public $mobileGuide = null;
   public $pwdModify = null;
-  public $tagDel = null;
-  public $remind = null;
   public $deptUpdate = null;
   public $deptTransfer = null;
   public $positionUpdate = null;
@@ -11890,9 +8064,6 @@ class UcMessageBody {
   public $confAlert = null;
   public $instantReceive = null;
   public $instantReject = null;
-  public $confChat = null;
-  public $confSummary = null;
-  public $callState = null;
   public $cardUpdate = null;
   public $contacterAdd = null;
   public $contacterDel = null;
@@ -11907,9 +8078,7 @@ class UcMessageBody {
   public $callRecent = null;
   public $callBlock = null;
   public $callReject = null;
-  public $callCancel = null;
   public $confShare = null;
-  public $wbContent = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -11949,11 +8118,6 @@ class UcMessageBody {
           'type' => TType::STRUCT,
           'class' => '\uc\WakeupResult',
           ),
-        25 => array(
-          'var' => 'ackPlay',
-          'type' => TType::STRUCT,
-          'class' => '\uc\AckPlay',
-          ),
         50 => array(
           'var' => 'text',
           'type' => TType::STRUCT,
@@ -11983,76 +8147,6 @@ class UcMessageBody {
           'var' => 'groupCreate',
           'type' => TType::STRUCT,
           'class' => '\uc\GroupCreateContent',
-          ),
-        56 => array(
-          'var' => 'groupTop',
-          'type' => TType::STRUCT,
-          'class' => '\uc\GroupTopContent',
-          ),
-        57 => array(
-          'var' => 'summaryCreate',
-          'type' => TType::STRUCT,
-          'class' => '\uc\SummaryCreateContent',
-          ),
-        58 => array(
-          'var' => 'docSend',
-          'type' => TType::STRUCT,
-          'class' => '\uc\DocumentContent',
-          ),
-        59 => array(
-          'var' => 'alertRule',
-          'type' => TType::STRUCT,
-          'class' => '\uc\AlertRuleContent',
-          ),
-        60 => array(
-          'var' => 'groupClose',
-          'type' => TType::STRUCT,
-          'class' => '\uc\DiscussionClose',
-          ),
-        61 => array(
-          'var' => 'msgNotify',
-          'type' => TType::STRUCT,
-          'class' => '\uc\MsgNotifyContent',
-          ),
-        62 => array(
-          'var' => 'groupKick',
-          'type' => TType::STRUCT,
-          'class' => '\uc\GroupMemberKickContent',
-          ),
-        63 => array(
-          'var' => 'codeCreate',
-          'type' => TType::STRUCT,
-          'class' => '\uc\CodeCreateContent',
-          ),
-        64 => array(
-          'var' => 'codeDel',
-          'type' => TType::STRUCT,
-          'class' => '\uc\CodeDelContent',
-          ),
-        65 => array(
-          'var' => 'docDel',
-          'type' => TType::STRUCT,
-          'class' => '\uc\DocumentDelContent',
-          ),
-        66 => array(
-          'var' => 'commentCreate',
-          'type' => TType::STRUCT,
-          'class' => '\uc\CommentCreateContent',
-          ),
-        67 => array(
-          'var' => 'commentDel',
-          'type' => TType::STRUCT,
-          'class' => '\uc\CommentDelContent',
-          ),
-        68 => array(
-          'var' => 'groupAvatarUpdate',
-          'type' => TType::STRUCT,
-          'class' => '\uc\GroupAvatarUpdateContent',
-          ),
-        69 => array(
-          'var' => 'groupState',
-          'type' => TType::STRUCT,
-          'class' => '\uc\GroupStateUpdateContent',
           ),
         100 => array(
           'var' => 'welcome',
@@ -12093,16 +8187,6 @@ class UcMessageBody {
           'var' => 'pwdModify',
           'type' => TType::STRUCT,
           'class' => '\uc\PasswordModifyContent',
-          ),
-        108 => array(
-          'var' => 'tagDel',
-          'type' => TType::STRUCT,
-          'class' => '\uc\TagDelContent',
-          ),
-        109 => array(
-          'var' => 'remind',
-          'type' => TType::STRUCT,
-          'class' => '\uc\GroupRemindContent',
           ),
         150 => array(
           'var' => 'deptUpdate',
@@ -12204,21 +8288,6 @@ class UcMessageBody {
           'type' => TType::STRUCT,
           'class' => '\uc\InstantIQRejectContent',
           ),
-        209 => array(
-          'var' => 'confChat',
-          'type' => TType::STRUCT,
-          'class' => '\uc\ConfChatContent',
-          ),
-        210 => array(
-          'var' => 'confSummary',
-          'type' => TType::STRUCT,
-          'class' => '\uc\ConfSummaryContent',
-          ),
-        211 => array(
-          'var' => 'callState',
-          'type' => TType::STRUCT,
-          'class' => '\uc\CallStateContent',
-          ),
         250 => array(
           'var' => 'cardUpdate',
           'type' => TType::STRUCT,
@@ -12289,20 +8358,10 @@ class UcMessageBody {
           'type' => TType::STRUCT,
           'class' => '\uc\AudioRejectCallContent',
           ),
-        357 => array(
-          'var' => 'callCancel',
-          'type' => TType::STRUCT,
-          'class' => '\uc\AudioCancelCallContent',
-          ),
         400 => array(
           'var' => 'confShare',
           'type' => TType::STRUCT,
           'class' => '\uc\ConfShareContent',
-          ),
-        450 => array(
-          'var' => 'wbContent',
-          'type' => TType::STRUCT,
-          'class' => '\uc\WBMessageContent',
           ),
         );
     }
@@ -12328,9 +8387,6 @@ class UcMessageBody {
       if (isset($vals['wakeupConfirm'])) {
         $this->wakeupConfirm = $vals['wakeupConfirm'];
       }
-      if (isset($vals['ackPlay'])) {
-        $this->ackPlay = $vals['ackPlay'];
-      }
       if (isset($vals['text'])) {
         $this->text = $vals['text'];
       }
@@ -12348,48 +8404,6 @@ class UcMessageBody {
       }
       if (isset($vals['groupCreate'])) {
         $this->groupCreate = $vals['groupCreate'];
-      }
-      if (isset($vals['groupTop'])) {
-        $this->groupTop = $vals['groupTop'];
-      }
-      if (isset($vals['summaryCreate'])) {
-        $this->summaryCreate = $vals['summaryCreate'];
-      }
-      if (isset($vals['docSend'])) {
-        $this->docSend = $vals['docSend'];
-      }
-      if (isset($vals['alertRule'])) {
-        $this->alertRule = $vals['alertRule'];
-      }
-      if (isset($vals['groupClose'])) {
-        $this->groupClose = $vals['groupClose'];
-      }
-      if (isset($vals['msgNotify'])) {
-        $this->msgNotify = $vals['msgNotify'];
-      }
-      if (isset($vals['groupKick'])) {
-        $this->groupKick = $vals['groupKick'];
-      }
-      if (isset($vals['codeCreate'])) {
-        $this->codeCreate = $vals['codeCreate'];
-      }
-      if (isset($vals['codeDel'])) {
-        $this->codeDel = $vals['codeDel'];
-      }
-      if (isset($vals['docDel'])) {
-        $this->docDel = $vals['docDel'];
-      }
-      if (isset($vals['commentCreate'])) {
-        $this->commentCreate = $vals['commentCreate'];
-      }
-      if (isset($vals['commentDel'])) {
-        $this->commentDel = $vals['commentDel'];
-      }
-      if (isset($vals['groupAvatarUpdate'])) {
-        $this->groupAvatarUpdate = $vals['groupAvatarUpdate'];
-      }
-      if (isset($vals['groupState'])) {
-        $this->groupState = $vals['groupState'];
       }
       if (isset($vals['welcome'])) {
         $this->welcome = $vals['welcome'];
@@ -12414,12 +8428,6 @@ class UcMessageBody {
       }
       if (isset($vals['pwdModify'])) {
         $this->pwdModify = $vals['pwdModify'];
-      }
-      if (isset($vals['tagDel'])) {
-        $this->tagDel = $vals['tagDel'];
-      }
-      if (isset($vals['remind'])) {
-        $this->remind = $vals['remind'];
       }
       if (isset($vals['deptUpdate'])) {
         $this->deptUpdate = $vals['deptUpdate'];
@@ -12481,15 +8489,6 @@ class UcMessageBody {
       if (isset($vals['instantReject'])) {
         $this->instantReject = $vals['instantReject'];
       }
-      if (isset($vals['confChat'])) {
-        $this->confChat = $vals['confChat'];
-      }
-      if (isset($vals['confSummary'])) {
-        $this->confSummary = $vals['confSummary'];
-      }
-      if (isset($vals['callState'])) {
-        $this->callState = $vals['callState'];
-      }
       if (isset($vals['cardUpdate'])) {
         $this->cardUpdate = $vals['cardUpdate'];
       }
@@ -12532,14 +8531,8 @@ class UcMessageBody {
       if (isset($vals['callReject'])) {
         $this->callReject = $vals['callReject'];
       }
-      if (isset($vals['callCancel'])) {
-        $this->callCancel = $vals['callCancel'];
-      }
       if (isset($vals['confShare'])) {
         $this->confShare = $vals['confShare'];
-      }
-      if (isset($vals['wbContent'])) {
-        $this->wbContent = $vals['wbContent'];
       }
     }
   }
@@ -12619,14 +8612,6 @@ class UcMessageBody {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 25:
-          if ($ftype == TType::STRUCT) {
-            $this->ackPlay = new \uc\AckPlay();
-            $xfer += $this->ackPlay->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         case 50:
           if ($ftype == TType::STRUCT) {
             $this->text = new \uc\TextContent();
@@ -12671,118 +8656,6 @@ class UcMessageBody {
           if ($ftype == TType::STRUCT) {
             $this->groupCreate = new \uc\GroupCreateContent();
             $xfer += $this->groupCreate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 56:
-          if ($ftype == TType::STRUCT) {
-            $this->groupTop = new \uc\GroupTopContent();
-            $xfer += $this->groupTop->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 57:
-          if ($ftype == TType::STRUCT) {
-            $this->summaryCreate = new \uc\SummaryCreateContent();
-            $xfer += $this->summaryCreate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 58:
-          if ($ftype == TType::STRUCT) {
-            $this->docSend = new \uc\DocumentContent();
-            $xfer += $this->docSend->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 59:
-          if ($ftype == TType::STRUCT) {
-            $this->alertRule = new \uc\AlertRuleContent();
-            $xfer += $this->alertRule->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 60:
-          if ($ftype == TType::STRUCT) {
-            $this->groupClose = new \uc\DiscussionClose();
-            $xfer += $this->groupClose->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 61:
-          if ($ftype == TType::STRUCT) {
-            $this->msgNotify = new \uc\MsgNotifyContent();
-            $xfer += $this->msgNotify->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 62:
-          if ($ftype == TType::STRUCT) {
-            $this->groupKick = new \uc\GroupMemberKickContent();
-            $xfer += $this->groupKick->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 63:
-          if ($ftype == TType::STRUCT) {
-            $this->codeCreate = new \uc\CodeCreateContent();
-            $xfer += $this->codeCreate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 64:
-          if ($ftype == TType::STRUCT) {
-            $this->codeDel = new \uc\CodeDelContent();
-            $xfer += $this->codeDel->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 65:
-          if ($ftype == TType::STRUCT) {
-            $this->docDel = new \uc\DocumentDelContent();
-            $xfer += $this->docDel->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 66:
-          if ($ftype == TType::STRUCT) {
-            $this->commentCreate = new \uc\CommentCreateContent();
-            $xfer += $this->commentCreate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 67:
-          if ($ftype == TType::STRUCT) {
-            $this->commentDel = new \uc\CommentDelContent();
-            $xfer += $this->commentDel->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 68:
-          if ($ftype == TType::STRUCT) {
-            $this->groupAvatarUpdate = new \uc\GroupAvatarUpdateContent();
-            $xfer += $this->groupAvatarUpdate->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 69:
-          if ($ftype == TType::STRUCT) {
-            $this->groupState = new \uc\GroupStateUpdateContent();
-            $xfer += $this->groupState->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -12847,22 +8720,6 @@ class UcMessageBody {
           if ($ftype == TType::STRUCT) {
             $this->pwdModify = new \uc\PasswordModifyContent();
             $xfer += $this->pwdModify->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 108:
-          if ($ftype == TType::STRUCT) {
-            $this->tagDel = new \uc\TagDelContent();
-            $xfer += $this->tagDel->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 109:
-          if ($ftype == TType::STRUCT) {
-            $this->remind = new \uc\GroupRemindContent();
-            $xfer += $this->remind->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -13027,30 +8884,6 @@ class UcMessageBody {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 209:
-          if ($ftype == TType::STRUCT) {
-            $this->confChat = new \uc\ConfChatContent();
-            $xfer += $this->confChat->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 210:
-          if ($ftype == TType::STRUCT) {
-            $this->confSummary = new \uc\ConfSummaryContent();
-            $xfer += $this->confSummary->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 211:
-          if ($ftype == TType::STRUCT) {
-            $this->callState = new \uc\CallStateContent();
-            $xfer += $this->callState->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         case 250:
           if ($ftype == TType::STRUCT) {
             $this->cardUpdate = new \uc\CardUpdateContent();
@@ -13163,26 +8996,10 @@ class UcMessageBody {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 357:
-          if ($ftype == TType::STRUCT) {
-            $this->callCancel = new \uc\AudioCancelCallContent();
-            $xfer += $this->callCancel->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
         case 400:
           if ($ftype == TType::STRUCT) {
             $this->confShare = new \uc\ConfShareContent();
             $xfer += $this->confShare->read($input);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 450:
-          if ($ftype == TType::STRUCT) {
-            $this->wbContent = new \uc\WBMessageContent();
-            $xfer += $this->wbContent->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -13256,14 +9073,6 @@ class UcMessageBody {
       $xfer += $this->wakeupConfirm->write($output);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->ackPlay !== null) {
-      if (!is_object($this->ackPlay)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('ackPlay', TType::STRUCT, 25);
-      $xfer += $this->ackPlay->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->text !== null) {
       if (!is_object($this->text)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
@@ -13310,118 +9119,6 @@ class UcMessageBody {
       }
       $xfer += $output->writeFieldBegin('groupCreate', TType::STRUCT, 55);
       $xfer += $this->groupCreate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupTop !== null) {
-      if (!is_object($this->groupTop)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupTop', TType::STRUCT, 56);
-      $xfer += $this->groupTop->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->summaryCreate !== null) {
-      if (!is_object($this->summaryCreate)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('summaryCreate', TType::STRUCT, 57);
-      $xfer += $this->summaryCreate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->docSend !== null) {
-      if (!is_object($this->docSend)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('docSend', TType::STRUCT, 58);
-      $xfer += $this->docSend->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->alertRule !== null) {
-      if (!is_object($this->alertRule)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('alertRule', TType::STRUCT, 59);
-      $xfer += $this->alertRule->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupClose !== null) {
-      if (!is_object($this->groupClose)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupClose', TType::STRUCT, 60);
-      $xfer += $this->groupClose->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->msgNotify !== null) {
-      if (!is_object($this->msgNotify)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('msgNotify', TType::STRUCT, 61);
-      $xfer += $this->msgNotify->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupKick !== null) {
-      if (!is_object($this->groupKick)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupKick', TType::STRUCT, 62);
-      $xfer += $this->groupKick->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->codeCreate !== null) {
-      if (!is_object($this->codeCreate)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('codeCreate', TType::STRUCT, 63);
-      $xfer += $this->codeCreate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->codeDel !== null) {
-      if (!is_object($this->codeDel)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('codeDel', TType::STRUCT, 64);
-      $xfer += $this->codeDel->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->docDel !== null) {
-      if (!is_object($this->docDel)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('docDel', TType::STRUCT, 65);
-      $xfer += $this->docDel->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->commentCreate !== null) {
-      if (!is_object($this->commentCreate)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('commentCreate', TType::STRUCT, 66);
-      $xfer += $this->commentCreate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->commentDel !== null) {
-      if (!is_object($this->commentDel)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('commentDel', TType::STRUCT, 67);
-      $xfer += $this->commentDel->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupAvatarUpdate !== null) {
-      if (!is_object($this->groupAvatarUpdate)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupAvatarUpdate', TType::STRUCT, 68);
-      $xfer += $this->groupAvatarUpdate->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->groupState !== null) {
-      if (!is_object($this->groupState)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('groupState', TType::STRUCT, 69);
-      $xfer += $this->groupState->write($output);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->welcome !== null) {
@@ -13486,22 +9183,6 @@ class UcMessageBody {
       }
       $xfer += $output->writeFieldBegin('pwdModify', TType::STRUCT, 107);
       $xfer += $this->pwdModify->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->tagDel !== null) {
-      if (!is_object($this->tagDel)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('tagDel', TType::STRUCT, 108);
-      $xfer += $this->tagDel->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->remind !== null) {
-      if (!is_object($this->remind)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('remind', TType::STRUCT, 109);
-      $xfer += $this->remind->write($output);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->deptUpdate !== null) {
@@ -13664,30 +9345,6 @@ class UcMessageBody {
       $xfer += $this->instantReject->write($output);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->confChat !== null) {
-      if (!is_object($this->confChat)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('confChat', TType::STRUCT, 209);
-      $xfer += $this->confChat->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->confSummary !== null) {
-      if (!is_object($this->confSummary)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('confSummary', TType::STRUCT, 210);
-      $xfer += $this->confSummary->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->callState !== null) {
-      if (!is_object($this->callState)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('callState', TType::STRUCT, 211);
-      $xfer += $this->callState->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->cardUpdate !== null) {
       if (!is_object($this->cardUpdate)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
@@ -13800,28 +9457,12 @@ class UcMessageBody {
       $xfer += $this->callReject->write($output);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->callCancel !== null) {
-      if (!is_object($this->callCancel)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('callCancel', TType::STRUCT, 357);
-      $xfer += $this->callCancel->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->confShare !== null) {
       if (!is_object($this->confShare)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('confShare', TType::STRUCT, 400);
       $xfer += $this->confShare->write($output);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->wbContent !== null) {
-      if (!is_object($this->wbContent)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('wbContent', TType::STRUCT, 450);
-      $xfer += $this->wbContent->write($output);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

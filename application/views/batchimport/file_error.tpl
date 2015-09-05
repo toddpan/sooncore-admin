@@ -22,6 +22,7 @@
 				{$msg}
 			</li>
 		</ul>
+		<b class="bgTL"></b><b class="bgTR"></b><b class="bgBL"></b><b class="bgBR"></b> 
 	</div>
 	<a onclick="loadCont('{if $operate_type == 0 }{site_url('batchimport/index')}{else}{site_url('staff/batchModifyStaff')}{/if}')" class="linkGoback" style="margin-left:0">&lt;&lt;&nbsp;返回重新导入&nbsp;</a> 
 </div>

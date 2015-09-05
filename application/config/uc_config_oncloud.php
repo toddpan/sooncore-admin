@@ -23,12 +23,6 @@ define('UC_DB_USERNAME','dstatusnet');//帐号
 define('UC_DB_PASSWORD','lkjijn');//密码
 define('UC_DB_DATABASE','statusnet');//数据库
 
-//ucc server 地址
-define('UCCSERVER_DB_HOSTNAME','192.168.87.127');//主机
-define('UCCSERVER_DB_USERNAME','dstatusnet');//帐号
-define('UCCSERVER_DB_PASSWORD','lkjijn');//密码
-define('UCCSERVER_DB_DATABASE','statusnet');//数据库
-
 //uc cas(client access service)数据库地址
 define('DOMAIN_DB_HOSTNAME','192.168.87.127');//主机
 define('DOMAIN_DB_USERNAME','dstatusnet');//帐号

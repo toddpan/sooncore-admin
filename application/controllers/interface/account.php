@@ -213,7 +213,6 @@ class Account extends Api_Controller{
 		}
 		
 		//4.根据账号操作类型，去做相应的回滚
-		/*
 		log_message('info', 'rollback user.');
 		list($flag, $msg) = $this->_rollback($failed_list, $history_users, $type);
 		if(!$flag){
@@ -221,7 +220,6 @@ class Account extends Api_Controller{
 		}else{
 			log_message('info', 'all users rollback success');
 		}
-		*/
 		
 		#操作成功
 		return_json(COMMON_SUCCESS, 'success');
@@ -256,16 +254,16 @@ class Account extends Api_Controller{
 			switch($type){
 				case 'create':
 				case 'enable':
-					//$ret_local_status = $this->account->setUserstatus($user['id'], UC_USER_STATUS_DISABLE);//本地用户状态置为禁用
-					//$ret_ums   		  = $this->ums->setUserProduct($old_user['siteId'], $user['id'], UC_PRODUCT_ID, UMS_USER_STATUS_CLOSE);//ums端用户产品状态置为关闭
+					$ret_local_status = $this->account->setUserstatus($user['id'], UC_USER_STATUS_DISABLE);//本地用户状态置为禁用
+					$ret_ums   		  = $this->ums->setUserProduct($old_user['siteId'], $user['id'], UC_PRODUCT_ID, UMS_USER_STATUS_CLOSE);//ums端用户产品状态置为关闭
 					break;
 				case 'delete':
 				case 'disable':
-					//$ret_local_status = $this->account->setUserstatus($user['id'], UC_USER_STATUS_ENABLE);//本地用户状态置为启用
-					//$ret_ums          = $this->ums->setUserProduct($old_user['siteId'], $user['id'], UC_PRODUCT_ID, UMS_USER_STATUS_OPEN);//ums端用户产品状态置为开通
+					$ret_local_status = $this->account->setUserstatus($user['id'], UC_USER_STATUS_ENABLE);//本地用户状态置为启用
+					$ret_ums          = $this->ums->setUserProduct($old_user['siteId'], $user['id'], UC_PRODUCT_ID, UMS_USER_STATUS_OPEN);//ums端用户产品状态置为开通
 					break;
 				case 'update':
-					//$ret_local_power  = $this->account->userPowerRollback($user['id']);
+					$ret_local_power  = $this->account->userPowerRollback($user['id']);
 					break;
 				default:
 					break;

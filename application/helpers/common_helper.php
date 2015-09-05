@@ -25,21 +25,13 @@
  * @return mixed
  *
  */
-function cache($cmd, $key, $value=null, $expire=7200) {
+function cache($cmd, $key, $value=null, $expire=3600) {
 	static $ways = NULL;
 	$CI =& get_instance();
-	
- 	// memcached方式
 	if( is_null($ways) ){
 		$CI->load->driver('cache');
 		$ways = 'memcached';
 	}
-
-	// redis 方式
-// 	if( is_null($ways) ){
-// 		$CI->load->driver('cache', array('adapter' => 'redis'));
-// 		$ways = 'redis';
-// 	}
 	switch ($cmd) {
 		case 'get':
 			return $CI->cache->$ways->get($key);

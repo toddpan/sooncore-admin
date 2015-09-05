@@ -294,7 +294,15 @@ class StaffLib{
 		foreach($user_id_arr as $k => $v){//遍历调入的用户数组
 			$user_id = arr_unbound_value($v,'userid',2,'');//用户id
 			//根据用户id，判断用户是否是组织管理者
+			// $is_manager = arr_unbound_value($v,'is_manager',2,'');//是否组织管理者0不是1是
 			$ns_ok_sys_obj = $sys_obj;
+			//            //获得用户类型
+			//            $user_type_arr = array(
+			//                'userid' => $user_id,//用户id
+			//                'adminstate' => 1,//0：停用；1：启用
+			//            );
+			//            $user_type = $this->get_usertype_byuserid($user_type_arr);
+			//            $ns_ok_sys_obj['sys']['user_type'] = $user_type;
 			$old_org_id = arr_unbound_value($v,'orgid',2,'');//旧组织id
 			if($org_id != $old_org_id){//新旧组织不一样，才是调岗
 
@@ -317,13 +325,37 @@ class StaffLib{
 					$err_msg = ' usm api rs/organizations/change_organization $user_id=' . $user_id . ' fail .';
 					log_message('error', $err_msg);
 					$is_change_success = 0;//变更组织是否成功0没有成功1成功
+					//return false;
 				}else{
+					//$change_org_data = arr_unbound_value($change_org_arr,'data',1,array());
 					$err_msg = ' usm api rs/organizations/change_organization $user_id=' . $user_id . '  success .';
 					log_message('debug', $err_msg);
+					// return true;
 				}
 
 				if($is_change_success == 1){//变更组织是否成功0没有成功1成功
-					
+					//如果是旧组织管理者,新旧组织不一样时，删除旧组织管理者
+					//if($org_id != $old_org_id){
+					// if($is_manager == 1){
+					//设置成组织管理者
+					//                                $in_arr = array(
+					//                                    'org_id' => $org_id,//组织id
+					//                                    'site_id' => $site_id,//站点id
+					//                                    'user_id' => $user_id,//用户id
+					//                                    'isset' => 1,//0取消，1设置修改
+					//                                );
+					//                              $sys_arr = $sys_arr;
+					//                              $new_org_arr = $CI-> OrganizeLib->modify_manager($in_arr,$sys_arr);
+					//                            $where_arr = array(
+					//                                'user_id' => $user_id,
+					//                            );
+					//                            $modify_arr = array(
+					//                                'org_id' => $aaa,
+					//                                'site_id' => $aaa,
+					//                                'user_id' => $user_id,
+					//                            );
+					//                           $CI->uc_org_manager_model->set_manager($where_arr,$modify_arr);
+					// }else{
 					//如果是组织管理者，则取消组织管理者
 					if($is_manager == 1){
 						$in_arr = array(
@@ -332,51 +364,56 @@ class StaffLib{
                                     'user_id' => $user_id,//用户id
                                     'isset' => 0,//0取消，1设置修改
 						);
-						$operate_boolean = $CI->OrganizeLib->modify_manager($in_arr,$sys_arr);
+						// $sys_arr = $sys_arr;
+					//}
+					$operate_boolean = $CI->OrganizeLib->modify_manager($in_arr,$sys_arr);
+					// $CI->uc_org_manager_model->del_org_manager($user_id);
+					//}
+
+					 }
+
+
+					//判断用户是否有自己的权限
+					$user_boolean = $this->user_has_power($user_id);
+					if($user_boolean){//用户有自己权限
+						$not_update_pwoer_arr[] = $user_id;//不需要更新权限
+					}else{
+						if($has_neworg_power == 1){//是否有新组织权限0没有1有
+							$update_org_pwoer_arr[] = $user_id;//需要更新到当前组织权限
+						}else{//是否为站点权限[如果旧组织有权限，则需要修改用户权限为站点权限，如果旧组织也是站点权限，则不用更新]
+							//获得旧组织权限
+							//旧的组织
+							$ns_old_org_arr = arr_unbound_value($old_orgid_arr,$old_org_id,1,array());
+							if(isemptyArray($ns_old_org_arr)){//如果是空数组
+								$ns_old_org_arr = $CI-> OrganizeLib->get_org_by_id($old_org_id);
+								$old_orgid_arr[$old_org_id] = $ns_old_org_arr;
+							}
+							$old_org_code = arr_unbound_value($ns_old_org_arr,'nodeCode',2,'');//旧组织的组织id串
+
+							//先从数组中获取
+							$ns_oldorg_power_components_arr = arr_unbound_value($old_orgid_power_arr,$old_org_id,1,array());//旧组织权限数组
+							if(isemptyArray($ns_oldorg_power_components_arr)){//如果是空数组,则再去获取
+								$power_in_arr = array(
+                                     'userid' => 0,//用户id
+                                     'org_code' => $old_org_code,//组织id串  -500-501-502-503
+                                     'siteid' => 0//站点id
+								);
+								$ns_oldorg_components_arr = $CI->PowerLib->get_components($power_in_arr);
+								if(!isemptyArray($ns_oldorg_components_arr)){//如果不是空数组
+									//$ns_oldorg_from_num = isset($ns_oldorg_components_arr['from_num'])?$ns_oldorg_components_arr['from_num']:0;//从哪里获得的 0没有1用户2组织3站点
+									//$ns_oldorg_power_org_code = isset($ns_oldorg_components_arr['power_org_code'])?$ns_oldorg_components_arr['power_org_code']:'';//
+									$ns_oldorg_power_components_arr = isset($ns_oldorg_components_arr['components'])?$ns_oldorg_components_arr['components']:array();
+									$old_orgid_power_arr[$old_org_id] = $ns_oldorg_power_components_arr;
+								}
+
+							}
+							if(!isemptyArray($ns_oldorg_power_components_arr)){//如果不是空数组,有旧部门权限,更新
+								$update_org_site_arr[] = $user_id;//需要更新到当前站点权限
+							}else{//是站点权限，不用更新
+								$not_update_pwoer_arr[] = $user_id;//不需要更新权限
+							}
+						}
 					}
-
-
-// 					//判断用户是否有自己的权限
-// 					$user_boolean = $this->user_has_power($user_id);
-// 					if($user_boolean){//用户有自己权限
-// 						$not_update_pwoer_arr[] = $user_id;//不需要更新权限
-// 					}else{
-// 						if($has_neworg_power == 1){//是否有新组织权限0没有1有
-// 							$update_org_pwoer_arr[] = $user_id;//需要更新到当前组织权限
-// 						}else{//是否为站点权限[如果旧组织有权限，则需要修改用户权限为站点权限，如果旧组织也是站点权限，则不用更新]
-// 							//获得旧组织权限
-// 							//旧的组织
-// 							$ns_old_org_arr = arr_unbound_value($old_orgid_arr,$old_org_id,1,array());
-// 							if(isemptyArray($ns_old_org_arr)){//如果是空数组
-// 								$ns_old_org_arr = $CI-> OrganizeLib->get_org_by_id($old_org_id);
-// 								$old_orgid_arr[$old_org_id] = $ns_old_org_arr;
-// 							}
-// 							$old_org_code = arr_unbound_value($ns_old_org_arr,'nodeCode',2,'');//旧组织的组织id串
-
-// 							//先从数组中获取
-// 							$ns_oldorg_power_components_arr = arr_unbound_value($old_orgid_power_arr,$old_org_id,1,array());//旧组织权限数组
-// 							if(isemptyArray($ns_oldorg_power_components_arr)){//如果是空数组,则再去获取
-// 								$power_in_arr = array(
-//                                      'userid' => 0,//用户id
-//                                      'org_code' => $old_org_code,//组织id串  -500-501-502-503
-//                                      'siteid' => 0//站点id
-// 								);
-// 								$ns_oldorg_components_arr = $CI->PowerLib->get_components($power_in_arr);
-// 								if(!isemptyArray($ns_oldorg_components_arr)){//如果不是空数组
-// 									//$ns_oldorg_from_num = isset($ns_oldorg_components_arr['from_num'])?$ns_oldorg_components_arr['from_num']:0;//从哪里获得的 0没有1用户2组织3站点
-// 									//$ns_oldorg_power_org_code = isset($ns_oldorg_components_arr['power_org_code'])?$ns_oldorg_components_arr['power_org_code']:'';//
-// 									$ns_oldorg_power_components_arr = isset($ns_oldorg_components_arr['components'])?$ns_oldorg_components_arr['components']:array();
-// 									$old_orgid_power_arr[$old_org_id] = $ns_oldorg_power_components_arr;
-// 								}
-
-// 							}
-// 							if(!isemptyArray($ns_oldorg_power_components_arr)){//如果不是空数组,有旧部门权限,更新
-// 								$update_org_site_arr[] = $user_id;//需要更新到当前站点权限
-// 							}else{//是站点权限，不用更新
-// 								$not_update_pwoer_arr[] = $user_id;//不需要更新权限
-// 							}
-// 						}
-// 					}
 
 				}
 				//发送组织消息
@@ -387,15 +424,6 @@ class StaffLib{
                     'old_org_id' => $old_org_id,//旧组织id
 				);
 				$CI->Informationlib->send_ing($sys_arr,array('msg_id' => 2,'msg_arr' => $msg_arr));
-				
-				// 调用UCC接口创建新的同事关系
-				$data = 'user_id=' . $user_id . '&org_id=' . $org_id . '&parent_id=' . $org_pid;
-				$api_arr = $CI->API->UCCServerAPI($data, 9);
-				if(api_operate_fail($api_arr)){//失败
-					log_message('error', 'uccapi async/createColleague fail.');
-				}else{
-					log_message('debug', 'uccapi async/createColleague success.');
-				}
 			}
 		}
 		//日志
@@ -404,65 +432,65 @@ class StaffLib{
 		$re_id = $CI->LogLib ->set_log(array('5','6'),$log_in_arr);
 		//分别对不对权限修改用户进行操作
 		//不需要更新权限,不进行操作了
-// 		if(!isemptyArray($not_update_pwoer_arr)){
+		if(!isemptyArray($not_update_pwoer_arr)){
 
-// 		}
+		}
 		//需要更新到当前组织权限
-// 		if(!isemptyArray($update_org_pwoer_arr)){
-// 			//保存线程，走线程update流程
-// 			// 保存线程
-// 			$power_in_arr = array(
-//                'type' => 5,//类型1站点权限2部门权限3用户权限4会议属性5用户调部门权限变更-最新的是组织权限 ；6用户调部门权限变更-最新的是站点权限
-//                'id' => '[' . implode(',', $update_org_pwoer_arr) . ']',//保存对应的id 站点是：所属组织id; 部门是部门串-500-501-502-503;用户是用户user_id；5、6是用户id串,格式 [1,2,3]
-//                'power_ower' => $power_org_code,//用户权限变更时传值; 站点是站点siteurl; 部门是部门串-500-501-502-503;用户是用户最近的组织串或siteurl；5：最新调入部门所有的权限组织串；6：当前站点siteurl
-//                'components' => $neworg_power_components_arr,//最新的权限数组               
-//                'oper_type' => '',// 组织类型，多个用,号分隔types：空：不需要[如type=5或6时]；1:企业 2:生态企业 3:部门 4:生态企业部门 5 分公司 逗号分割的字符串
-//                'obj' => $ns_ok_sys_obj,//调用boss接口需要用到的
-// 			);
-// 			$success_json = json_encode($power_in_arr);
-// 			//接口参数
-// 			$data = 'type=5&value=' . urlencode($success_json);
-// 			$uc_thread_arr = $CI->API->UCAPI($data,2,array('url' => base_url('')));
-// 			if(api_operate_fail($uc_thread_arr)){//失败
-// 				log_message('error', 'UCAPI NO 1 is fail.');
-// 			}else{
+		if(!isemptyArray($update_org_pwoer_arr)){
+			//保存线程，走线程update流程
+			// 保存线程
+			$power_in_arr = array(
+               'type' => 5,//类型1站点权限2部门权限3用户权限4会议属性5用户调部门权限变更-最新的是组织权限 ；6用户调部门权限变更-最新的是站点权限
+               'id' => '[' . implode(',', $update_org_pwoer_arr) . ']',//保存对应的id 站点是：所属组织id; 部门是部门串-500-501-502-503;用户是用户user_id；5、6是用户id串,格式 [1,2,3]
+               'power_ower' => $power_org_code,//用户权限变更时传值; 站点是站点siteurl; 部门是部门串-500-501-502-503;用户是用户最近的组织串或siteurl；5：最新调入部门所有的权限组织串；6：当前站点siteurl
+               'components' => $neworg_power_components_arr,//最新的权限数组               
+               'oper_type' => '',// 组织类型，多个用,号分隔types：空：不需要[如type=5或6时]；1:企业 2:生态企业 3:部门 4:生态企业部门 5 分公司 逗号分割的字符串
+               'obj' => $ns_ok_sys_obj,//调用boss接口需要用到的
+			);
+			$success_json = json_encode($power_in_arr);
+			//接口参数
+			$data = 'type=5&value=' . urlencode($success_json);
+			$uc_thread_arr = $CI->API->UCAPI($data,2,array('url' => base_url('')));
+			if(api_operate_fail($uc_thread_arr)){//失败
+				log_message('error', 'UCAPI NO 1 is fail.');
+			}else{
 
-// 				log_message('debug', 'UCAPI NO 1 is success.');
-// 			}
-// 		}
+				log_message('debug', 'UCAPI NO 1 is success.');
+			}
+		}
 		//需要更新到当前站点权限
-// 		if(!isemptyArray($update_org_site_arr)){
-// 			//获得站点权限
-// 			$power_in_arr = array(
-//                  'userid' => 0,//用户id
-//                  'org_code' => '',//组织id串  -500-501-502-503
-//                  'siteid' => $site_id//站点id
-// 			);
-// 			$site_components_arr = array();
-// 			$ns_components_arr = $CI->PowerLib->get_components($power_in_arr);
-// 			if(!isemptyArray($ns_components_arr)){//如果不是空数组
-// 				$from_num = isset($ns_components_arr['from_num'])?$ns_components_arr['from_num']:0;//从哪里获得的 0没有1用户2组织3站点
-// 				$site_components_arr = isset($ns_components_arr['components'])?$ns_components_arr['components']:array();
-// 			}
-// 			//保存线程，走线程update流程
-// 			$power_in_arr = array(
-//                'type' => 6,//类型1站点权限2部门权限3用户权限4会议属性5用户调部门权限变更-最新的是组织权限 ；6用户调部门权限变更-最新的是站点权限
-//                'id' => '[' . implode(',', $update_org_site_arr) . ']',//保存对应的id 站点是：所属组织id; 部门是部门串-500-501-502-503;用户是用户user_id；5、6是用户id串,格式 [1,2,3]
-//                'power_ower' => $siteURL,//用户权限变更时传值; 站点是站点siteurl; 部门是部门串-500-501-502-503;用户是用户最近的组织串或siteurl；5：最新调入部门所有的权限组织串；6：当前站点siteurl
-//                'components' => $site_components_arr,//最新的权限数组
-//                'oper_type' => '',// 组织类型，多个用,号分隔types：空：不需要[如type=5或6时]；1:企业 2:生态企业 3:部门 4:生态企业部门 5 分公司 逗号分割的字符串
-//                'obj' => $ns_ok_sys_obj,//调用boss接口需要用到的
-// 			);
-// 			$success_json = json_encode($power_in_arr);
-// 			//接口参数
-// 			$data = 'type=5&value=' . urlencode($success_json);
-// 			$uc_thread_arr = $CI->API->UCAPI($data,2,array('url' => base_url('')));
-// 			if(api_operate_fail($uc_thread_arr)){//失败
-// 				log_message('error', 'UCAPI NO 1 is fail.');
-// 			}else{
-// 				log_message('debug', 'UCAPI NO 1 is success.');
-// 			}
-// 		}
+		if(!isemptyArray($update_org_site_arr)){
+			//获得站点权限
+			$power_in_arr = array(
+                 'userid' => 0,//用户id
+                 'org_code' => '',//组织id串  -500-501-502-503
+                 'siteid' => $site_id//站点id
+			);
+			$site_components_arr = array();
+			$ns_components_arr = $CI->PowerLib->get_components($power_in_arr);
+			if(!isemptyArray($ns_components_arr)){//如果不是空数组
+				$from_num = isset($ns_components_arr['from_num'])?$ns_components_arr['from_num']:0;//从哪里获得的 0没有1用户2组织3站点
+				$site_components_arr = isset($ns_components_arr['components'])?$ns_components_arr['components']:array();
+			}
+			//保存线程，走线程update流程
+			$power_in_arr = array(
+               'type' => 6,//类型1站点权限2部门权限3用户权限4会议属性5用户调部门权限变更-最新的是组织权限 ；6用户调部门权限变更-最新的是站点权限
+               'id' => '[' . implode(',', $update_org_site_arr) . ']',//保存对应的id 站点是：所属组织id; 部门是部门串-500-501-502-503;用户是用户user_id；5、6是用户id串,格式 [1,2,3]
+               'power_ower' => $siteURL,//用户权限变更时传值; 站点是站点siteurl; 部门是部门串-500-501-502-503;用户是用户最近的组织串或siteurl；5：最新调入部门所有的权限组织串；6：当前站点siteurl
+               'components' => $site_components_arr,//最新的权限数组
+               'oper_type' => '',// 组织类型，多个用,号分隔types：空：不需要[如type=5或6时]；1:企业 2:生态企业 3:部门 4:生态企业部门 5 分公司 逗号分割的字符串
+               'obj' => $ns_ok_sys_obj,//调用boss接口需要用到的
+			);
+			$success_json = json_encode($power_in_arr);
+			//接口参数
+			$data = 'type=5&value=' . urlencode($success_json);
+			$uc_thread_arr = $CI->API->UCAPI($data,2,array('url' => base_url('')));
+			if(api_operate_fail($uc_thread_arr)){//失败
+				log_message('error', 'UCAPI NO 1 is fail.');
+			}else{
+				log_message('debug', 'UCAPI NO 1 is success.');
+			}
+		}
 		return true;
 	}
 	/**
@@ -1142,6 +1170,7 @@ class StaffLib{
 		//系统标签数组
 		$system_must_tag_arr = $tag_obj->get_must_tag_arr();
 
+		//print_r($system_must_tag_arr);
 		//获得系统员工标签值
 		foreach($system_must_tag_arr as $k => $v){
 			$tag_umsapifield = arr_unbound_value($v,'umsapifield',2,'');//标签字段
@@ -2164,194 +2193,4 @@ class StaffLib{
 		$CI->load->library('Informationlib','','Informationlib');
 		$CI->Informationlib->send_ing($sys_arr,array('msg_id' => 3,'msg_arr' => $msg_arr));
 	}
-	
-	/**
-	 * 
-	 * @brief 根据相关信息，获得当前用户的标签相关信息
-	 * @details
-	 * @param array $in_arr
-	 $in_arr = array(
-	 'user_id' => $aa,//用户id，没有写0，且不会取相关标签的值
-	 'tag_type' => $aa,//标签页面类型
-	 'site_id' => $aa,//当前站点id
-	 );
-	 * @param array $user_auto_arr 默认的用户帐号信息
-	 * @return array
-	 $re_arr = array(
-	 'user_info_arr' => $user_info_data,//用户详情信息
-	 'system_must_tag_names' => $system_must_tag_names,//系统标签名称，多个用,号分隔
-	 'system_must_tag_arr' => $system_must_tag_arr,//系统标签及其值数组
-	 'seled_not_must_tag_names' => $seled_not_must_tag_names,//可选标签名称，多个用,号分隔
-	 'seled_not_must_tag_arr' => $seled_not_must_tag_arr ,//可选标签及其值数组
-	 'user_defined_tag_names' => $user_defined_tag_names,//自定义标签名称，多个用,号分隔
-	 'user_defined_tag_arr' => $user_defined_tag_arr ,//自定义标签及其值数组
-	 );
-	 */
-	public function get_user_tag2_arr($in_arr = array(),$user_auto_arr = array()){
-		log_message('info', 'into method ' . __FUNCTION__ . '.');
-		$CI =& get_instance();
-		$CI->load->helper('my_publicfun');
-		$CI->load->library('API','','API');
-	
-		$user_id = arr_unbound_value($in_arr,'user_id',2,0);
-		$tag_type = arr_unbound_value($in_arr,'tag_type',2,4);
-		$site_id = arr_unbound_value($in_arr,'site_id',2,0);
-	
-		$re_arr = array();
-		
-		//获得当前用户信息数组
-		$user_info_data = array();
-		$user_info_data = array_merge($user_info_data, $user_auto_arr);
-		if($user_id > 0){
-			$user_info_data = $this->get_user_by_id($user_id);
-				
-			// 获得当前用户所在部门的信息
-			$CI->load->library('UmsLib', '', 'ums');
-			$org_info = $CI->ums->getOrgInfoByUserId($user_id);
-			//print_r($org_info);
-			$user_info_data['organizationId'] = isset($org_info[0]['id']) ? $org_info[0]['id'] : '';
-			$user_info_data['organizationName'] = isset($org_info[0]['name']) ? $org_info[0]['name'] : '';
-			$user_info_data['orgNodeCode'] = isset($org_info[0]['nodeCode']) ? $org_info[0]['nodeCode'] : '';
-		}
-	
-		//载入员工标签资源
-		$CI->config->load('tags2', TRUE);
-		$system_tags = $CI->config->item('system_tags', 'tags2');
-		//载入员工标签资源
-// 		include_once APPPATH . 'libraries/public/Tag_class.php';
-// 		$tag_obj = new Tag_class($tag_type);//新加员工页显示使用
-		//从数据库获得系统可选标签及自定义员工标签信息
-		$CI->load->model('UC_User_Tags_Model');
-		$tag_arr = $CI->UC_User_Tags_Model->get_tags_by_siteid($site_id,1);
-// 		$tag_obj->resolve_tag_arr($tag_arr);
-		$system_must_tag_names = $seled_not_must_tag_names = $user_defined_tag_names = '';
-		if(!empty($tag_arr)){
-			foreach ($tag_arr as $tv){
-				if($tv['tag_type'] == 1){
-					$selected_tag_arr[] 		= $tv['tag_name'];
-					$seled_not_must_tag_names	.= $tv['tag_name'].',';
-				}else {
-					$user_defined_tag_arr[]		= $tv;
-					$user_defined_tag_names		.= $tv['tag_name'].',';
-				}
-			}
-		}
-		
-		$staff_lib = new StaffLib();
-		$system_tags_arr = $staff_lib->_getSystemTagInfo($system_tags);
-		
-		$name = ($CI->config->item('language') == "english") ? 'name' : "姓名";	//姓名选项的中英文
-		$seled_not_must_tag_arr = array();
-		$system_must_tag_arr[] = array(
-							'id'    =>  0,
-							'title'  =>  $name,
-							'umsapifield'  => 'lastName',
-							'regex'  =>  '/^\S{1,50}$/',
-							'tag_value' => $user_info_data['displayName']
-						);
-		$index = 1;
-		foreach($system_tags_arr as $id=>$tag){
-			if( $id === 'lastname' OR $id === 'firstname'){
-				continue;
-			}
-			if($tag['tag_type'] == 0 && $tag['enable']){
-				$system_must_tag_arr[] = array(
-						'id'    =>  $index,
-						'title'  =>  $tag['name'],
-						'umsapifield'  => $tag['umsapifield'],
-						'regex'  =>  $tag['js_pattern'],
-						'tag_value' => ($tag['umsapifield'] == 'isopen') ? $user_info_data['productStatus'] : $user_info_data[$tag['umsapifield']]
-				);
-				$system_must_tag_names .= $tag['name'].',';
-				$index++;
-			}elseif ($tag['tag_type'] == 1 && !empty($selected_tag_arr) && in_array($tag['name'], $selected_tag_arr)){
-				if($tag['umsapifield'] == 'countryCode'){
-					include_once APPPATH . 'libraries/public/Country_code.php';
-					$country_code_obj   = new Country_code();
-					$country_arr    = $country_code_obj->get_country_code();
-					foreach ($country_arr as $c_key => $c_val){
-						$tmp_contry_code = '+'.$user_info_data[$tag['umsapifield']];
-						if($c_val['country_code'] == $tmp_contry_code){
-							//TODO 将来可能要做国际化支持
-							$user_info_data[$tag['umsapifield']] = $c_val['ch_name'];
-						}
-						break;
-					}
-				}
-				$seled_not_must_tag_arr[] = array(
-						'id'    =>  $index,
-						'title'  =>  $tag['name'],
-						'umsapifield'  => $tag['umsapifield'],
-						'regex'  =>  $tag['js_pattern'],
-						'tag_value' => $user_info_data[$tag['umsapifield']]
-				);
-				$index++;
-			}
-		}
-
-		//获得当前员工签值
-		$user_tag_value_arr = array();
-		if($user_id > 0){
-			$CI->load->library('TagLib','','TagLib');
-			$user_tag_value_arr = $CI->TagLib->get_tag_arr($user_id);
-		}
-		//获得自定义员工标签值
-		foreach($user_defined_tag_arr as $k => $v){
-			$tag_id = arr_unbound_value($v,'id',2,'');//tag标签
-			$tag_value = '';
-			foreach ($user_tag_value_arr as $v_k =>$v_v){
-				$u_tag_id = arr_unbound_value($v_v,'tag_id',2,'');
-				$u_tag_value = arr_unbound_value($v_v,'tag_value',2,'');
-				$u_tag_name = arr_unbound_value($v_v,'tag_name',2,'');
-				if($tag_id == $u_tag_id){
-					$tag_value = $u_tag_value;
-					break;
-				}
-			}
-			$user_defined_tag_arr[$k]['tag_value'] = $tag_value;
-		}
-		$re_arr = array(
-				'user_info_arr' => $user_info_data,//用户详情信息
-				'system_must_tag_names' => substr($system_must_tag_names, 0, -1),//系统标签名称，多个用,号分隔
-				'system_must_tag_arr' => $system_must_tag_arr,//系统标签及其值数组
-				'seled_not_must_tag_names' => substr($seled_not_must_tag_names, 0, -1),//可选标签名称，多个用,号分隔
-				'seled_not_must_tag_arr' => $seled_not_must_tag_arr ,//可选标签及其值数组
-				'user_defined_tag_names' => $user_defined_tag_names,//自定义标签名称，多个用,号分隔
-				'user_defined_tag_arr' => $user_defined_tag_arr ,//自定义标签及其值数组
-		);
-		return $re_arr;
-	}
-	
-	private function _getSystemTagInfo($system_tags){
-		$CI =& get_instance();
-		$lang = 'cn';
-		/**
-		 * 由于测试环境暂时不能切成中文环境，所以现在先将环境设置注销，否则会导致自定义标签无法展示的问题
-		 * 
-		if($CI->config->item('language') == "english"){
-			$lang = 'en';
-		}
-		 */
-		
-		$tag_info = array();
-		foreach($system_tags as $id=>$system_tag){
-			$tmp = array();
-			$tmp['id']               =  $id;
-			$tmp['js_pattern']          =  $system_tag['js_pattern'];
-			$tmp['tag_type']         =  $system_tag['tag_type'];
-			$tmp['umsapifield']      =  $system_tag['umsapifield'];
-			$tmp['enable']           =  $system_tag['enable'];
-			$tmp['show'] =  $system_tag['show'];
-	
-			foreach($system_tag['alias'] as $alia){
-				if($alia['lang'] == $lang){
-					$tmp['name'] = $alia['name'];
-				}
-			}
-			$tag_info[$id] = $tmp;
-		}
-	
-		return $tag_info;
-	}
-	
 }

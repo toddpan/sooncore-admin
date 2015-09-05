@@ -315,116 +315,98 @@ class OrganizeLib  {
 	}
 
 	/**
-	 * 格式化组织串
-	 * 
-	 * @param 	array 	$org_array 		组织数组
-	 * @param 	int 	$oper_type 		类型：1、组织树
-	 * @param 	array 	$in_arr 		其它条件
-	 * 
+	 *
+	 * @brief 格式化组织串：
+	 * @details
+	 * @param array $org_array 组织数组
+	 * @param int $oper_type 类型1组织树
+	 * @param array $in_arr 其它条件
+	 $in_arr = array(
+	 'is_first' => $aa ,//是否第一级0不是1是
+	 );
 	 * @return array 数组
+	 *
 	 */
-	public function InitzTree_arr($org_array, $oper_type = 1, $in_arr = array()){
-		$CI = & get_instance();
-		log_message('info', 'Into method InitzTree_arr.');
-		
-		// 初始化结果数组
+	public function InitzTree_arr($org_array ,$oper_type = 1,$in_arr = array()){
+		log_message('info', 'into method ' . __FUNCTION__ . '.');
+		$CI =& get_instance();
+		$CI->load->helper('my_publicfun');
+		$CI->load->helper('my_dgmdate');
+		$CI->load->library('API','','API');
 		$re_array = array();
-		
-		// 是否为第一层级
-		$is_first 	= arr_unbound_value($in_arr, 'is_first', 2, 0);
-		$org_no 	= 1;
-		
-		foreach($org_array as $k => $v){
-			// 初始化临时结果数组
-			$ns_mb_arr = array();
-			
-			$id 			= arr_unbound_value($v, 'id', 2, 0);			// 组织id
-			$name 			= arr_unbound_value($v, 'name', 2, '');			// 组织名称
-			$childNodeCount = arr_unbound_value($v, 'childNodeCount', 2, 0);// 子组织数
-			$parentId 		= arr_unbound_value($v, 'parentId', 2, 0);		// 父组织id
-			$userCount 		= arr_unbound_value($v, 'userCount', 2, 0);		// 用户数量
+		if(!is_array($org_array)){//不是数组
+			return $re_array;
+		}
 
-			$open_boolean 				= false;				// 是否展开
-			$nocheck_boolean 			= false;					// 没有复选框
-			$chkDisabled_boolean 		= false;				// 是否禁用
-			$isrename_boolean 			= true;					// 是否可以修改组织名称
-			$isaddnext_boolean 			= true ;				// 是否可以新加下级组织
-			$isdel_boolean 				= true;					// 是否可以删除当前组织
-			$isDisabled_boolean 		= false;				// 都不能用
-			$is_onclick					= true;					// 是否可以点击选中
+		$is_first = arr_unbound_value($in_arr,'is_first',2,0);
+		$ns_arr =array();
+		$org_no = 1;
+		foreach($org_array as $k => $v){
+			$id = arr_unbound_value($v,'id',2,0);//isset($v['id'])?$v['id']:'';//组织id
+			$name = arr_unbound_value($v,'name',2,'');//isset($v['name'])?$v['name']:'';//组织名称
+			//$code = isset($v['code'])?$v['code']:'';//客户编码
+			// $siturl = isset($v['siturl'])?$v['siturl']:'';//url
+			// $childOrder = isset($v['childOrder'])?$v['childOrder']:'';//childOrder
 			
-			// 如果是第一级
-			if($org_no == 1 && $is_first == 1){
-				$open_boolean 			= false;				// 是否展开
-				$nocheck_boolean 		= true;					// 没有复选框
-				$chkDisabled_boolean 	= true;					// 是否禁用
-				$isrename_boolean 		= false;				// 是否可以修改组织名称
-				$isaddnext_boolean 		= false;				// 是否可以新加下级组织
-				$isdel_boolean 			= false;				// 是否可以删除当前组织
+			$childNodeCount = arr_unbound_value($v,'childNodeCount',2,0);//isset($v['childNodeCount'])?$v['childNodeCount']:0;//子组织数
+			$parentId = arr_unbound_value($v,'parentId',2,0);//isset($v['parentId'])?$v['parentId']:'';//父组织id
+			//$customercode = isset($v['customercode'])?$v['customercode']:'';//客户编码
+			$userCount = arr_unbound_value($v,'userCount',2,0);//isset($v['userCount'])?$v['userCount']:0;//用户数量
+			// $type = isset($v['type'])?$v['type']:'';//类型
+			// $nodeCode = isset($v['nodeCode'])?$v['nodeCode']:'';//
+			// $users = isset($v['users'])?$v['users']:'';
+			// $childs = isset($v['childs'])?$v['childs']:'';
+
+			$open_boolean = false;//是否展开
+			$nocheck_boolean =true;//没有复选框
+			$chkDisabled_boolean = false;//是否禁用
+			$isrename_boolean = true;//是否可以修改组织名称
+			$isaddnext_boolean = true ;//是否可以新加下级组织
+			$isdel_boolean = true;//是否可以删除当前组织
+			$isDisabled_boolean = false;//都不能用
+			if($org_no == 1 && $is_first == 1){//第一级
+				$open_boolean = false;//是否展开
+				$nocheck_boolean =true;//没有复选框
+				$chkDisabled_boolean = true;//是否禁用
+				$isrename_boolean = false;//是否可以修改组织名称
+				$isaddnext_boolean = false ;//是否可以新加下级组织
+				$isdel_boolean = false;//是否可以删除当前组织
 			}
-			
-			// 各种管理员的权限控制
-			if(in_array($CI->p_role_id, array(EMPPLOYEE_MANAGER, ORGANIZASION_MANAGER, ACCOUNT_MANAGER))){
-				// 查询当前管理员的组织管理范围
-				$CI->load->model('uc_user_resource_model');
-				$where_arr = array(
-					'id' 		=> $CI->p_admin_role_id,
-					'userID' 	=> $CI->p_user_id
-				);
-				$user_res_arr = $CI->uc_user_resource_model->getUserResource($where_arr);
-				
-				
-				// 第一维度的组织范围
-				$wd_1 = isset($user_res_arr['scope_level_1']) ? $user_res_arr['scope_level_1'] : '';
-				if($wd_1 == 'department'){
-					$wd_1_value = isset($user_res_arr['scope_level_1_value']) ? $user_res_arr['scope_level_1_value'] : '';
-					if(!empty($wd_1_value)){
-						$self_org_arr = explode(",", $wd_1_value);
-						if(!in_array($id, $self_org_arr)){
-							$is_onclick 		= false;	// 是否可以点击选中: true可以，false不可以[手动控制]
-							$isrename_boolean 	= false;	// 是否可以修改组织名称
-						}
-					}
-				}
-				
-				// 第二维度的组织范围
-				$wd_2 = isset($user_res_arr['scope_level_2']) ? $user_res_arr['scope_level_2'] : '';
-				if($wd_1 == 'department'){
-					$wd_2_value = isset($user_res_arr['scope_level_2_value']) ? $user_res_arr['scope_level_2_value'] : '';
-					if($id == $wd_2_value){
-						$is_onclick 		= false;	// 是否可以点击选中: true可以，false不可以[手动控制]
-						$isrename_boolean 	= false;	// 是否可以修改组织名称
-					}
-				}
-				
+			switch ($oper_type) {
+				case 1://1组织树
+					$ns_mb_arr = array(
+                        'id' => $id,//当前组织id
+                        'pId' => $parentId,//父组织id
+                        'name' => $name,//组织名称
+                        'userCount' => $userCount,//用户数量
+                        'open' => $open_boolean,//默认展开不展开下一级 true展开 false不展开 [手动控制]
+                        'nocheck' => $nocheck_boolean,//没有复选框 true没有 ;false 有服 [手动控制]
+                        'chkDisabled' => $chkDisabled_boolean,//是否禁用 true 禁用,false不禁用 [手动控制,]
+                        'isDisabled' => $isDisabled_boolean,//都不能用,是否禁用 true 禁用,false不禁用 [手动控制,]
+                        'isParent' => $childNodeCount,//子组织数//决定是否会有一下级
+                        'isrename' => $isrename_boolean,//是否可以修改组织名称 true 能,false不能
+                        'isaddnext' => $isaddnext_boolean,//是否可以新加下级组织 true 能,false不能
+                        'isdel' => $isdel_boolean,//是否可以删除当前组织 true 能,false不能
+                        'identity' => 0,//0组织1帐号
+					);
+					break;
+				default:
+					break;
 			}
-			
-			$ns_mb_arr = array(
-					'id' 				=> $id,					// 当前组织id
-					'pId' 				=> $parentId,			// 父组织id
-					'name' 				=> $name,				// 组织名称
-					'userCount' 		=> $userCount,			// 用户数量
-					'open' 				=> $open_boolean,		// 默认展开不展开下一级： true展开 ，false不展开 [手动控制]
-					'nocheck' 			=> $nocheck_boolean,	// 没有复选框 ：true没有 ，false有 [手动控制]
-					'chkDisabled' 		=> $chkDisabled_boolean,// 是否禁用 ：true 禁用，false不禁用 [手动控制,]
-					'isDisabled' 		=> $isDisabled_boolean,	// 都不能用是否禁用： true禁用，false不禁用 [手动控制]
-					'isParent' 			=> $childNodeCount,		// 子组织数（决定是否会有下一级）
-					'isrename' 			=> $isrename_boolean,	// 是否可以修改组织名称： true 能，false不能
-					'isaddnext' 		=> $isaddnext_boolean,	// 是否可以新加下级组织： true 能，false不能
-					'isdel' 			=> $isdel_boolean,		// 是否可以删除当前组织 ：true 能，false不能
-					'identity' 			=> 0,					// 0组织，1帐号
-					'is_onclick'		=> $is_onclick			// 是否可以点击选中: true可以，false不可以[手动控制]
-			);
-						
-			$re_array[] = $ns_mb_arr;
+			$ns_arr[] = $ns_mb_arr;
 			$org_no += 1;
 		}
-		
-		log_message('info', 'out method InitzTree_arr.');
-		
+		if(is_array($ns_arr)){//如果是数组
+			$re_array = $ns_arr;
+		}
+		//$ns_arr = array('id','pId','name','open','nocheck','chkDisabled','childNodeCount');
+		//foreach($ns_arr as $k => $v){
+		//    $re_json = str_ireplace("\"" . $v . "\"", $v , $re_json);
+		//   $re_json = str_ireplace('\'' . $v . '\'', $v , $re_json);
+		//}
+		log_message('info', 'out method ' . __FUNCTION__ . '.');
 		return $re_array;
 	}
-	
 	/**
 	 *
 	 * @brief 格式化用户串,使组织树可以使用：
@@ -467,19 +449,12 @@ class OrganizeLib  {
 	 *
 	 */
 	public function get_users_arr_by_orgid($org_id = 0){
+		log_message('info', 'into method ' . __FUNCTION__ . '.');
 		$CI =& get_instance();
 		$CI->load->helper('my_publicfun');
 		$CI->load->helper('my_dgmdate');
 		$CI->load->library('API','','API');
 		$user_data = array();
-		
-		//隐藏公司组织下的用户 add by hongliang
-		/*
-		if($org_id == $CI->p_org_id){
-			return $user_data;
-		}
-		*/
-		
 		$siteURL = '/' . $org_id . '/users?productID=' . UC_PRODUCT_ID;//不加productID的话，就不会验证产品状态
 		$uc_user_arr = $CI->API->UMS_Special_API('',7,array('url' => $siteURL));
 		if(api_operate_fail($uc_user_arr)){//失败
@@ -490,6 +465,7 @@ class OrganizeLib  {
 			$err_msg = ' usm api rs/sites?' . $siteURL . ' success .';
 			log_message('debug', $err_msg);
 		}
+		log_message('info', 'out method ' . __FUNCTION__ . '.');
 		return $user_data;
 
 	}
@@ -504,52 +480,125 @@ class OrganizeLib  {
 	 *
 	 */
 	public function get_users_list($org_id = 0,$site_id = 0 ,$org_pid = 0){
-		log_message('info', 'into method get_users_list.');
-		
-		$CI = & get_instance();
+		log_message('info', 'into method ' . __FUNCTION__ . '.');
+		$CI =& get_instance();
 		$CI->load->helper('my_publicfun');
+		$CI->load->helper('my_dgmdate');
 		$CI->load->library('API','','API');
-		
-		// 获得用户列表
 		$user_arr = $this->get_users_arr_by_orgid($org_id);
-		
-		// 如果用户列表不是空数组
-		if(!isemptyArray($user_arr)){
+		// print_r($user_arr);
+		$org_manager_userid =0;
+		if(!isemptyArray($user_arr)){//如果不是空数组
 			$CI->load->model('uc_org_manager_model');
-			
-			// 获得当前组织的管理者id,没有则为0
+			//获得当前组织的管理者id,没有则为0
 			$org_manager_userid = $CI-> uc_org_manager_model ->get_org_manager_userid($org_id,$site_id);
-			
-			// 有组织管理者，将组织管理者提到最前面来
-			if($org_manager_userid > 0){
-				$ns_user_arr 			= array();	// 临时普通员工数组
-				$ns_manager_user_arr 	= array();	// 临时管理者数组
-				
+			if($org_manager_userid > 0){//有组织管理者
+				//将组织管理者提到最前面来
+				$ns_user_arr = array();//临时普通管理者数组
+				$ns_manager_user_arr = array();//临时管理员数组
 				foreach($user_arr as $k => $v){
-					$id = arr_unbound_value($v,'id',2,0);	// 用户id
-					
-					// 是组织管理者
-					if($org_manager_userid == $id){
-						$v['is_org_manager'] = 1;	// 是否组织管理者：0、不是；1、是
+					$id = arr_unbound_value($v,'id',2,0);//获得id
+					$isset = 0;//是否组织管理者0不是1是
+					if($org_manager_userid == $id){//是组织管理者
+						$isset = 1;//是否组织管理者0不是1是
+						$v['is_org_manager'] = 1;//是否组织管理者0不是1是
 						$ns_manager_user_arr[] = $v;
 					}else{
-						$v['is_org_manager'] = 0;	// 是否组织管理者：0、不是；1、是
+						$v['is_org_manager'] = 0;//是否组织管理者0不是1是
 						$ns_user_arr[] = $v;
 					}
-				}
-				
-				//把组织管理者放到最前面 ,合并数组
-				$user_arr = array_merge($ns_manager_user_arr,$ns_user_arr);
+					/*
+					 if($org_pid > 0 ){//TODO 临时触发UCCSERVER的同事接口加的，以后注释掉
+					 $create_colleague_arr = array(
+					 'user_id' => $id,//用户id
+					 'org_id' => $org_id,//组织id
+					 'parent_id' => $org_pid,//父组织id
+					 'is_admin'=> $isset,//是否管理员,可以为空
+					 );
+					 //write_test_file( 'aaa' . __FUNCTION__ . time() . $id . '.txt' ,'$org_pid =' .$org_pid);
+					 $this->create_colleague($create_colleague_arr);
+					 }
+					 *
+					 */
 
-			}else{ // 没有组织管理者
-				foreach($user_arr as $k => $v){
-					$user_arr[$k]['is_org_manager'] = 0;	// 是否组织管理者：0、不是；1、是
 				}
+				if(!isemptyArray($ns_manager_user_arr)){//有管理者
+					//把组织管理者放到最前面 ,合并数组
+					$user_arr = array_merge($ns_manager_user_arr,$ns_user_arr);
+				}
+
+			}else{
+				foreach($user_arr as $k => $v){
+					$user_arr[$k]['is_org_manager'] = 0;//是否组织管理者0不是1是
+				}
+				/*
+				 if($org_pid > 0 ){//TODO 临时触发UCCSERVER的同事接口加的，以后注释掉
+				 foreach($user_arr as $k => $v){
+				 $id = arr_unbound_value($v,'id',2,0);//获得id
+				 $isset = 0;//是否组织管理者0不是1是
+				 $create_colleague_arr = array(
+				 'user_id' => $id,//用户id
+				 'org_id' => $org_id,//组织id
+				 'parent_id' => $org_pid,//父组织id
+				 'is_admin'=> $isset,//是否管理员,可以为空
+				 );
+				 //write_test_file( 'aaa' . __FUNCTION__ . time() . $id . '.txt' ,'$org_pid =' .$org_pid);
+				 $this->create_colleague($create_colleague_arr);
+				 }
+				 }
+				 *
+				 */
 			}
+
+
+		}
+		if(!is_array($user_arr)){//不是数组
+			$user_arr = array();
 		}
 		return $user_arr;
 	}
+	/**
+	 *
+	 * @brief 公用同事关系接口调用：
+	 * @details
+	 * @param array $in_arr 传入参数数组
+	 $in_arr = array(
+	 'user_id' => ;//用户id
+	 'org_id' => ;//组织id
+	 'parent_id' => ;//父组织id
+	 'is_admin'=>;//是否管理员,可以为空
+	 );
+	 * @return boolean true 成功 false 失败
+	 *
+	 */
+	public function create_colleague($in_arr = array()){
+		log_message('info', 'into method ' . __FUNCTION__ . '.');
+		$CI =& get_instance();
+		$CI->load->helper('my_publicfun');
+		$CI->load->helper('my_dgmdate');
+		$CI->load->library('API','','API');
+		$user_id = arr_unbound_value($in_arr,'user_id',2,'');
+		$org_id = arr_unbound_value($in_arr,'org_id',2,'');
+		$parent_id = arr_unbound_value($in_arr,'parent_id',2,'');
+		$is_admin = arr_unbound_value($in_arr,'is_admin',2,'');
+		if(bn_is_empty($user_id) || bn_is_empty($org_id) || bn_is_empty($parent_id)){//没有有数据
+			return false;
+		}
 
+		//uccserver 接口 9.	同事关系创建
+		$data = 'user_id=' . $user_id . '&org_id=' . $org_id . '&parent_id=' . $parent_id ;//. '&is_admin=' .$isset ;//'user_id=' . $user_id . '&session_id=' . $session_id . '&type =' . $UCC_TYPE . '&data=' . json_decode($api_data_arr);
+		if(!bn_is_empty($is_admin)){
+			$data .=  '&is_admin=' .$is_admin;
+		}
+		$api_arr = $CI->API->UCCServerAPI($data,9);
+		if(api_operate_fail($api_arr)){//失败
+			log_message('error', 'uccapi async/createColleague fail.');
+			return false;
+		}else{
+			log_message('debug', 'uccapi async/createColleague success.');
+			return true;
+		}
+	}
 	/**
 	 *
 	 * @brief 根据组织id删除当前组织：
@@ -857,12 +906,13 @@ class OrganizeLib  {
 		}
 
 
-		$org_id 	= arr_unbound_value($in_arr,'org_id',2,'');
-		$site_id 	= arr_unbound_value($in_arr,'site_id',2,'');
-		$user_id 	= arr_unbound_value($in_arr,'user_id',2,'');
-		$isset 		= arr_unbound_value($in_arr,'isset',2,'');//0取消1设置
-		$re_org_arr = $this->get_org_by_id($org_id);
-		$org_pid 	= arr_unbound_value($re_org_arr,'parentId',2,'');
+		$org_id = arr_unbound_value($in_arr,'org_id',2,'');
+		$site_id = arr_unbound_value($in_arr,'site_id',2,'');
+		$user_id = arr_unbound_value($in_arr,'user_id',2,'');
+		$isset = arr_unbound_value($in_arr,'isset',2,'');//0取消1设置
+		$CI->load->library('OrganizeLib','','OrganizeLib');
+		$re_org_arr = $CI->OrganizeLib->get_org_by_id($org_id);
+		$org_pid = arr_unbound_value($re_org_arr,'parentId',2,'');
 
 
 		if(bn_is_empty($org_id) || bn_is_empty($site_id) || bn_is_empty($user_id) || bn_is_empty($isset)){//没有数据
@@ -922,12 +972,12 @@ class OrganizeLib  {
 				}else{
 					log_message('debug', 'uccapi async/createColleague success.');
 				//6员工权限变更消息
-// 				$CI->load->library('Informationlib','','Informationlib');
-// 				$msg_arr = array(
-//                         'user_id' => $user_id,//用户id
-//                         'org_id' => $org_id,//组织id
-// 				);
-// 				$CI->Informationlib->send_ing($sys_arr,array('msg_id' => 6,'msg_arr' => $msg_arr));	
+				$CI->load->library('Informationlib','','Informationlib');
+				$msg_arr = array(
+                        'user_id' => $user_id,//用户id
+                        'org_id' => $org_id,//组织id
+				);
+				$CI->Informationlib->send_ing($sys_arr,array('msg_id' => 6,'msg_arr' => $msg_arr));	
 				}				
 			}
 		}else{
@@ -967,22 +1017,22 @@ class OrganizeLib  {
 		 
 		$ns_orgID = arr_unbound_value($sys_arr,'orgID',2,'');
 		$ns_siteID = arr_unbound_value($sys_arr,'siteID',2,'');
-		$ns_operator_id = arr_unbound_value($sys_arr,'operate_id',2,'');
+		$ns_operator_id = arr_unbound_value($sys_arr,'operator_id',2,'');
 		$ns_oper_account = arr_unbound_value($sys_arr,'oper_account',2,'');
 		$ns_oper_display_name = arr_unbound_value($sys_arr,'oper_display_name',2,'');
 		$ns_client_ip = arr_unbound_value($sys_arr,'client_ip',2,'');
 		//日志
 		$CI->load->library('LogLib','','LogLib');
-		$log_in_arr =array(
+		$log_in_arr = array(
                'Org_id' => $ns_orgID,//$this->p_org_id ,//组织ID
                'site_id' => $ns_siteID,//$this->p_site_id ,//站点ID
                'operate_id' => $ns_operator_id,//$this->p_user_id,//操作会员ID
-               'login_name' => $CI->p_account ,//操作账号[可以为空，没有，则重新获取]
+               'login_name' => $ns_oper_account,//$this->p_account ,//操作账号[可以为空，没有，则重新获取]
                'display_name' => $ns_oper_display_name,//$this->p_display_name,//操作姓名[可以为空，没有，则重新获取]
                'client_ip' => $ns_client_ip,//$this->p_client_ip ,//客户端ip
 		);
 		log_message('info', 'xiaoxiao_log=' . var_export($log_in_arr, true));
-		$re_id = $CI->LogLib->set_log(array('5',$log_id),$log_in_arr);
+		$re_id = $CI->LogLib ->set_log(array('5',$log_id),$log_in_arr);
 		return true;
 	}
 	/**
@@ -1574,7 +1624,7 @@ class OrganizeLib  {
 		//check w2
 		if(isset($data['w2']) && is_array($data['w2'])){
 			foreach($allow_w as $v2){
-				if(!isset($data['w2'][$v2])){
+				if(!isset($data['w2'][$v1])){
 					log_message('error', 'the key '.$v1.' in w2 is requred');
 					//return array(false, 'the key '.$v1.' in w2 is requred');
 					return array(false);
@@ -1582,7 +1632,7 @@ class OrganizeLib  {
 			}
 
 			if(!in_array($data['w2']['key'], $allow_w_k)){
-				log_message('error', 'not allowed key value'.$data['w2']['key']);
+				log_message('error', 'not allowed key value'.$data['w1']['key']);
 				//return array(false, 'not allowed key value'.$data['w1']['key']);
 				return array(false);
 			}
@@ -1619,10 +1669,7 @@ class OrganizeLib  {
 		//检查维度值是否合法
 		if($w['key'] == 'region'){
 			$area_arr = explode(',', trim(strtolower($w['value'])));
-			if(!isemptyArray($area_arr)){
-				return $this->checkRegion($area_arr);
-			}
-			return true;
+			return $this->checkRegion($area_arr);
 		}else if($w['key'] == 'department'){
 			$dept_ids = explode(',', trim(strtolower($w['value'])));
 			return $this->checkDepartment($CI->p_org_id, $dept_ids);

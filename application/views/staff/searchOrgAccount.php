@@ -1,28 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云企管理中心</title>
+</head>
+<body>
+<!--搜索_组织与帐号.html-->
 <div class="contHead">
 	<span class="title01 rightLine">组织管理</span><span class="title03 rightLine">搜索结果</span> 
     <div class="contHead-right">
-    <?php if($this->functions['tagMenu'] || $this->functions['ldapListMenu']){?>
 	<div class="fr rightLine"><a class="btnSet" onclick="toggleMenu('menu1',event)"  ></a></div>
-	<?php }?>
+	
 	<div class="headSearch rightLine">
 		<div class="combo searchBox">
 			<b class="bgR"></b>
-			<a class="icon js-search" ></a>
+                        <a class="icon js-search" ></a>
 			<label class="label">请输入查询条件</label>
 			<input class="input" type="text" name="keyword" id="search_staff"/>
 		</div>
 	</div>
-     <ul class="menu" id="menu1" style="line-height: 30px;">
-         <?php if($this->functions['tagMenu']){?>
-			<li style="*margin-top:-10px">
-				<a onclick="qs.linkPage.set({url: 'organize/OrgList'}); loadCont('tag/manageTag/0','group');">员工标签管理</a>
-			</li>
-		<?php }?>
-		<?php if($this->functions['ldapListMenu']){?>
-			<li style="*margin-top:-25px">
-				<a onclick="loadCont('ldap/getLdapList');">LDAP设置管理</a>
-			</li>
-		<?php }?>
+     <ul class="menu" id="menu1">
+            <li><a  onclick="loadCont('组织与员工_批量导入.html')">员工标签管理</a></li>
+            <li><a  onclick="loadCont('staff/batchModifyStaff');">批量修改</a></li>
+     <!--       <li><a  onclick="loadCont('组织与帐号_LDAP同步1.html')">LDAP设置</a></li>  -->
         </ul>
     </div>
 </div>
@@ -38,22 +38,21 @@
             <!-- end bread -->
             <div class="tabToolBar">
                 <a class="back fl" onclick="loadCont('organize/OrgList');" title="返回">&nbsp;</a>
-            <?php if($this->functions['employeeChange']){?>
                 <div class="tabToolBox" style="display:none;">
                     <a class="btnGray btn" id="search_move_staff">
 						<span class="text">员工调岗</span><b class="bgR"></b>
 					</a>
-					<!-- 
                     <a class="btnGray btn" id="search_delete_staff"><span class="text">删除员工</span><b class="bgR"></b></a>
-					 -->
+                    
                 </div>
-            <?php }?>
             </div>
             <!-- end tabToolBar -->
             <table class="table">
                 <thead>
                     <tr>
-                        <th width="6%" <?php if(!$this->functions['multiChoose']) { echo "style='display:none;'"; }?>><label class="checkbox"><input type="checkbox" /></label></th>
+                    	<?php if(!empty($ret_cnt)){ ?>
+                        <th width="6%"><label class="checkbox"><input type="checkbox" /></label></th>
+                    	<?php } ?>
                         <th style="text-align: left; text-indent: 24px">姓名</th>
                         <th>帐号</th>
                         <th>手机</th>
@@ -65,18 +64,19 @@
                 <?php 
                 foreach($ret_data as $user):?>   
                     <tr>
-                        <td <?php if(!$this->functions['multiChoose']) { echo "style='display:none;'"; }?>><label class="checkbox"><input type="checkbox" value="<?php echo $user['userId'];?>" orgid="<?php echo $user['organizationId'];?>" /></label></td>
+                        <td><label class="checkbox"><input type="checkbox" value="<?php echo $user['userId'];?>"/></label></td>
                         <td class="tl"><a class="userName ellipsis"  onclick="staff_information1(this,<?php echo $user['userId'];?>);"><?php echo $user['displayName'];?></a></td>
                         <td class="tl"><span class="ellipsis"><?php echo $user['loginName'];?></span></td>
                         <td><?php echo $user['mobileNumber'];?></td>
                         <td><?php echo $user['lastlogintime'];?></td>
-                        <td><a class="<?php if($user['productStatus'] == 1): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"></a></td>
+                        <td><a  class="btnOn"></a></td>
                     </tr>
                 <?php endforeach;?>
                 </tbody>
             </table>          
 </div>
 <script type="text/javascript">
+	
 	$(function(){
 		 $('#part01 table:first thead label.checkbox').toggle(function() {
         if ($(this).hasClass("checked")) {
@@ -204,16 +204,16 @@
 		}
 		$(this).addClass("false");
 		var _this=$(this);
-        var user_id ='';
-        var org_id = [];   
+        var user_id ='';       
         $('#part01 table tbody label').each(function() {
             if ($(this).hasClass("checked")) {
                 var value = $(this).find('input').val();
-                org_id.push($(this).find('input').attr('orgid'));
+				//alert(value)
                 var name = $(this).parent().next().find("a").text();
                 user_id = user_id +'{"userid":' + value +',"user_name":"' + name +'"},';
             }
         });
+        //alert(user_id);
         var lastIndex = user_id.lastIndexOf(',');
         if (lastIndex > -1) {
             user_id = user_id.substring(0, lastIndex) + user_id.substring(lastIndex + 1, user_id.length);
@@ -226,22 +226,43 @@
 		_this.removeClass("false");
         $('#dialog .dialogBottom #move_staff_part').die('click');
         $('#dialog .dialogBottom #move_staff_part').live('click', function() {
+			/*if($(this).hasClass("false"))
+			{
+				return;
+			}
+			$(this).addClass("false");*/
 			var _t=$(this);
             var dgtree = $.fn.zTree.getZTreeObj("dgmoveorg");
             var nodes1 = dgtree.getSelectedNodes();
             var treeNode1 = nodes1[0];
             if (treeNode1 != null) {
                 var neworgid = treeNode1.id;
+                var parent_orgid = treeNode1.pId;
+                // alert(orgid1)
             } else {
                 alert("请选择要调入的部门！");
                 return false;
             }
+            id_2 = treeNode1.pId;
+            var org_code1 ='-' + treeNode1.id;           
+           /* var orgname = "";
+            orgname = treeNode.name;*/
+            var neworgname = "";
+            neworgname = treeNode1.name;
+            // alert(orgname);
+            //alert(neworgname);
+            //alert(user_id)
             var staff = {
-               "orgid": org_id,
+                //"parent_orgid":parent_orgid,
+                //"old_org_code":org_code,
+               // "orgid": orgid,
+               // "orgname": orgname, //新的部门名称//
                 "user_id": user_id,
                'neworgid': neworgid,
-               'search_flag': 'search'
+                //'new_org_code':org_code1,
+                "neworgname": neworgname //新的部门名称
             };
+            //alert(parent_orgid)
             var path_staff ="staff/save_move_staff";
             $.post(path_staff, staff, function(data) {
                // alert(data);
@@ -252,15 +273,15 @@
 					org_del_staff();                  
                     hideDialog();
                 } else {					
-					alert(json.prompt_text);	  	
+					alert(json.prompt_text)		  	
 					hideDialog();
 				}
 				_t.removeClass("false");
 			
-            });
-        });
-    });
-    
+            })
+        })
+
+    });		
 	 //选中员工，点击删除员工
     $('#search_delete_staff').click(function() {
 		//alert(1)
@@ -304,6 +325,18 @@
        // "org_code":org_code,
 		"user_id":user_id
 		 };
+		 //alert(parent_orgid)
+		 var All_delete=0;
+		 if(_checked.length == $('#part01 .table:first tbody tr').length){
+			//$("#novalueTable").show().prev("table").hide();
+			//$('#part01 .table:first tbody tr').show();
+			//alert("ddddd: "+ dG)
+			All_delete=1;
+			/*if(dG==1){
+				//alert("eeeee: "+ dG)
+				
+			}*/
+		}
 			//_checked.parent().parent().hide();
 		var path_delete_staff ="staff/save_delete_staff";
 		$.post(path_delete_staff,staff,function(data)
@@ -378,11 +411,11 @@
         $('#part01 .link_limitSet').show();
         $('#part01 #part1').remove();
         $('#part01 .tabToolBar').hide();
-        $('#part01 table').hide();
+        $('#part01 .table').hide();
         var path_staff_information='staff/search_staff_info_page';
         var obj={
 			"user_id":user_id,
-			"flag":"search"
+			"flag":"search",
         }
         $.post(path_staff_information,obj,function(data)
         {
@@ -391,3 +424,5 @@
 		});
     }
 </script>
+</body>
+</html>

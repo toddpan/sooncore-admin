@@ -3,7 +3,7 @@
 		<a class="pageGoBack"></a> 
 		<span class="personName"><?php echo $user_info_arr['displayName'];?></span>
 		<div class="fr">
-		<?php if($this->functions['AccountOperation']){?>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
 		 	<a class="btn btn0ff" id="count_handle"  onClick="toggleAccount(this)">
 				<span class="text" style="text-decoration: none">
 					<?php if($user_info_arr['productStatus'] == 82){ ?>关闭帐号<?php }else{?>开启账号<?php }?>
@@ -12,7 +12,7 @@
 			</a>
 			<?php }?>
 			&nbsp; 
-			<?php if($this->functions['changePassword']){?>
+			<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
 			<a class="btn"  onClick="showDialog('password/showTempPWD')">
 				<span class="text"style="text-decoration: none">重置密码</span>
 				<b class="bgR"></b>
@@ -23,23 +23,19 @@
 	<div class="cont-wrapper">
 		<ul class="infoNav" id="staff_info">
 			<li class="selected">员工信息</li>
-			<?php if($this->functions['employeeAuthority']){?>
+			<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
 			<li>员工权限</li>
-			<?php 
-			$org_json_arr = json_decode($org_json,true);
-			if(!empty($org_json_arr['admin_arr'])){	//该员工是管理员才进行展示  ?>
-			<li>管理员权限</li>
-				<?php }?>
 			<?php }?>
 		</ul>
 		<dl class="infoCont">
 			<dd id="dd1">
-			<?php if($this->functions['employeeEdit']){?>
 				<div class="toolBar2">
+				<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
 					 <a class="btnGray btn btn_infoEdit" >
 					 	<span class="text">编辑信息</span>
 						<b class="bgR"></b>
 					</a> 
+				<?php }?>
 					<a class="btnBlue yes btn_infoSave hide" >
 						<span class="text">保存</span>
 						<b class="bgR"></b>
@@ -48,18 +44,18 @@
 						<span class="text">取消</span>
 						<b class="bgR"></b>
 					</a>
-			 	</div>
-			<?php }?>
+			 </div>
 			<table class="infoTable">
 				<?php //必选员工标签 ?>
 				<?php 
 					   foreach($system_must_tag_arr as $k => $v):
-// 					   		$field = arr_unbound_value($v,'field',2,'');
+					   		$field = arr_unbound_value($v,'field',2,'');
 							$umsapifield = arr_unbound_value($v,'umsapifield',2,'');
 							$title = arr_unbound_value($v,'title',2,'');
 							$regex = arr_unbound_value($v,'regex',2,'');
 							$tag_value = arr_unbound_value($v,'tag_value',2,'');
 // 							echo $umsapifield;
+							//echo '  ';
 							?>
 			<?php if ($umsapifield == 'lastName')://姓名?>
 			<tr>
@@ -67,7 +63,9 @@
 				<td>
 					<span class="infoText userName"><?php echo $tag_value;?></span>
 					<div class="inputBox w360 hide add_css">
-						<input id="nameInput" class="input" maxlength="100" id="<?php echo $umsapifield ;?>" value="<?php echo $tag_value ;?>"/>
+						<b class="bgR"></b>
+						<label class="label"></label>
+						<input class="input" id="<?php echo $umsapifield ;?>" value="<?php echo $tag_value ;?>"/>
 					</div>
 				</td>
 			</tr>
@@ -80,7 +78,9 @@
 				<td>
 					<span class="infoText userCount"><?php echo $tag_value;?></span>
 					<div class="inputBox w360 hide add_css">
-						<input class="input account_input" maxlength="100" id="<?php echo $umsapifield ;?>" value="<?php echo $tag_value;?>" />
+						<b class="bgR"></b>
+						<label class="label"></label>
+						<input class="input account_input"  id="<?php echo $umsapifield ;?>" value="<?php echo $tag_value;?>" />
 					</div>
 				</td>
 			</tr>
@@ -91,11 +91,10 @@
 			<tr>
 				<td class="tr">账户：</td>
 				<td>
-					<span class="infoText userAccount" value="<?php echo $account_id;?>"><?php echo $account_name;?></span>
-					<?php if($user_info_arr['productStatus'] == 82){ //账号只有开通后才能进行修改 ?>
+					<span class="infoText"><?php echo $account_name;?></span>
 					<div class="combo selectBox hide add_css"  style="width:204px;word-break:keep-all;"> 
 						<a class="icon" ></a> 
-						<span class="text" value="<?php echo $account_id;?>" style="width: 175px" readonly="readonly" onfocus="$(this).blur();"><?php echo $account_name;?></span>
+						<span class="text" value="<?php echo $account_name;?>" style="width: 175px" readonly="readonly" onfocus="$(this).blur();"></span>
 						<div class="optionBox" target='0' style="width: 206px; display: none;*position:relative;*margin-top:-27px" id="<?php echo $umsapifield ;?>">
 							<dl class="optionList" style="height: 95px;" id="staff_userCount">
 								<?php foreach($account_names as $item): ?>
@@ -104,19 +103,36 @@
 							</dl>
 						</div>
 					</div>
-					<?php }?>
 				</td>
 			</tr>
 			<?php 
 							continue;
 							endif;?>
-			<?php if ($umsapifield == 'organizationName')://部门?>
+			<?php if ($umsapifield == 'sex')://性别//0未知1男2女?>
+			<tr>
+				<td class="tr">性别：</td>
+				<td>
+					<span class="infoText"><?php if($tag_value == 1){echo "男";}else if($tag_value == 2){ echo "女";}?></span>
+					<div class="radioBox hide">
+						<label class="radio radio_on">
+							<input name="xb " onchange='change_value(this)'type="radio" value="男" <?php if($tag_value == 1){?> checked="checked" <?php } ?> />男					
+						</label>
+						<label class="radio">
+							<input name="xb " onchange='change_value(this)' type="radio" value="女" <?php if($tag_value == 2){?> checked="checked" <?php } ?> />
+					女</label>
+					</div>
+				</td>
+			</tr>
+			<?php
+							continue;
+							 endif;?>
+			<?php if ($umsapifield == 'organizationId')://部门?>
 			<tr>
 				<td class="tr">部门：</td>
 				<td>
-					<span class="infoText" id="depart_span" readonly="readonly"><?php echo $tag_value;?></span>
+					<span class="infoText" id="depart_span" readonly="readonly"></span>
 					<div class="select-box w210 hide add_css">
-						<input  readonly="readonly" type="text" class="text" value="" onClick="showMenu(this);" id="departmentSel2" placeholder="请选择管理的部门"  id="<?php echo $umsapifield ;?>" />
+						<input  type="text" class="text" value="" onClick="showMenu(this);" id="departmentSel2" placeholder="请选择管理的部门"  id="<?php echo $umsapifield ;?>" />
 						<a class="icon" onClick="showMenu(this); return false;"></a>
 						<div class="selectOptionBox "   target='0'  style="display: none;z-index:99;width: 208px;*position:relative;*top:1px">
 							<ul class="ztree" id="ztree4">
@@ -132,11 +148,11 @@
 			<tr>
 				<td class="tr">职位：</td>
 				<td>
-					<span class="infoText position"><?php echo $tag_value ;?></span>
+					<span class="infoText"><?php echo $tag_value ;?></span>
 					<div class="inputBox w360 hide add_css" > 
 						<b class="bgR"></b>
 						<label class="label"></label>
-						<input id="<?php echo $umsapifield ;?>" maxlength="100" class="input" value="<?php echo  $tag_value ;?>"/>
+						<input id="<?php echo $umsapifield ;?>" class="input" value="<?php echo  $tag_value ;?>"/>
 					</div>
 				</td>
 			</tr>
@@ -172,17 +188,36 @@
 					<div class="inputBox w130 hide add_css" style="*margin-left:10px;*margin-top:-26px"> 
 						<b class="bgR"></b>
 						<label class="label"></label>
-						<input id="<?php echo $umsapifield ;?>" maxlength="100" class="input" value="<?php echo $country_mobile ;?>" />
+						<input id="<?php echo $umsapifield ;?>" class="input" value="<?php echo $country_mobile ;?>" />
 					</div>
 				</td>
 			</tr>
 			<?php 
 							continue;
 							endif;?>
+			<?php if ($umsapifield == 'officeaddress')://办公地址?>
+			<tr>
+				<td class="tr">办公地址：</td>
+				<td>
+					<span class="infoText "><?php echo $address;?></span>
+					<div  class="combo selectBox hide add_css" style="width: 250px; height:28px;">
+					 	<a class="icon" ></a>
+					 	<span class="text selected">北京朝阳区酒仙桥北路甲10号院</span>
+						<div class="optionBox" id="<?php echo $umsapifield ;?>" target='0' style="height:100%;*position:relative">
+						 	<dl class="optionList">
+								<dd class="option selected" onclick="change_value(this)" target="0" style=""><?php echo $address;?></dd>
+							</dl>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<?php 
+						   continue;
+						   endif;?>
 			<?php endforeach;?>
 			<?php //可选员工标签 ?>
 			<?php foreach($seled_not_must_tag_arr as $k => $v):
-// 					   		$field = arr_unbound_value($v,'field',2,'');
+					   		$field = arr_unbound_value($v,'field',2,'');
 							$umsapifield = arr_unbound_value($v,'umsapifield',2,'');
 							$title = arr_unbound_value($v,'title',2,'');
 							$regex = arr_unbound_value($v,'regex',2,'');
@@ -196,7 +231,7 @@
 					</span>
 					<div class="inputBox w360 hide add_css" style="*z-index:1"> <b class="bgR"></b>
 						<label class="label"></label>
-						<input class="input" id="<?php echo $umsapifield ;?>" maxlength="100" value="<?php  echo $tag_value;?>" />
+						<input class="input" id="<?php echo $umsapifield ;?>"  value="<?php  echo $tag_value;?>" />
 					</div>
 				</td>
 			</tr>
@@ -218,14 +253,14 @@
 					</span>
 					<div class="inputBox w360 hide" style="_z-index:-1"> <b class="bgR"></b>
 						<label class="label"></label>
-						<input class="input" id="user_tag<?php  echo $tag_id;?>" maxlength="100" value="<?php  echo $tag_value;?>" />
+						<input class="input" id="user_tag<?php  echo $tag_id;?>" value="<?php  echo $tag_value;?>" />
 					</div>
 				</td>
 			</tr>
 			<?php endforeach;?>
 		</table>
 	</dd>
-	<dd style="display:none;" id="dd2" class="staff_right">
+	<dd style="display:none;" id="dd2">
 		<div class="toolBar2" style="display:none;"> 
 			<a class="btnBlue yes">
 				<span class="text">保存</span>
@@ -239,7 +274,7 @@
 		<!-- 	<h3 class="setTitle">IM设置</h3> -->
 	<!-- 	<label class="checkbox im_file checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
-	<!-- 	可使用全时蜜蜂 IM 互传文档</label> -->
+	<!-- 	可使用全时云企 IM 互传文档</label> -->
 	<!-- 	<label class="checkbox add_link checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
 	<!-- 	自动将联系过的联系人添加到常用联系人列表</label> -->
@@ -247,19 +282,19 @@
 	<!-- 	<input type="checkbox" checked="checked"> -->
 	<!-- 	自动将联系过的讨论组添加到讨论组列表</label> -->
 	<h3 class="setTitle">通话设置</h3>
-		<label class="checkbox accept_call checked" style="width: 155px;">
+		<label class="checkbox accept_call checked">
 			<input type="checkbox" checked="checked" />
 				允许用户设置接听策略
 		</label>
-		<label class="checkbox set_area checkbox2" style="width: 240px;">
+		<label class="checkbox set_area checkbox2">
 			<input type="checkbox" checked="checked" />
 				用户可设定接听策略到海外直线电话
 		</label>
-		<label class="checkbox accept_cloud checked" style="width: 155px;">
+		<label class="checkbox accept_cloud checked">
 			<input type="checkbox" checked="checked">
-				允许使用蜜蜂拨打电话
+				允许使用云企拨打电话
 		</label>
-		<label class="checkbox accept_areaPhone checkbox2 checked" style="width: 130px;">
+		<label class="checkbox accept_areaPhone checkbox2 checked">
 			<input type="checkbox" checked="checked" />
 				允许拨打海外电话
 		</label>
@@ -285,11 +320,11 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox allow_attendee_call checked" style="width: 150px;">
+		<label class="checkbox allow_attendee_call checked">
 			<input type="checkbox" checked="checked" />
 				允许参会人自我外呼
 		</label>
-		<label class="checkbox record_name checked" style="width: 260px;">
+		<label class="checkbox record_name checked">
 			<input type="checkbox" checked="checked" />
 				所有参会者在加入会议时，允许录制姓名
 		</label>
@@ -374,11 +409,11 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox report_num checked" style="width: 220px;">
+		<label class="checkbox report_num checked">
 			<input type="checkbox" checked="checked" />
 			参会人加入会议，告知参会者人数
 		</label>
-		<label class="checkbox warning_information checked" style="width: 325px;">
+		<label class="checkbox warning_information checked">
 			<input type="checkbox" checked="checked" />
 			第一方与会者是否听到“您是第一个入会者”的提示
 		</label>
@@ -408,7 +443,7 @@
 				</label>
 			</dd>
 		</dl>
-		<label class="checkbox accept_95 checked" style="width: 240px;">
+		<label class="checkbox accept_95 checked">
 			<input type="checkbox" checked="checked" />
 			数据会议结束后，立即结束电话会议
 		</label>
@@ -430,27 +465,27 @@
 			<input id="accept_max_input" name="accept_max_input" class="form-text input_right"  style="width: 60px;" value="" placeholder="" type="text"/>方
 			<span class="gray-style">(只限数字，最大2000方，最小2方)</span>
 		</label>
-		<label class="checkbox accept_inner_local" style="width: 130px;">
+		<label class="checkbox accept_inner_local">
 			<input type="checkbox" checked="checked" />
 			允许国内本地接入
 		</label>
-		<label class="checkbox accept_40" style="width: 135px;">
+		<label class="checkbox accept_40">
 			<input type="checkbox" checked="checked" />
 			允许国内 400 接入
 		</label>
-		<label class="checkbox accept_80" style="width: 135px;">
+		<label class="checkbox accept_80">
 			<input type="checkbox" checked="checked" />
 			允许国内 800 接入
 		</label>
-		<label class="checkbox accept_hk_local" style="width: 140px;">
+		<label class="checkbox accept_hk_local">
 			<input type="checkbox" checked="checked" />
 			允许香港 local 接入
 		</label>
-		<label class="checkbox accept_toll_free" style="width: 160px;">
+		<label class="checkbox accept_toll_free">
 			<input type="checkbox" checked="checked" />
 			允许国际 toll free 接入
 		</label>
-		<label class="checkbox accept_local_toll" style="width: 165px;">
+		<label class="checkbox accept_local_toll">
 			<input type="checkbox" checked="checked" />
 			允许国际 local toll 接入
 		</label>
@@ -458,6 +493,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+    
 //var  zNodes = <?php echo $org_list_json ;?>;//初始化的组织结构
 //var path="<?php echo site_url('organize/get_next_OrgList');?>";//要加载的每个组织结构
 //alert(<?php echo $user_info_arr['displayName'];?>)
@@ -489,14 +525,20 @@ function toggleAccount(t)
 					 
 					 if(json.code==0)
 						{
+							
 							_this.find("span.text").text("关闭帐号");
 							hideDialog();
+																		
 						 }else
 							{
-								alert(json.prompt_text);
+								alert(json.prompt_text)	
 							}
-				});
-		});
+				}) 
+										//_this.removeClass('btnOn').addClass('btnOff');
+										//hideDialog();
+		})
+				
+					
 	}
 else {
 		var path_Open = '<?php echo site_url('staff/open_user')?>';
@@ -512,9 +554,9 @@ else {
 			   }
 			   else
 				{
-					alert(json.prompt_text);	
+					alert(json.prompt_text)	
 				}
-			});
+			})	
 	
 	}
 }
@@ -557,6 +599,7 @@ function disable_select()
 //修改员工信息
 function change_value()
 {
+	//alert(1)
 	$("#part1").removeClass("value_change");
 	$("#part1").addClass("value_change");
 }
@@ -604,10 +647,10 @@ $(function(){
   	 })
 	// if(clear_null==0)
 	// {
-	create_node(zNodes);
 	//$.fn.zTree.init($("#ztree"), setting, zNodes);
-	$.fn.zTree.init($("#ztree4"), radioSetting, zNodes);
-	$.fn.zTree.init($("#selectTree"), selectSetting, zNodes);
+	//create_node(zNodes);
+	//$.fn.zTree.init($("#ztree4"), radioSetting, zNodes);
+	//$.fn.zTree.init($("#selectTree"), selectSetting, zNodes);
 	$('.radioBox label.radio').click(function()
 	{ 
  	 $(this).siblings().removeClass("radio_on");
@@ -651,7 +694,7 @@ $(function(){
 	});
 	$('#dd2 .toolBar2 a:eq(0)').click(function()
 	{
-		var obj=right_save('.staff_right ');
+		var obj=right_save();
 		 var value={
 			"power_json":obj,
 			"org_code":<?php echo $org_json;?>,
@@ -679,7 +722,6 @@ $(function(){
 	{
 		$("#part1").removeClass("value_change");
 		$('.infoNav li:eq(1)').trigger("click");
-		$('#dd2 .toolBar2').hide();
 	})
 	//$('#ztree4 a').click(function()
 	//{
@@ -718,14 +760,13 @@ $(function(){
 	//如果是从搜索页过来的请求，返回的点击事件执行如下
 	<?php 
 	$org_arr = json_decode($org_json, true);
-	$search_flag = empty($org_arr[0]['flag']) ? "not_search" : $org_arr[0]['flag'];
+	$search_flag = empty($org_arr['flag']) ? "not_search" : $org_arr['flag'];
 	?>
 	var search_flag = '<?php echo $search_flag; ?>';
 	if(search_flag == 'search'){
 		$('.pageGoBack').click(function(){
 			$('#part1').hide();
 			$('.table').show();
-			$('.tabToolBar').show();
 		});
 	}
 	
@@ -823,9 +864,7 @@ $(function(){
 	$('.btn_infoEdit').click(function(){
 		$(this).addClass('hide').siblings('.btn_infoSave, .btn_infoCancel').removeClass('hide');
 		$('.infoTable .infoText').not('.dotEdit').each(function(){
-			if($(this).next().find("input").attr("id")!="loginName" 
-				&& $(this).next().find("input").attr("id")!="nameInput"
-				&& $(this).next().find("input").attr("id")!="departmentSel2")
+			if($(this).next().find("input").attr("id")!="loginName")
 			{
 				$(this).hide().next().removeClass('hide');
 			}
@@ -851,43 +890,277 @@ $(function(){
 	});
 	//点击保存员工信息
 	$('.btn_infoSave').click(function(){
-		//如果账户进行了修改
-		post_value = '';
-		original_account_value	= $('.userAccount').attr('value');
-		update_account_value	= $('#accountId').prev().val();
-		if(original_account_value != update_account_value){
-			change_value();
-			post_value += ',"accountId":"' + update_account_value + '"';
-		}
-		//如果职位进行了修改
-		original_position_value = $('.position').text();
-		update_position_value	= $('#position').val();
-		if(original_position_value != update_position_value){
-			change_value();
-			post_value += ',"position":"' + update_position_value + '"';
-		}
-		//如果手机进行了修改
-		original_mobile_value	= $('.telephone2').text();
-		update_mobile_value	= $('#mobileNumber').val();
-		if(original_mobile_value != update_mobile_value){
-			change_value();
-			post_value += ',"mobileNumber":"' + update_mobile_value + '"';
-		}
+		  <?php //必选员工标签 ?>
+		  var sys_tag_value;//系统及可选员工标签
+		  sys_tag_value="";
+		  var user_tag_value;//用户自定义员工标签
+		  user_tag_value="";
+		  var org_tag_value;//组织
+		  org_tag_value="";
+		  var ns_value ;//临时的值
+		  ns_value="";
+		  var ns_regex;//临时的正则
+		  ns_regex="";  
+		  var default_user_org_json;
+		  default_user_org_json = '<?php echo $org_json;?>';//默认的当前的用户部门串
+		  var count=0;
+		  //{"name": "姓名","value": "开发测试","umsapifield": "lastName"}
+		   <?php 
+		  // print_r($system_must_tag_arr);
+		   foreach($system_must_tag_arr as $k => $v):
+				$field = arr_unbound_value($v,'field',2,'');//字段名称
+				$umsapifield = arr_unbound_value($v,'umsapifield',2,'');//ums字段名称
+				$title = arr_unbound_value($v,'title',2,'');//名称
+				$regex = arr_unbound_value($v,'regex',2,'');//正则
+				$tag_value = arr_unbound_value($v,'tag_value',2,'');
+				//echo $umsapifield;
+				//echo '  ';
+				?>
+				<?php if ($umsapifield == 'lastName')://姓名?> 
+					var ns_value =$("#<?php echo $umsapifield ;?>").val();//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					 ns_regex ="<?php echo $regex;?>" ; //alert(ns_regex)
+					if(ns_regex !=''){//有正则，才去做判断
+					   ns_regex=<?php echo $regex;?>;
+					   if(!ns_regex.test(ns_value))
+					   {
+						   $("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+						  count++;
+
+					   }
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+				<?php 
+				continue;
+				endif;?> 
+				<?php if ($umsapifield == 'loginName')://帐号?> 
+					ns_value = $("#<?php echo $umsapifield ;?>").val();//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+					 
+				<?php
+				continue;
+				 endif;?> 
+				<?php if ($umsapifield == 'accountId')://账户?> 
+				    ns_value =$("#<?php echo $umsapifield ;?>").find('dd.selected').attr("account_id");//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+					 	sys_tag_value = sys_tag_value + ',';
+					}
+					if(ns_value=="")
+					{
+						$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+						count++;
+					}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+						else
+						{
+							sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+						}
+					}				
+				<?php 
+				continue;
+				endif;?>
+				<?php if ($umsapifield == 'sex')://性别//0未知1男2女?> 
+				   ns_value = $('.radioBox label.radio_on').find('input').val();//拿到值
+					if(ns_value=="男")
+					{
+						ns_value=1;
+					}else if(ns_value=="女")
+					{
+						ns_value=2;
+					}else
+					{
+						ns_value=0;
+					}
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					//ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+				
+				<?php 
+				continue;
+				endif;?>
+				<?php if ($umsapifield == 'organizationId')://部门?>
+				var zTree = $.fn.zTree.getZTreeObj("ztree4");
+				var nodes = zTree.getCheckedNodes(true);
+				var treeNode = nodes[0];				
+				//alert(treeNode)	
+				if (treeNode==null && $("#departmentSel2").val()=="") {
+					
+					   $("#departmentSel2").parent('div').addClass('error');
+					   //alert("<?php echo $umsapifield ;?>");
+							count++;
+					}
+					else
+					{
+						if(treeNode==null && $("#departmentSel2").val()!="")
+						{
+							org_tag_value='<?php echo $org_json;?>';
+						}
+						else if(treeNode!=null && $("#departmentSel2").val()!="")
+						{
+							//alert(111)
+							var id_2 = treeNode.pId;
+							var node;
+							depart_input=treeNode.name;
+							//alert(treeNode.name)
+							org_tag_value = org_tag_value + '{"id":"' + treeNode.id + '","value": "' + treeNode.name + '"},';
+							while (zTree.getNodesByParam('id', id_2, null)[0] != null) {
+								node = zTree.getNodesByParam('id', id_2, null)[0];
+								id_2 = node.pId;
+								org_tag_value = '{"id":"' + node.id + '","value": "' + node.name + '"},' + org_tag_value;
+								depart_input= node.name+'-'+depart_input;
+							}
+							var staff_tag_post = org_tag_value;
+							var lastIndex = staff_tag_post.lastIndexOf(',');
+							if (lastIndex > -1) {
+							org_tag_value = staff_tag_post.substring(0, lastIndex) + staff_tag_post.substring(lastIndex + 1, staff_tag_post.length);
+							} 
+							ns_regex ="<?php echo $regex;?>" ;
+							if(ns_regex != ''){//有正则，才去做判断
+								ns_regex=<?php echo $regex;?>;
+								if(!ns_regex.test(treeNode.name))
+								{
+									$("#departmentSel2").parent('div').addClass('error');
+									count++;
+								}
+							}  
+							//sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+						}
+					}
+				   // sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+					
+				<?php 
+				continue;
+				endif;?>
+				<?php if ($umsapifield == 'position')://职位?>
+					ns_value =  $("#<?php echo $umsapifield ;?>").val();;//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+				
+				<?php 
+				continue;
+				endif;?>
+				<?php if ($umsapifield == 'mobileNumber')://手机?>
+					var pre=$("#<?php echo $umsapifield ;?>").parent().siblings('.selectBox').find('dd.selected').text();
+					ns_value = $("#<?php echo $umsapifield ;?>").val();;//拿到值
+					ns_value=''+pre+''+ns_value+'';
+					//alert(ns_value)
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+				sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield":'+
+				'"<?php echo  $umsapifield ;?>"}';
+				<?php 
+				continue;
+				endif;?>
+				<?php if ($umsapifield == 'mobileNumber')://办公地址?>
+					ns_value = 11;//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
+					}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+				
+				<?php 
+				continue;
+				endif;?>
+			<?php endforeach;?> 
+			
+			<?php //可选员工标签,放系统标签里面 ?>				
 			<?php foreach($seled_not_must_tag_arr as $k => $v)://循环
+					$field = arr_unbound_value($v,'field',2,'');//字段名称
 					$umsapifield = arr_unbound_value($v,'umsapifield',2,'');//ums字段名称
 					$title = arr_unbound_value($v,'title',2,'');//名称
 					$regex = arr_unbound_value($v,'regex',2,'');//正则
 					$tag_value = arr_unbound_value($v,'tag_value',2,'');
 				   ?>
-				   umsapifield = "<?php echo $umsapifield ;?>"; 
-				   _this = $("#" + umsapifield);
-					original_value	= _this.parent().prev().text().replace(/^\s+|\s+$/g,"");
-					update_value	= _this.val().replace(/^\s+|\s+$/g,"");//拿到值
-					if(original_value != update_value){
-						change_value();
-						post_value += ',"' + umsapifield + '":"' + update_value + '"';
+					ns_value =  $("#<?php echo $umsapifield ;?>").val();;//拿到值
+					if(sys_tag_value != ''){//有值则加一个逗号
+						sys_tag_value = sys_tag_value + ',';
 					}
-					
+					if(ns_value=="")
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+							count++;
+						}
+					}
+					sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield ;?>"}';
+			
+			
 			<?php endforeach;?> 
 			
 			<?php //自定义员工标签 ?>				
@@ -897,30 +1170,63 @@ $(function(){
 					$regex = arr_unbound_value($v,'regex',2,'');//自定义标签正则
 					?>
 					//alert('<?php echo  $tag_id;?>')
-					_define_this = $('#user_tag<?php echo  $tag_id;?>');
-					original_define_value	= _this.parent().prev().text();
-					update_define_value		= _define_this.val();//拿到值user_tag+标签id
-					if(original_define_value != update_define_value){
-						change_value();
-						post_value += ',"' + <?php echo $umsapifield?> + '":"' + update_value + '"';
+					ns_value = $('#user_tag<?php echo  $tag_id;?>').val();//拿到值user_tag+标签id
+					if(user_tag_value != ''){//有值则加一个逗号
+						user_tag_value = user_tag_value + ',';
 					}
+					if(ns_value=="")
+						{
+							$('#user_tag<?php echo  $tag_id;?>').parent('div').addClass('error');
+							count++;
+						}
+					//对值进行正则判断
+					ns_regex ="<?php echo $regex;?>";
+					if(ns_regex != ''){//有正则，才去做判断
+						//ns_regex=<?php echo $regex;?>;
+						if(!ns_regex.test(ns_value))
+						{
+							$('#user_tag<?php echo  $tag_id;?>').parent('div').addClass('error');
+							count++;
+						}
+					}
+					//{"tag_name": "birthday","tag_id": "1", "value": 19840229}
+					user_tag_value = user_tag_value + '{"tag_name": "<?php echo  $tag_name ;?>","value": "' + ns_value + '","tag_id": "<?php echo  $tag_id;?>"}';
+			
 			<?php endforeach;?>
-// 			post_json = '{"sys_tag":[' + sys_tag_value + '],"user_tag":[' + user_tag_value + '],"org_tag":' + org_tag_value + '}';//组织
-			post_json = '{"user_id":"' + user_id + '"' + post_value + '}';
-			var path_change_staffInfor = '<?php echo site_url('staff/updateUserInfo'); ?>';
+			if(count!=0)
+			{
+
+				return false;
+			}
+			var post_json ;
+			post_json = '{"sys_tag":[' + sys_tag_value + '],"user_tag":[' + user_tag_value + '],"org_tag":[' + org_tag_value + ']}';//组织
+			//alert(post_json)
+			//alert(sys_tag_value)
+			//alert(user_tag_value)
+			//alert(org_tag_value)
+			var path_change_staffInfor = '<?php echo site_url('staff/save_staff'); ?>';
 		   	var change_staff={
-				"post_json":post_json
-				};
+				"user_json":post_json,
+				"user_id":user_id};
 		   $.post(path_change_staffInfor,change_staff,function(data)
 		   {
 			 //alert(data);
 			  var json=$.parseJSON(data);
 			  if(json.code==0)
 			  {
+				  //alert(32)
 				  $('#part1').removeClass("value_change");
 				  $('.btn_infoSave').addClass('hide').siblings('.btn_infoEdit').removeClass('hide').siblings('.btn_infoCancel').addClass('hide');
 				  $('.infoTable .infoText').not('.dotEdit').each(function(){
 						$(this).show().next().addClass('hide');
+						if($(this).next().find("label:eq(1)").hasClass("radio_on"))
+						{
+							$(this).text("女");
+						}
+						else
+						{
+							$(this).text("男");
+						}
 						if($(this).attr("id")!="depart_span")
 						{ 
 						  var text = $(this).next().hasClass('inputBox') ? $(this).next().find('.input').val() : $(this).next().hasClass('selectBox') ? $(this).next().find('.text').text() : $(this).next().hasClass('radioBox')?$(this).next().find(":checked").val():$(this).next().hasClass('select-box')?$(this).next().find("input").val():"";
@@ -929,26 +1235,31 @@ $(function(){
 						 }
 						 else
 						 {
+							//alert(depart_input)
 							 $(this).text(depart_input);
 						 }
 				  });
 			  }
 			  else
 			  {
-			  	alert(json.prompt_text);
+			  	alert(json.prompt_text)	
 			  }
 				
 			 
 		   });
 	});
-	//点击事件获取当前选中的账户值
+	/*$('.selectBox').combo({
+		cont:'>.text',
+		listCont:'>.optionBox',
+		list:'>.optionList',
+		listItem:' .option'
+	});*/
 	$("#staff_userCount dd").click(function(e)
 	{
 		
 		$(this).parent().find("dd.selected").removeClass("selected");
 		$(this).addClass("selected");
 		$(this).parent().parent().prev().text($(this).text()).css("color","#4f4f4f");
-		$(this).parent().parent().prev().attr('value', $(this).attr('account_id'));
 		$(this).parent().parent().hide();
 		return false;		
 	})
@@ -1138,17 +1449,7 @@ $(function(){
 		}
 		 $("#dd2 .toolBar2").show();
 	});
-
-	$('.input_right').keyup(function(event)
-	        {
-	            if($(this).val()!='')
-	            {
-	            	$("#dd2 .toolBar2").show();
-	            }
-	        });
-
-	
-	//$(".account_input").addClass("disabled");
+	$(".account_input").addClass("disabled");
 	$('#loginName').click(function()
 		{
 			//alert(11)

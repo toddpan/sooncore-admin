@@ -115,8 +115,7 @@ class UcOrgMessage{
      *                                                    14 - 员工入职拒绝消息 15 - 员工离职拒绝消息 16 - 员工部门调动拒绝消息  
      * @return array array(boolean, '')
      */
-    function orgMsgSend($from_user_id, $from_site_id, $to_user_id, $to_site_id, $msg_type, $msg_id, $body, $is_group=1, $content_type=2, $type=1)
-    //function orgMsgSend($from_user_id, $from_site_id, $to_user_id, $to_site_id, $msg_type, $msg_id, $body, $is_group=1, $content_type=2)
+    function orgMsgSend($from_user_id, $from_site_id, $to_user_id, $to_site_id, $msg_type, $msg_id, $body, $is_group=1, $content_type=2)
     {
         //生成消息头
         $conf_header            = $this->createMsgHeader($from_user_id, $from_site_id, $to_user_id, $to_site_id, $msg_type, $is_group, $msg_id, $content_type);
@@ -126,8 +125,7 @@ class UcOrgMessage{
         //$conf_header->length    = $this->getBodyLength($conf_body);
         //$operate_id = isset($body['operator_id']) ? $body['operator_id'] : 0;
         //调用消息发送接口
-        $results                = $this->sendMsg($conf_header, $conf_body, $type);
-        //$results                = $this->sendMsg($conf_header, $conf_body);
+        $results                = $this->sendMsg($conf_header, $conf_body);
         //返回结果给调用者
         return $results;
     }
@@ -145,17 +143,10 @@ class UcOrgMessage{
     {
         //创建消息头对象
         $msg_header                 = new \uc\UcMessageHead();
-        if($msg_id == 17){
-        	$msg_header->appid      = $this->getPwdModifyAppId();
-        	$msg_header->protocoltype   = 0x06;
-        }else{
-        	$msg_header->appid      = $this->getAppId();
-        	$msg_header->protocoltype   = $this->getProtocolType();
-        }
-        
-        log_message('info', 'appid='. $msg_header->appid);
+        $msg_header->appid          = $this->getAppId();
         $msg_header->pri            = $this->getPri($is_group, $content_type);
         $msg_header->protocolid     = $this->getProtocolId($msg_id);
+        $msg_header->protocoltype   = $this->getProtocolType();
         $msg_header->id             = time();
         $msg_header->seq            = 0;
         $msg_header->conversation   = 0;
@@ -254,7 +245,6 @@ class UcOrgMessage{
                 $dept_parent_change                 =  new \uc\DeptParentChangeContent();
                 $dept_parent_change->operator_id    =  isset($body['operator_id'])        ? $body['operator_id']          : 0;
                 $dept_parent_change->dept_id        =  isset($body['dept_id'])            ? $body['dept_id']              : 0;
-                $dept_parent_change->dept_name      =  isset($body['dept_name'])            ? $body['dept_name']              : 0;
                 $dept_parent_change->old_dept_name  =  isset($body['old_dept_name'])      ? $body['old_dept_name']        : '';
                 $dept_parent_change->new_dept_name  =  isset($body['new_dept_name'])      ? $body['new_dept_name']        : '';
                 $dept_parent_change->desc           =  isset($body['desc'])               ? $body['desc']                 : '';
@@ -312,13 +302,7 @@ class UcOrgMessage{
                 $dept_transfer_confirm->desc        =  isset($body['desc'])               ? $body['desc']                 : '';
                 $msg_body->deptConfirm              =  $dept_transfer_confirm;  
                 break;
-            case 17://忘记密码的修改密码		xue.bai_2@quanshi.com		2015-01-05
-            	$pwd_modify_confirm = new \uc\PasswordModifyContent();
-            	$pwd_modify_confirm->password = isset($body['pwd']) ? $body['pwd'] : '';
-            	$msg_body->pwdModify = $pwd_modify_confirm;
-            	break;
         }
-//        log_message('info', 'msg_body='.$msg_body );
         //返回结果
         return $msg_body;
     }
@@ -342,11 +326,6 @@ class UcOrgMessage{
     {
         return \uc\AppId::AppOrganization;
     }
-    
-    function getPwdModifyAppId(){
-    	return \uc\AppId::AppNotify;
-    }
-    
     /**
      * 获取消息号
      * @param int $msg_id        消息号          1 - 部门名称变更    2 - 员工部门调动    3 - 职位调整  4 -员工入职 5 - 员工离职
@@ -410,9 +389,6 @@ class UcOrgMessage{
                 break;
             case 16:
                 $protocol_id = \uc\OrganizeProtoMessageId::DeptTransferReject;
-                break;
-            case 17:
-                $protocol_id = \uc\OrganizeProtoMessageId::PasswordModify;
                 break;
         }
         //返回结果
@@ -580,108 +556,6 @@ class UcOrgMessage{
         //return 
         return $this->app_id;
     }
-    
-    function createGrpMsg($project_group_data, $chat_group_data, $group_change_info)
-    {
-        $send_data          = array();
-        $msg_header         = new \uc\UcMessageHead();
-        $msg_body           = new \uc\UcMessageBody();
-        $from_jid           = new \uc\JID();
-        $to_jid             = new \uc\JID();
-        $from_jid->resID    = 0;
-        $to_jid->resID      = 0;
-        $msg_header->appid  = \uc\AppId::AppChat;
-        $msg_header->pri    = \uc\GroupType::to_group;
-        $msg_header->id     = time();
-        $msg_header->seq    = 0;
-        $msg_header->timestamp = time();
-        $msg_header->conversation = 0;
-        //set up project group data
-        if (!empty($project_group_data)){
-            $msg_header->protocoltype = \uc\ChatMessageType::DiscussionChat;
-            $msg_header->protocolid   = \uc\GroupMessageId::DisMemberDel;
-            $dis_content = new \uc\GroupMemberDelContent();
-            foreach($project_group_data as $project_data){
-                $from_jid->userID  = $project_data['user_id'];
-                $from_jid->siteID  = $project_data['site_id'];
-                $to_jid->userID    = $project_data['group_id'];
-                $to_jid->siteID    = $project_data['site_id'];
-                $msg_header->from  = $from_jid;
-                $msg_header->to    = $to_jid;
-                $dis_content->memberId    = $project_data['user_id'];
-                $dis_content->groupid     = $project_data['group_id'];
-                $dis_content->operatorid  = $project_data['user_id'];
-                $dis_content->name_flag   = $project_data['name_flag'];
-                $dis_content->avatar      = $project_data['group_logo'];
-                $dis_content->group_name  = $project_data['group_name'];
-                $dis_content->name_pinyin = $project_data['group_pinyin'];
-                $msg_body->groupDel       = $dis_content;
-                $send_data[] = $this->serializeMsg($msg_header, $msg_body);  
-            }
-        }
-        //starting to create group send msg data
-        if(!empty($chat_group_data)){
-            $msg_header->protocoltype = \uc\ChatMessageType::GroupChat;
-            $msg_header->protocolid   = \uc\ClusterMessageId::DisMemberDel;
-            $dis_content = new \uc\GroupMemberDelContent();
-            foreach($chat_group_data as $chat_data){
-                $gid    = $chat_data['group_id'];
-                $change_info = (isset($group_change_info[$gid]) && !empty($group_change_info[$gid])) ? $group_change_info[$gid] : $chat_data;
-                $from_jid->userID  = $chat_data['user_id'];
-                $from_jid->siteID  = $chat_data['site_id'];
-                $to_jid->userID    = $chat_data['group_id'];
-                $to_jid->siteID    = $chat_data['site_id'];
-                $msg_header->from  = $from_jid;
-                $msg_header->to    = $to_jid;
-                $dis_content->memberId    = $chat_data['user_id'];
-                $dis_content->groupid     = $chat_data['group_id'];
-                $dis_content->operatorid  = $chat_data['user_id'];
-                $dis_content->name_flag   = $chat_data['name_flag'];
-                $dis_content->avatar      = join(',', $change_info['group_logo']);
-                $dis_content->group_name  = $change_info['group_name'];
-                $dis_content->name_pinyin = $change_info['group_pinyin'];
-                $msg_body->groupDel       = $dis_content;
-                $send_data[] = $this->serializeMsg($msg_header, $msg_body);  
-            }
-        }
-        //return 
-        return join('', $send_data);
-    }
-    
-    function serializeMsg($msg_header, $msg_body)
-    {
-    	$body_buffer 		= new TMemoryBuffer();
-    	$prsence_protocol 	= new TBinaryProtocol($body_buffer);
-    	$msg_body->write($prsence_protocol);
-    	$msg_header->length = $body_buffer->available();
-    	
-    	//序列化消息头
-    	$head_buffer		= new TMemoryBuffer();
-    	$header_protocol 	= new TBinaryProtocol($head_buffer);
-    	$msg_header->write($header_protocol);
-    	
-    	//合并消息头和消息体
-    	$message_buffer     = new TMemoryBuffer($head_buffer->getBuffer().$body_buffer->getBuffer());
-        //return 
-        return pack('la*', $message_buffer->available(), $message_buffer->getBuffer());
-    }
-    
-    function sendGrpMsg($send_data)
-    {
-        $data           = array('data' => gzcompress($send_data));
-    	$result_json    = $this->make_post($data, UCC_API.'message/deliver');
-    	
-    	log_message('info', 'The result of sending msg is ' . $result_json);
-    	
-    	$result = json_decode($result_json, true);
-    	
-    	if($result['code'] == 0){
-            return array(true, 'success');
-    	}else{
-            log_message('error', "send group msg error, error msg is ->".var_export($result['msg'], true));
-            return array(false, $result['msg']);
-    	}
-    }
     /**
      * 执行消息发送操作
      * @param uc\UcMessageHead  $msg_header     消息头
@@ -722,8 +596,7 @@ class UcOrgMessage{
      * @param int $operate_id 操作人Id
      * @return boolean
      */
-//    function sendMsg(uc\UcMessageHead $msg_header, \uc\UcMessageBody $msg_body){
-    	function sendMsg(uc\UcMessageHead $msg_header, \uc\UcMessageBody $msg_body, $type){
+    function sendMsg(uc\UcMessageHead $msg_header, \uc\UcMessageBody $msg_body){
     	log_message('info', 'message');
     	//序列化消息体
     	$body_buffer 		= new TMemoryBuffer();
@@ -747,15 +620,8 @@ class UcOrgMessage{
     	$gzip_message 		= gzcompress($message);
     	
     	//发送消息
-    	if($type == 0){
-    		$address 			= UCC_API.'message/deliver';
-    		$data 				= array('data'=>$gzip_message);
-    	}else{
-    		$address 			= UCC_API.'message/send';
-    		log_message('info', '$address='.$address);
-    		$data 				= array('session_id'=> $this->CI->p_session_id,'user_id'=> $this->CI->p_user_id,'data'=>$gzip_message);
-     	}
-    	
+    	$address 			= UCC_API.'message/send';
+    	$data 				= array('session_id'=> $this->CI->p_session_id,'user_id'=> $this->CI->p_user_id,'data'=>$gzip_message);
     	$result_json		= $this->make_post($data,$address);
     	
     	log_message('info', 'The result of sending msg is ' . $result_json);

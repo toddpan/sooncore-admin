@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>蜜蜂管理中心</title>
+	<title>云企管理中心</title>
 </head>
 <body>
 	<!-- 组织与员工_批量导入_下载模板上传文档.html -->
@@ -13,9 +13,9 @@
 	<div class="contTitle"><span class="text">批量导入组织与员工</span><span class="tips">您已定义的员工标签如下：</span></div>
 	<div class="userTagBox">    
 		{foreach $tags as $tag}
-			<span class="tag">{html_escape($tag)}</span>
+			<span class="tag">{$tag}</span>
 		{/foreach}
-		<a class="link" onclick="loadCont('{site_url('tag/manageTag')}');">修改</a>
+		<a class="link" onclick="loadCont('{site_url('tag/addTagPage')}');">修改</a>
 	</div>
 	<a class="downLoadTemp" href="{site_url('batchimport/downloadTemplate')}" target="_self">
 		<span class="btn_downLoad">下载模板</span>

@@ -119,8 +119,7 @@ class UmsLib{
         $url  = $this->apiurl.'rs/organizations/'.$org_id;
         $params = array('scope'=>$scope, 'types'=>$type);
         $ret = httpCurl($url, $params,$method);
-		log_message('info', "get data from ums url is->{$url}");
-		//log_message('info',"get data from ums url is->".$url." result is->".var_export($ret, true));
+		log_message('info',"get data from ums url is->".$url." result is->".var_export($ret, true));
 		if($ret['code'] == 0  && $ret['data'] != ''){
 			return json_decode($ret['data'], true);
         }else{
@@ -249,7 +248,7 @@ class UmsLib{
 	 */
 	public function addUserToOrg($user_id, $org_id){
 		$method = 'POST';
-		$url  	= $this->apiurl.'rs/organizations/'.$org_id.'/users/'.$user_id;
+		$url  	= $this->apiurl.'/rs/organizations/'.$org_id.'/users/'.$user_id;
 		$params = array();
 		$ret = httpCurl($url, json_encode($params),$method);
 		
@@ -266,7 +265,7 @@ class UmsLib{
 	 */
 	public function addNewUserToOrg($user_info,$org_id){
 		$method = 'POST';
-		$url  = $this->apiurl.'rs/organizations/'.$org_id.'/users';
+		$url  = $this->apiurl.'/rs/organizations/'.$org_id.'/users';
 		$ret = httpCurl($url, json_encode($user_info),$method);
 		
 		log_message('info',"add new user to organization in ums url is->".$url." param is -->".var_export($user_info,true)." result is->".var_export($ret, true));
@@ -286,8 +285,8 @@ class UmsLib{
 	 * @param int $to_org_id   目标组织id
 	 */
 	public function changeUserOrg($user_id, $from_org_id, $to_org_id){
-		$method = 'PUT';
-		$url  = $this->apiurl.'rs/organizations/change_organization';
+		$method = 'POST';
+		$url  = $this->apiurl.'/rs/organizations/change_organization';
 		$param = array(
 			'id'=>$user_id,
 			'from'=>$from_org_id,
@@ -344,9 +343,6 @@ class UmsLib{
     
     /**
      * 根据用户Id查询用户所在组织信息
-     * 
-     * 返回array([0] => array([id] => 9 [name] => 北京公司 [code] => 003530……)), 注意和getOrganizationByUserId的区别.
-     * 
      * @param unknown $user_id
      */
     public function getOrgInfoByUserId($user_id){
@@ -382,7 +378,7 @@ class UmsLib{
     }
     
     /**
-     * 根据用户登陆名获取用户信息
+      * 根据用户登陆名获取用户信息
      * @param string $loginName 用户登陆名
      * @return mixed|boolean
      */
@@ -404,7 +400,7 @@ class UmsLib{
 	 */
 	public function getUserByIds($ids){
 		$method = 'POST';
-        $url  = $this->apiurl.'rs/users/id/in';
+        $url  = $this->apiurl.'/rs/users/id/in';
         $ret = httpCurl($url, json_encode($ids), $method);
         log_message('info',"ums api url --> ".$url."param --> ".var_export($ids, true)." result -->".var_export($ret, true));
 		if($ret['code'] == 0 && isset($ret['http_info']['http_body'])){
@@ -421,7 +417,7 @@ class UmsLib{
 	 */
 	public function getUserProduct($user_id, $product_id){
 		$method = 'GET';
-        $url  = $this->apiurl.'rs/users/getUserProductList?userId='.$user_id.'&productId='.$product_id;
+        $url  = $this->apiurl.'/rs/users/getUserProductList?userId='.$user_id.'&productId='.$product_id;
         $ret = httpCurl($url, array(), $method);
         log_message('info',"get data from ums url is->".$url." result is->".var_export($ret, true));
 		if($ret['code']== 0 && isset($ret['data'])){
@@ -445,8 +441,6 @@ class UmsLib{
 	
 	/**
 	 * 根据用户的id获取用户所在的组织信息
-	 * 
-	 * 返回array([id] => 9 [name] => 北京公司 [code] => 003530……), 注意和getOrgInfoByUserId的区别.
 	 */
 	public function getOrganizationByUserId($user_id){
 		$method = 'GET';
@@ -460,25 +454,6 @@ class UmsLib{
             return false;
         }
 	}
-	
-	/**
-	 * 可以返回多个组织
-	 * @param unknown $user_id
-	 * @return unknown|boolean
-	 */
-	public function getOrganizationsByUserId($user_id){
-		$method = 'GET';
-		$url  = $this->apiurl.'rs/users/'.$user_id.'/organizations';
-		$ret = httpCurl($url, array(), $method);
-		log_message('info',"get org info by user id from ums. url is->".$url." result is->".var_export($ret, true));
-		if($ret['code'] == 0 && isset($ret['data'])){
-			$orgs = json_decode($ret['data'], true);
-			return $orgs;
-		}else{
-			return false;
-		}
-	}
-	
 	/**
 	 * 分页获取未指定成本中心分组的用户
 	 * @param type $exclude_users 已经指定分组的用户
@@ -512,7 +487,7 @@ class UmsLib{
 		$method = 'POST';
 		$url  = $this->apiurl.'rs/users/setUserProduct?productId=%s&userStatus=%s&sitesId=%s&userId=%s';
 		$url  = sprintf($url, $uc_product_id, $user_status, $site_id, $user_id);
-		$ret = httpCurl($url, '', $method);
+		$ret = httpCurl($url, array(), $method);
 		log_message('info',"set user product to ums url is->".$url." result is->".var_export($ret, true));
 		return $ret['code'] == 0;
 	}
@@ -594,93 +569,10 @@ class UmsLib{
 	public function updateUser($login_name, $others_info=array()){
 		$method = 'POST';
 		$url  = $this->apiurl.'rs/users'; // /rs/users/updateUser或/rs/users
-		//$param = array_push($others_info, array('loginName'=>$login_name));
-		$others_info['loginName'] = $login_name;
-		//var_dump($others_info);
-		$ret = httpCurl($url, json_encode($others_info), $method);
-		log_message('info',"update user to ums url is->".$url.", param is->". json_encode($others_info) ." result is->".var_export($ret, true));
-		return $ret['code'] == 0 ? $ret['http_info']['http_body'] : false;
-	}
-
-	/**
-	 * 批量修改用户和组织
-	 *
-	*/
-	public function updateUserAndOrganization($customer_code,$info){
-		$method = 'POST';
-		$url  = $this->apiurl.'rs/users/updateUsers/customerCode/'.$customer_code;
-		$ret = httpCurl($url, json_encode($info), $method);
-		
-		log_message('info',"batch update user and organization to ums url is->".$url.", param is->". json_encode($info) ." result is->".var_export($ret, true));
-		
-		if($ret['code'] == 0 && isset($ret['http_info']['http_body'])){
-            return json_decode($ret['http_info']['http_body'], true);
-        }else{
-            return false;
-        }
-	}
-
-	/**
-	 * 修改用户
-	 * @param string $login_name
-	 * @param array  $others_info
-	 */
-	public function updateUserInfo($user_info=array()){
-		$method = 'POST';
-		$url  = $this->apiurl.'rs/users/updateUser'; // /rs/users/updateUser或/rs/users
-		$ret = httpCurl($url, json_encode($user_info), $method);
-		log_message('info',"update user to ums url is->".$url.", param is->". json_encode($user_info) ." result is->".var_export($ret, true));
-		return $ret['code'] == 0 ? $ret['http_info']['http_body'] : false;
-	}
-
-	/**
-	 * 查询邮箱和手机是否认证过
-	*/
-	public function checkUserVerified($email, $mobileNumber){
-		$method = 'POST';
-		$url  = $this->apiurl.'rs/users/checkVerified';
-		$param = array(
-			'email'	=> $email,
-			'mobile'=> array(
-				'phoneNumber'=>$mobileNumber,
-				'phoneTypeName'=>3,//电话类型
-			)
-		);
+		$param = array_push($others_info, array('loginName'=>$login_name));
 		$ret = httpCurl($url, json_encode($param), $method);
-		log_message('info',"check user verified from ums url is->".$url.", param is->". json_encode($param) ." result is->".var_export($ret, true));
-
-		if($ret['code'] == 0 && isset($ret['http_info']['http_body'])){
-            return json_decode($ret['http_info']['http_body'], true);
-        }else{
-            return false;
-        }
-	}
-
-	/**
-	 * 认证手机和邮箱
-	 * 
-	 * 
-	*/
-	public function verifyPhoneAndMail($user_id, $email='' ,$phone=''){
-		$method = 'POST';
-		$url  = $this->apiurl.'rs/users/verifyPhoneAndMail';
-		$param = array(
-			'id'=>$user_id,
-			'email'	=> $email,
-			'mobile'=> array(
-				'phoneNumber'=>$mobileNumber,
-				'phoneTypeName'=>3,//电话类型
-			),
-			'isForceUpdate'=>false,
-		);
-		$ret = httpCurl($url, json_encode($param), $method);
-		log_message('info',"verified  user email and phone to ums url is->".$url.", param is->". json_encode($param) ." result is->".var_export($ret, true));
-
-		if($ret['code'] == 0 && isset($ret['http_info']['http_body'])){
-            return json_decode($ret['http_info']['http_body'], true);
-        }else{
-            return false;
-        }
+		log_message('info',"create user to ums url is->".$url." result is->".var_export($ret, true));
+		return $ret['code'] == 0 ? $ret['http_info']['http_body'] : false;
 	}
 	
     //=====================LDAP接口==================
@@ -726,7 +618,7 @@ class UmsLib{
 		$method = 'POST';	
         $url = sprintf('%s%s', $this->ldapurl, 'rs/ldap');
 		$ret = httpCurl( $url, json_encode($ldap_param), $method, array('Content-Type: application/json') );
-		log_message('info',"get data from ums url is->".$url." param is->".var_export($ldap_param, true)." result is->".var_export($ret, true));
+		log_message('info',"get data from ums url is->".$url." param is->".var_export($param, true)." result is->".var_export($ret, true));
 		if($ret['code']== 0 && isset($ret['http_info']['http_body'])){
 			return $ret['http_info']['http_body'];//返回ldap id
 		}else{
@@ -763,7 +655,7 @@ class UmsLib{
      * return boolean
      */
     public function editLdap($ldap_param){
-		$method = 'PUT';
+		$method = 'POST';
 		$url	= sprintf('%s%s', $this->ldapurl, 'rs/ldap');
 		$ret	= httpCurl($url, json_encode($ldap_param), $method, array('Content-Type: application/json'));
 		log_message('info',"get data from ums url is->".$url." param is->".var_export($ldap_param, true)." result is->".var_export($ret, true));
@@ -789,7 +681,7 @@ class UmsLib{
         $method = 'GET';
         $url = sprintf('%s%s', $this->ldapurl, sprintf('rs/ldap/%d',$ldap_id));
         $ret = httpCurl($url, json_encode(array()), $method);
-		log_message('info',"get data from ums url is->".$url." result is->".var_export($ret, true));
+		log_message('info',"get data from ums url is->".$url." param is->".var_export($param, true)." result is->".var_export($ret, true));
 		if($ret['code']== 0 && isset($ret['data'])){
             return json_decode($ret['data'] ,true);
         }else{

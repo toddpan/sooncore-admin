@@ -25,9 +25,7 @@ class Search extends Admin_Controller{
      *
      * @author hongliang.cao@quanshi.com
      */
-    public function searchOrgAccountPage() {	
-		$this->setFunctions();
-    	
+    public function searchOrgAccountPage() {		 
         //获取关键字,如果为空则直接返回
         $keyword = $this->input->get_post('keyword', true);
         $ret_data = array();
@@ -41,8 +39,6 @@ class Search extends Admin_Controller{
 			return $this->load->view('staff/searchOrgAccount.php', $data=array('ret_data'=>$ret_data));
 		}
 		$ret_users = isset($data['users']) ? $data['users'] : array(); 
-		$this->load->library('UmsLib','','ums');
-		$this->load->model('uc_user_model', 'user_model');
         //设置返回值
         foreach($ret_users as $_user){
             $_ret_data = array();
@@ -51,60 +47,10 @@ class Search extends Admin_Controller{
             $_ret_data['loginName']      = $_user['loginName'];
             $_ret_data['mobileNumber']   = $_user['mobileNumber'];
             $_ret_data['lastlogintime']  = !empty($_user['lastlogintime']) ? date("Y/m/d H:i",round($_user['lastlogintime']/1000)) : '未登录';
-            // TODO 由于UMS搜索返回接口得到的组织有问题，所以临时使用“用户id查组织id”的方式处理
-            $user_infos = $this->ums->getOrgInfoByUserId($_user['id']);
-            $_ret_data['organizationId'] = $user_infos[0]['id'];	//用户以前所属的组织id
-//             $_ret_data['organizationId'] = $_user['organizationId'];
-            $_ret_data['organizationName'] = $_user['organizationName'];
-			// XXX 这里将来要修改，暂时先使用UCC的用户状态
-            $u_info = $this->user_model->getUserInfo($_user['id']);
-            $_ret_data['productStatus'] = $u_info['status'];
-//             $_ret_data['productStatus'] = $_user['productStatus'];
             $ret_data[] = $_ret_data; 
         }
         $this->load->view('staff/searchOrgAccount.php', $data=array('ret_data'=>$ret_data));
     }
-    
-	private function setFunctions(){
-		$roleFunctions = $this->setFunctionsByRole();
-		$customFunctions = $this->setFunctionsBySite();
-		
-		$functions = array_merge($customFunctions, $roleFunctions);
-		
-		foreach ($customFunctions as $key=>$value){
-			$functions[$key] = $functions[$key] && $value;
-		}
-		
-		$this->functions = $functions;
-	}
-	
-	private function setFunctionsBySite(){
-		$functions = array();
-
-		$functions['ldapListMenu'] = $this->siteConfig['importType'] == 2;
-		$functions['multiChoose'] = $this->siteConfig['importType'] != 2;
-		$functions['employeeChange'] = $this->siteConfig['importType'] != 2;
-		
-		return $functions;
-	}
-	
-	private function setFunctionsByRole(){
-		$functions = array();
-		
-		$functions['tagMenu'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;
-		$functions['ldapListMenu'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER;		
-		$functions['multiChoose'] = $this->p_role_id != ACCOUNT_MANAGER;
-		$functions['employeeChange'] = $this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER;
-
-		return $functions;
-	}
-    
-    
-    
-    
-    
-    
-    
 	
 	
 	/**
@@ -167,9 +113,9 @@ class Search extends Admin_Controller{
     	//设置返回值
     	foreach($ret_users as $_user){
     		$_ret_data = array();
-    		$_ret_data['displayName'] 	= $_user['displayName'];
-    		$_ret_data['loginName'] 	= $_user['loginName'];
-			$_ret_data['user_id'] 		= $_user['id'];
+    		$_ret_data['displayName']    = $_user['displayName'];
+    		$_ret_data['loginName']      = $_user['loginName'];
+			$_ret_data['user_id']      = $_user['id'];
     		$ret_data[] = $_ret_data;
     	}
 

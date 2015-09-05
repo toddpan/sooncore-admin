@@ -70,9 +70,6 @@ class Mixture extends Admin_Controller {
 		// 向密码历史记录中保存新密码
 		$this->save_newpwd($newpwd, $current_num);
 		
-		// 调用UCCServer接口向客户端发送消息
-		
-		
 		form_json_msg(COMMON_SUCCESS, '', $this->lang->line('resetpwd_success'), array()); // 修改密码成功
 	}
 	
@@ -261,7 +258,6 @@ class Mixture extends Admin_Controller {
 	 * 验证新密码的复杂性
 	 */
 	public function valid_pwd_complexity($pwd_obj, $newpwd, $pwd_complexity_type) {
-		log_message('info', 'Into method valid_pwd_complexity input is ' . var_export(array('newpwd' => $newpwd, 'pwd_complexity' => $pwd_complexity_type), true));
 		$complexity_arr = $pwd_obj->get_complexity_type_arr();
 		foreach ($complexity_arr as $complexity_type){
 			if($complexity_type['id'] == $pwd_complexity_type){
@@ -269,7 +265,6 @@ class Mixture extends Admin_Controller {
 				break;
 			}
 		}
-		//echo $pwd_complexity_reg;
 		if(!preg_match($pwd_complexity_reg, $newpwd)){
 			form_json_msg(NEW_PWD_COMPLIXYTY_WRONG, 'newPwd', $this->lang->line('resetpwd_wrong_new_complexity'), array());
 		}

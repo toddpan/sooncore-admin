@@ -331,14 +331,13 @@ class UC_Site_Costcenter_Model extends MY_Model{
 	public function isUniqueName($group_id,$new_title,$type){
 		//获取父id
 		$parent_id = $type == 0 ? $this->db->get_where($this->tbl['group'], array('id'=>$group_id))->first_row()->cost_pid : $group_id;
-		if($parent_id > 0){
+		if($parent_id>0){
 			$where_parent  = array('id'=>$parent_id,'cost_title'=>$new_title);
 			$where_siblings = array('cost_pid'=>$parent_id,'cost_title'=>$new_title);
 			$count = $this->db->where($where_parent)->or_where($where_siblings)->get($this->tbl['group'])->count_all_results();
 			return $count > 0 ? false : true;
 		}
-// 		return false;
-		return true;
+		return false;
 	}
 	
 	/**

@@ -23,16 +23,12 @@ class Crippleware extends Web_Controller {
 		$user_id = $this->input->get('user_id', true); // userId
 		log_message('info', 'Into method ' . __FUNCTION__ . " \n input -->" . var_export(array('user_id' => $user_id), true));
 		
-		//echo $user_id;
-		
 		// 将userId从base64加密中解密出来
 		//$user_id = base64_decode($user_id);
 		
 		// 验证userId
 		$this->load->library('UmsLib', '', 'ums');
 		$user_info = $this->ums->getUserById($user_id);
-		
-		//print_r($user_info);
 		if($user_info == false){
 			log_message('error', 'The user whose user_id is '. $user_id . ' is not exist.');
 			$this->assign('error_message', $this->lang->line('user_not_exist'));	// 该用户不存在
@@ -67,13 +63,8 @@ class Crippleware extends Web_Controller {
 		// 发送短信
 		$this->send_phone_code($user_id, $mobile_number);
 		
-		// 将手机号中间4位用*代替
-		$phone = substr_replace($mobile_number, ' **** ', 3, -4);
-		
-		
 		// 显示输入手机验证码页面
 		$this->assign('user_id', $user_id);
-		$this->assign('phone', $phone);
 		$this->assign('mobileNumber', $mobile_number);
 		$this->display('crippleware/valid_phone.tpl');
 	}
@@ -220,8 +211,7 @@ class Crippleware extends Web_Controller {
 		
 		// 判断该站点是否在UMS中存在
 		$site_info_arr = $this->ums->getSiteInfoByUrl($site_url);
-		//var_dump($site_info_arr);
-		if($site_info_arr != false){
+		if($site_info_arr == false){
 			log_message('error', 'The site whose site_url is '. $site_url . ' is already exist.');
 			$this->assign('error_message', $this->lang->line('site_is_exist'));	// 该站点已存在
 			$this->display('crippleware/err_msg.tpl');
@@ -249,8 +239,8 @@ class Crippleware extends Web_Controller {
 		// 判断该站点在本地是否存在
 		$this->load->model('uc_site_model');
 		$uc_site = $this->uc_site_model->getInfosBySiteId($site_id);
-		if(!isemptyArray($uc_site)){
-			log_message('error', 'The site whose site_url is '. $site_url . ' is already exist in uc.');
+		if(isemptyArray($uc_site)){
+			log_message('error', 'The site whose site_url is '. $site_url . ' is already exist.');
 			$this->assign('error_message', $this->lang->line('site_is_exist'));	// 该站点已存在
 			$this->display('crippleware/err_msg.tpl');
 			return ;
@@ -284,7 +274,7 @@ class Crippleware extends Web_Controller {
 		}	
 		
 		// 在本地创建用户
-		$uc_user_data = array(
+		$uc_user = array(
 				'userID' 		=> $user_id,
 				'siteId' 		=> $site_id,
 				'customerCode'  => TEST_CUSTOMER_CODE,
@@ -302,7 +292,6 @@ class Crippleware extends Web_Controller {
 		}
 		
 		// 将账号显示在页面上
-		$this->assign('user_id', $user_id);
 		$this->assign('loginName', $loginName);
 		$this->assign('site_url', $site_url);
 		$this->display('crippleware/set_pwd.tpl');
@@ -336,9 +325,10 @@ class Crippleware extends Web_Controller {
 		}
 		
 		// 保存密码
-		$user_info['password'] = $password;
-		//print_r($user_info);
-		$res = $this->ums->updateUser($loginName, $user_info);
+		$updateData = array(
+				'password' => md5($password)
+		);
+		$res = $this->ums->updateUser($loginName, $updateData);
 		if($res == false){
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('save_password_failed'), array());
 		}
@@ -370,13 +360,13 @@ class Crippleware extends Web_Controller {
 			'login_name' 		=> $loginName,
 			'mobile_number' 	=> isset($user_info['mobileNumber']) ? $user_info['mobileNumber']: ''
 		);
-		$result = $this->uc_user_admin_model->create_admin($user_admin_arr);
+		$result = $this->uc_user_admin_model->create_admin($user_admin_info);
 		if($result == false){
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('create_admin_failed'), array()); // 创建管理员失败
 		}
 		
 		// 根据customer_code获得站点id
-		$site_info = $this->ums->getSiteInfoByCustomercode(TEST_CUSTOMER_CODE);
+		$site_info = $this->ums->getSiteInfoBCustomercode(TEST_CUSTOMER_CODE);
 		if($site_info == false){
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('site_not_exist'), array()); // 该站点不存在
 		}
@@ -421,7 +411,7 @@ class Crippleware extends Web_Controller {
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('fail'), array()); // 保存线程失败
 		}
 		
- 		form_json_msg(COMMON_SUCCESS, '', $this->lang->line('success'), array('user_id' => $user_id));
+		form_json_msg(COMMON_SUCCESS, '', $this->lang->line('success'), array('user_id' => $user_id));
 	}
 	
 	/**
@@ -439,10 +429,7 @@ class Crippleware extends Web_Controller {
 			$this->assign('error_message', $this->lang->line('user_not_exist'));	// 该用户不存在
 			$this->display('crippleware/err_msg.tpl');
 		}
-		$user_name 	= isset($user_info['displayName']) ? $user_info['displayName'] : ''; 	// 姓名
-		$loginName 	= isset($user_info['loginName']) ? $user_info['loginName'] : '';		// 用户名
-		$password  	= isset($user_info['password']) ? $user_info['password'] : ''; 			// 密码
-		$email  	= isset($user_info['email']) ? $user_info['email'] : ''; 				// 收件人邮箱
+		$loginName = isset($user_info['loginName']) ? $user_info['loginName'] : '';	// 用户名
 		
 		// 根据customer_code获得站点id
 		$customer_code = TEST_CUSTOMER_CODE;
@@ -450,41 +437,11 @@ class Crippleware extends Web_Controller {
 		if($site_info == false){
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('site_not_exist'), array()); // 该站点不存在
 		}
-		$site_id = isset($site_info['id']) ? $site_info['id'] : '';
 		$site_url = isset($site_info['url']) ? $site_info['url'] : '';
 		if(empty($site_url)){
 			form_json_msg(COMMON_FAILURE, '', $this->lang->line('site_not_exist'), array()); // 该站点不存在
 		}
 		
-		// 根据域名查询公司简称
-		$this->load->model('uc_site_model');
-		$where_arr = array(
-			'id' => $site_id
-		);
-		$uc_site_info = $this->uc_site_model->get_site_info_by_cond($where_arr);
-		$cor_name = isset($uc_site_info['corName']) ? $uc_site_info['corName'] : '';
-		if(empty($cor_name)){
-			$this->load->model('uc_customer_model');
-			$condition_arr = array(
-				'siteId' 		=> $site_id,
-				'customerCode' 	=> $customer_code
-			);
-			$uc_customer_info = $this->uc_customer_model->getContractid($condition_arr);
-			$cor_name = isset($uc_customer_info['name']) ? $uc_customer_info['name'] : '';
-		}
-		
-		// 发送开通邮件
-		$this->load->library('MssLib', '', 'mss');
-		$mail_template_set = array(
-			'user_name' 	=> $user_name, 	// 姓名
-			'login_name' 	=> $loginName, 	// 用户名
-			'password' 		=> $password,  	// 密码
-			'cor_name' 		=> $cor_name,  	// 公司简称
-			'email' 		=> $email, 		// 收件人邮箱
-		);
-		$mail_type = MANAGER_CRIPPLEWARE_CREATE_MAIL; 
-		$result = $this->mss->save_mail($mail_template_set, $mail_type);
-		log_message('info', 'the result of send_mail is ' . $result);
 		
 		// 显示成功页面
 		$this->assign('site_irl', $site_url);

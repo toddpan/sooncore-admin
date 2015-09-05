@@ -9,12 +9,8 @@ $lang['add_admin_suc'] = "添加管理员成功";
 $lang['add_admin_error'] = "添加管理员失败";
 $lang['save_admin_suc'] = "保存管理员成功";
 $lang['save_admin_error'] = "保存管理员失败";
-$lang['username_is_not_exist'] = "该账号不存在";
 
 $lang['not_reset_self_pwd'] = "无法重置自己的密码，请修改您的密码";
 $lang['reset_pwd_fail'] = "重置密码失败";
 
-$lang['user_not_exist'] = "该用户不存在";
-
 $lang['success'] = "成功";
-$lang['fail'] = "失败";

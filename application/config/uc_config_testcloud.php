@@ -31,20 +31,6 @@ define('UC_DB_PASSWORD','quanshi');//密码
 define('UC_DB_DATABASE','statusnet');//数据库
 */
 
-//ucc server数据库地址
-//--A套
-define('UCCSERVER_DB_HOSTNAME','10.255.0.229');//主机
-define('UCCSERVER_DB_USERNAME','root');//帐号
-define('UCCSERVER_DB_PASSWORD','quanshi');//密码
-define('UCCSERVER_DB_DATABASE','statusnet');//数据库
-//--B套
-/*
-define('UCCSERVER_DB_HOSTNAME','10.255.0.198');//主机
-define('UCCSERVER_DB_USERNAME','root');//帐号
-define('UCCSERVER_DB_PASSWORD','quanshi');//密码
-define('UCCSERVER_DB_DATABASE','statusnet');//数据库
-*/
-
 //uc cas(client access service)数据库地址
 define('DOMAIN_DB_HOSTNAME','10.255.0.229');//主机
 define('DOMAIN_DB_USERNAME','root');//帐号

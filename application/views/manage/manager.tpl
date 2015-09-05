@@ -11,7 +11,7 @@
 <!-- 管理员管理 -->
 <div class="contHead" style="margin-bottom:20px;">
 	<span class="title01">管理员管理</span>
-	<div class="contHead-right"><div class="fr rightLine"><a class="btnSet" onclick="toggleMenu('menu2',event)"></a></div>
+	<div class="contHead-right"><div class="fr rightLine"><a class="btnSet" onclick="toggleMenu('menu1',event)"></a></div>
 	<div class="headSearch rightLine">
 		<div class="combo searchBox">
 			<b class="bgR"></b>
@@ -21,9 +21,9 @@
 		</div>
 	</div>
     
-    <ul class="menu" id="menu2">
-            <li style="*margin-top:-10px;padding:0;"><a onclick="loadCont('tag/manageTag' + '/0')" style="padding:0;">员工标签管理</a></li>
-          <!--  <li style="*margin-top:-25px"><a onclick="loadCont('ldap/showLdapPage')">LDAP设置</a></li> -->
+    <ul class="menu" id="menu1">
+            <li><a onclick="loadCont('tag/addTagPage' + '/0')">员工标签管理</a></li>
+          <!--  <li><a onclick="loadCont('ldap/showLdapPage')">LDAP设置</a></li> -->
         </ul>
         
     </div>
@@ -36,7 +36,7 @@
     <div class="combo selectBox w130" style="float:right">
         <a class="icon" ></a>
         <span class="text selected">全部管理员</span>
-        <div class="optionBox hide">
+        <div class="optionBox">
             <dl class="optionList" >
                 <dd id="all_manger" class="option selected" target="0" onclick="select_manger_type(this)">全部管理员</dd>
                 <dd class="option" target="1" onclick="select_manger_type(this)">系统管理员</dd>

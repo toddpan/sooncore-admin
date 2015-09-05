@@ -18,7 +18,6 @@ abstract class AccountProcessInterface{
 		$this->ci->load->library('UccLib', '', 'ucc');
 		$this->ci->load->library('MeetingLib', '', 'meeting');
 		$this->ci->load->library('UmsLib', '', 'ums');
-		$this->ci->load->library('MssLib', '', 'mss');
 	}
 	
 	/**
@@ -83,7 +82,7 @@ abstract class AccountProcessInterface{
 	
 		//获取组件数据
 		//--获取合同模板和管理员员模板合并后的站点模板属性
-		$site_value 				= json_decode($this->ci->account->getSitePower($this->uc['customer_code'], $meeting_user['siteId'], $this->uc['contract_id']), true);
+		$site_value 				= json_decode($this->ci->account->getSitePower($meeting_user['siteId']), true);
 		if(is_null($site_value)){
 			return array(false, 'Get site power from local db failed');
 		}
@@ -259,8 +258,7 @@ abstract class AccountProcessInterface{
 	}
 	
 	protected function _generate_password($length = 8) {
-		//$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
-		$chars = "abcdefghijkmnpqrstuvwxyz23456789";
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
 		$password = substr(str_shuffle( $chars ), 0, $length);
 		return $password;
 	}

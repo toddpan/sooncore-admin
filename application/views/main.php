@@ -2,17 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>蜜蜂管理中心</title>
+		<title>云企管理中心</title>
 	</head>
 	<body>
-		<div class="contHead" id="main_head">
+		<div class="contHead">
 			<span class="title01 rightLine">首页</span>
-			<span class="title02">欢迎使用蜜蜂管理后台<?php if($this->p_role_id != ACCOUNT_MANAGER){ ?> ，管理组织与员工请先为员工设置统一的标签<?php } ?>。</span>
+			<span class="title02">欢迎使用云企管理后台，管理通讯录与员工请先为员工设置统一的标签。</span>
 		</div>
 		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
-		<a class="setLabelBtn" onclick="set_tag();">设置员工标签</a>
+		<a class="setLabelBtn" onclick="set_tag(this);">设置员工标签</a>
 		<?php }?>
-		<div class="block" <?php if($this->p_role_id == ACCOUNT_MANAGER){ ?> style="border-top: 0;"<?php } ?>>
+		<div class="block">
   			<h2>帐号情况</h2>
   			<div class="block-content">
   				<div class="block-content-left" id="chart1"></div>
@@ -76,11 +76,14 @@
 		<script type="text/javascript" src="public/js/jqplot.donutRenderer.min.js"></script>		
 		<script type="text/javascript">
 			$('.main').removeClass("false");
-			function set_tag()
+			function set_tag(t)
 			{
-				$(".group").parent("li").removeAttr('id');
-				$('#ri_group').empty();
-				loadPage('tag/manageTag/0','group');
+				if($(t).hasClass("false"))
+				{
+					return ;
+				}
+				$(t).addClass("false");
+				loadPage('tag/addTagPage/0','group');
 			}
 			$(function(){
      			$('.more_list1').click(function(){
@@ -107,7 +110,7 @@
 					if(is_open_users==0 || not_open_users==0)
 					{
 						$.jqplot('chart1', [data], {
-							title: { text:'帐号开通', show:true, fontSize:'16px' ,textColor:'#000'},
+							title: { text:'账号开通', show:true, fontSize:'16px' ,textColor:'#000'},
 							seriesDefaults:{			
 							renderer:$.jqplot.PieRenderer,			
 							rendererOptions: {			
@@ -121,7 +124,7 @@
 						
 						
 						$.jqplot('chart2', [data1], { 
-							title: { text:'帐号启用', show:true, fontSize:'16px' ,textColor:'#000'},
+							title: { text:'账号启用', show:true, fontSize:'16px' ,textColor:'#000'},
 							seriesDefaults:{			
 							renderer:$.jqplot.PieRenderer,			
 							rendererOptions: {			
@@ -137,7 +140,7 @@
 					else
 					{
 							$.jqplot('chart1', [data], {
-							title: { text:'帐号开通', show:true, fontSize:'16px' ,textColor:'#000'},
+							title: { text:'账号开通', show:true, fontSize:'16px' ,textColor:'#000'},
 							seriesDefaults: {
 								shadow:false,
 								renderer: jQuery.jqplot.PieRenderer, 
@@ -162,7 +165,7 @@
 						
 						
 						$.jqplot('chart2', [data1], { 
-							title: { text:'帐号启用', show:true, fontSize:'16px' ,textColor:'#000'},
+							title: { text:'账号启用', show:true, fontSize:'16px' ,textColor:'#000'},
 							seriesDefaults: {
 								shadow:false,
 								renderer: jQuery.jqplot.PieRenderer, 
@@ -191,11 +194,7 @@
 				
 
 			});
-
-			// 如果是账号管理员，则去掉id为main_head的div的下边框的显示
-			<?php if($this->p_role_id == ACCOUNT_MANAGER){?>
-//				$('#main_head').addClass('border-bottom:0;');
-			<?php } ?>
+			
 		</script>
 	</body>
 </html>

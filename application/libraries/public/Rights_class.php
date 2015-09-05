@@ -11,7 +11,7 @@ class Rights_class {
 	private $rights_arr = array(
 // 		'UC_passDoc' => array(
 // 				'type' 			=> IM_SET, //'IM 设置',
-// 				'name' 		=> '可使用全时蜜蜂 IM 互传文档',
+// 				'name' 		=> '可使用全时云企 IM 互传文档',
 // 				'boss_name' 	=> 'UC',
 // 				'boss_property' => 'passDoc',
 // 				'regex' 		=> "/[12]{1}/",
@@ -47,7 +47,7 @@ class Rights_class {
 		),
 		'UC_isCall' => array(
 				'type' 			=> CALL_SET, //'通话设置',
-				'name' 		=> '允许使用蜜蜂拨打电话',
+				'name' 		=> '允许使用云企拨打电话',
 				'boss_name' 	=> 'UC',
 				'boss_property' => 'isCall',
 				'regex' 		=> "/[12]{1}/",

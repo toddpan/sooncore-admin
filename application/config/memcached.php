@@ -2,7 +2,7 @@
 
 // 配置单台缓存服务器
 $config ['memcached'] = array (
-		'hostname' => '192.168.35.155',
+		'hostname' => '127.0.0.1',
 		'port' => 11211,
 		'weight' => 1	
 );

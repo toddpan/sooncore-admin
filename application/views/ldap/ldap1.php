@@ -8,7 +8,7 @@
 		?>
 		<base href="/ucadmin/" />
 		<base target="_blank" />
-		<title>蜜蜂管理中心</title>
+		<title>云企管理中心</title>
 	</head>
 	<body>
 		<?php 

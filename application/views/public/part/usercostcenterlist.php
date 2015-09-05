@@ -31,7 +31,7 @@ if (box2.length == 0) {
     $('#part02 .table:first thead .checkbox').hide();
 } else {
     $('#part02 .table:first thead .checkbox').show();
-    //click_staff_name = '0' + '<?php //echo $v['id '];?>';  /**不知道是干什么用的，先注释掉，后边如果发现有用请打开。----白雪    xue.bai_2@quanshi.com   2014-12-30**/
+    click_staff_name = '0' + '<?php echo $v['id '];?>';
 }
 function staff_information2(t,user_id) {
 	if($(t).hasClass("false"))

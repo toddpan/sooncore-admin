@@ -2,7 +2,7 @@
 
 class UC_Crippleware_Site_Value_Model extends CI_Model {
 	
-	const TBL = 'uc_crippleware_site_value';
+	const TBL = 'uc_crippleware_value_model';
 	
 	public function __construct(){
 		parent::__construct();

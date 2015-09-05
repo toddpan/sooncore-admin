@@ -164,12 +164,13 @@ function showMenu_staff_info(t)
 	
 	 $(t).parent().find('.selectOptionBox').show();
 }
+
 // 员工权限的确定/取消按钮
 $('#dd2 label.checkbox').toggle(function(e)
 {
 	$("#dd2 .toolBar2").show();
 	var t=$(e.target);
-	if(t.hasClass('form-text'))
+	if(!t.hasClass('form-text'))
 	{
 		//alert(555);
 		if($(this).hasClass('checked'))
@@ -180,17 +181,22 @@ $('#dd2 label.checkbox').toggle(function(e)
 		}
 		else
 		{
-			$(this).addClass('checked');
-			return false;
+			//alert(777);
+			if(!$(this).hasClass('checked'))
+			{
+				//alert(888);
+				$(this).addClass('checked');
+				return false;
+			}
 		}
-		return false;
+		//return false;
 
 	}
 },function(e)
 {
 	 $("#dd2 .toolBar2").show();
 	var t=$(e.target);
-	if(t.hasClass('form-text'))
+	if(!t.hasClass('form-text'))
 	{
 		//alert(111);
 		if(!$(this).hasClass('checked'))
@@ -201,8 +207,13 @@ $('#dd2 label.checkbox').toggle(function(e)
 		}
 		else
 		{
-			$(this).removeClass('checked');
-			return false;
+			//alert(333);
+			if($(this).hasClass('checked'))
+			{
+				//alert(444);
+				$(this).removeClass('checked');
+				return false;
+			}
 		}
 
 	}
@@ -218,20 +229,12 @@ $('#dd2 dl.radio-dl label.radio').live('click',function()
 	 $("#dd2 .toolBar2").show();
 });
 
-$('#accept_max_input').keyup(function(event)
-        {
-            if($(this).val()!='')
-            {
-            	$("#dd2 .toolBar2").show();
-            }
-        });
-
 
 
 //点击权限中的保存
 function save_admin_right(user_id)
 {
-	var obj=right_save('.manager_right ');
+	var obj=right_save();
 	var value={
 			"power_json":obj,
 			"user_id":user_id
@@ -255,7 +258,6 @@ $('#dd2 .toolBar2 a:eq(1)').click(function()
 		{
 			$("#part1").removeClass("value_change");
 			$('.infoNav li:eq(1)').trigger("click");
-			$('#dd2 .toolBar2').hide();
 		})
 
 //点击管理员权限中的保存
@@ -266,13 +268,11 @@ function save_manger_detail(user_id){
 			var count=0;
 		$('#editBox03 table').each(function()
 		{
-			var id = $(this).find('#admin_role_id').attr('target');
-			//alert(id);
+			
 			var role=$(this).find('#juese .optionList dd.selected').attr("target");
 			var first=$(this).find('#admin_weidu .optionBox dd.selected').attr("target");
 			if(first==2 || first==4)
 			{
-				
 				var ids=$(this).find('.ztree').attr("ids");
 			}
 			else if(first==3)
@@ -319,7 +319,7 @@ function save_manger_detail(user_id){
 					ids1=ids1+$(this).find("label").text()+',';
 				})
 			}
-			var weidu_2;
+			
 			if(second==2)
 			{
 				weidu_2='{"key":"department","value":"'+ids+'"}';
@@ -328,18 +328,15 @@ function save_manger_detail(user_id){
 			{
 				weidu_2='{"key":"costcenter","value":"'+ids+'"}';
 			}
-			else if(second==3)
+			else
 			{
 				weidu_2='{"key":"region","value":"'+ids+'"}';
-			}else{
-				weidu_2='""';
 			}
 			
-			manager_info += '{"id":' + id +',"user_id":'+ user_id +',"role_id":'+ role +',"w1":'+ weidu_1 +',"w2":'+ weidu_2 +'},';
-			//manager_info += '[{"user_id":'+ user_id +',"role_id":'+ role +',"w1":'+ weidu_1 +',"w2":'+ weidu_2 +'}],';
+			manager_info += '[{"user_id":'+ user_id +',"role_id":'+ role +',"w1":'+ weidu_1 +',"w2":'+ weidu_2 +'}],';
+			
 			//obj='{role:'+role+',first:'+first+',ids:'+ids+',second:'+second+',ids1:'+ids1+'},'+obj;
 		})
-		manager_info = manager_info.substring(0, manager_info.length-1);
 		manager_info = '[' + manager_info + ']';
 		if(count!=0)
 		{
@@ -368,7 +365,7 @@ function save_manger_detail(user_id){
 
 function toggleAccount(t){
 		if($(t).find("span.text").text()=="关闭帐号") {
-		showDialog('弹窗_关闭蜜蜂帐号.html');
+		showDialog('弹窗_关闭云企帐号.html');
 			var _this = $(t);
 			$("#dialog .dialogBottom .btn_confirm").live("click",function(){
 				_this.find("span.text").text("开启帐号");
@@ -570,7 +567,7 @@ function reselect_weidu_1(target,t,id_ztree,id_weidu,id_weidu_second,e)
 //点击选择员工角色
 function reselect_role(t)
 {
-	if($(t).attr("target")=="0")
+	if($(t).attr("target")=="1")
 	{
 		$(t).parent().parent().hide();
 	}
@@ -740,52 +737,33 @@ function sex_select(t)
 			
 			//if(ind<len-1) {
 			$(this).addClass('selected').siblings().removeClass('selected');
-			$('.manager_right > dd').eq(ind).show().siblings().hide();
-//			if(ind==0)
-//			{
-//				var path="organize/get_org_tree";
-//				 $.post(path,[],function(data)
-//					  {			  			 
-//							  var zNodes=$.parseJSON(data.prompt_text);
-//							  var leng=zNodes.length;
-//							   for(var i=0; i<leng;i++)
-//								{
-//									//cost_zNodes.push(childNodes[i]);
-//										if(!zNodes[i].isParent)
-//										{
-//											zNodes[i].nocheck=false;
-//											
-//										}
-//								}
-//								//zNodes=[{id:1,pId:0, name:"海尔",open:true,nocheck:true}];
-//							   $.fn.zTree.init($('#ztree_admin'),wdSetting,zNodes);
-//						 
-//						 
-//					  },'json');
-//			}
+			$('.infoCont > dd').eq(ind).show().siblings().hide();
+			if(ind==0)
+			{
+				var path="organize/get_org_tree";
+				 $.post(path,[],function(data)
+					  {			  			 
+							  var zNodes=$.parseJSON(data.prompt_text);
+							  var leng=zNodes.length;
+							   for(var i=0; i<leng;i++)
+								{
+									//cost_zNodes.push(childNodes[i]);
+										if(!zNodes[i].isParent)
+										{
+											zNodes[i].nocheck=false;
+											
+										}
+								}
+								//zNodes=[{id:1,pId:0, name:"海尔",open:true,nocheck:true}];
+							   $.fn.zTree.init($('#ztree_admin'),wdSetting,zNodes);
+						 
+						 
+					  },'json')
+			}
 			//}
 		});
 		
 		$('.btn_infoEdit').click(function(){
-			var path="organize/get_org_tree";
-			 $.post(path,[],function(data)
-				  {			  			 
-						  var zNodes=$.parseJSON(data.prompt_text);
-						  var leng=zNodes.length;
-						   for(var i=0; i<leng;i++)
-							{
-								//cost_zNodes.push(childNodes[i]);
-									if(!zNodes[i].isParent)
-									{
-										zNodes[i].nocheck=false;
-										
-									}
-							}
-							//zNodes=[{id:1,pId:0, name:"海尔",open:true,nocheck:true}];
-						   $.fn.zTree.init($('#ztree_admin'),wdSetting,zNodes);
-					 
-					 
-				  },'json');
 			$(this).addClass('hide').siblings('.btn_infoSave, .btn_infoCancel').removeClass('hide');
 			$(this).parents('dd').find('.infoTable .infoText').not('.dotEdit').each(function(){
 				if(!$(this).hasClass('userCount'))
@@ -803,25 +781,6 @@ function sex_select(t)
 		});
 		
 		$('.btn_infoEdit2').click(function(){
-//			var path="organize/get_org_tree";
-//			 $.post(path,[],function(data)
-//				  {			  			 
-//						  var zNodes=$.parseJSON(data.prompt_text);
-//						  var leng=zNodes.length;
-//						   for(var i=0; i<leng;i++)
-//							{
-//								//cost_zNodes.push(childNodes[i]);
-//									if(!zNodes[i].isParent)
-//									{
-//										zNodes[i].nocheck=false;
-//										
-//									}
-//							}
-//							//zNodes=[{id:1,pId:0, name:"海尔",open:true,nocheck:true}];
-//						   $.fn.zTree.init($('#ztree_admin'),wdSetting,zNodes);
-//					 
-//					 
-//				  },'json');
 			$(this).addClass('hide').siblings('.btn_infoSave2, .btn_infoCancel2').removeClass('hide');
 			$('#infoBox03').hide();
 			$('#editBox03').show();

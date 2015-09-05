@@ -34,7 +34,7 @@ class UC_User_Resource_Model extends MY_Model{
     	 
     	// 执行SQL语句
     	$this->db->select('r.id,r.userID,r.scope_level_1,r.scope_level_1_value,r.scope_level_2,r.scope_level_2_value,d.role');
-    	$this->db->from('uc_user_admin_role as u');
+    	$this->db->from(uc_user_admin_role.' as u');
     	$this->db->join('uc_user_resource as r', 'u.id=r.id', 'left');
     	$this->db->join('uc_role_dic as d', 'u.role_id=d.id', 'left');
     	$this->db->where(array('r.userID' => $user_id));

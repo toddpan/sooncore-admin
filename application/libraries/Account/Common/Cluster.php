@@ -80,21 +80,6 @@ class Cluster{
 		
 	}
 	
-	/**
-	 * 根据环境名称（A,B）获取集群信息
-	 * @param unknown $name
-	 */
-	public function getClusterByEnvironmentName($name){
-		return $this->ci->cluster->getClusterByEnvironmentName($name);
-	}
-	
-	/**
-	 * 根据当前站点url获取集群信息
-	 * @param unknown $name
-	 */
-	public function getClusterByDomain($url){
-		return $this->ci->cluster->getClusterByDomain($url);
-	}
 	
 	/**
 	 * 判断客户是否已经分配过集群

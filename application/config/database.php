@@ -96,24 +96,6 @@ $db['mss']['dbcollat'] = 'utf8_general_ci';
 $db['mss']['swap_pre'] = '';
 $db['mss']['autoinit'] = TRUE;
 $db['mss']['stricton'] = FALSE;
-
-//uccserver database connection config
-$db['uccserver']['hostname'] = UCCSERVER_DB_HOSTNAME;//'192.168.35.115';
-$db['uccserver']['username'] = UCCSERVER_DB_USERNAME;//'root';
-$db['uccserver']['password'] = UCCSERVER_DB_PASSWORD;//'quanshi';
-$db['uccserver']['database'] = UCCSERVER_DB_DATABASE;//'statusnet';
-$db['uccserver']['dbdriver'] = 'mysql';
-$db['uccserver']['dbprefix'] = '';
-$db['uccserver']['pconnect'] = false;
-$db['uccserver']['db_debug'] = TRUE;
-$db['uccserver']['cache_on'] = FALSE;
-$db['uccserver']['cachedir'] = '';
-$db['uccserver']['char_set'] = 'utf8';
-$db['uccserver']['dbcollat'] = 'utf8_general_ci';
-$db['uccserver']['swap_pre'] = '';
-$db['uccserver']['autoinit'] = TRUE;
-$db['uccserver']['stricton'] = FALSE;
-
 //webpower邮件数据库连接
 /*
 $db['email']['hostname'] = EMAIL_DB_HOSTNAME;//'192.168.35.115';

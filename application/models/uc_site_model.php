@@ -30,32 +30,12 @@ class UC_Site_Model extends MY_Model{
 	}
 	
 	/**
-	 * @brief根据当前当前站点ID查询所有数据;
+	 * @brief根据当前当前站点ID查询数据;
 	 * @param $site_id	当前站点ID
 	 * @return array	查询的数据结果集
 	 */
 	public function getInfosBySiteId($site_id){
-		$query = $this->db->get_where(self::TBL, array('siteID'=>$site_id));
-		
-		if($query->num_rows > 0){
-			return $query->row_array();
-		}
-		return array();
-	}
-	
-	/**
-	 * 根据当前site_id查询某个字段.注意与getInfosBySiteId的区别.
-	 * @author ge.xie
-	 * 
-	 * @param string site_id<p>
-	 * 站点ID</p>
-	 * @param string field<p>
-	 * 查询的字段
-	 * </p>
-	 * @return array 查询的数据结果集
-	 */
-	public function getInfoBySiteId($site_id, $field) {
-		$query = $this->db->select($field)->get_where(self::TBL, array('siteID'=>$site_id));
+		$query		= $this->db->get_where(self::TBL, array('siteID'=>$site_id));
 		
 		if($query->num_rows > 0){
 			return $query->row_array();
@@ -79,71 +59,11 @@ class UC_Site_Model extends MY_Model{
 	 */
 	public function update_value($where_arr, $update_arr){
 		$this->db->update(self::TBL, $update_arr, $where_arr);
-		//echo $this->db->affected_rows();
 	
-		//if($this->db->affected_rows() > 0 ){
+		if($this->db->affected_rows() > 0 ){
 			return true;
-		//}
-	
-		//return false;
-	}
-	
-	/**
-	 * 根据站点id获得公司简称
-	 * @param int $site_id
-	 * @return array
-	 */
-	public function getCorNameBySiteId($site_id){
-		$query		= $this->db->select('corName')->get_where(self::TBL, array('siteID'=>$site_id));
-	
-		if($query->num_rows > 0){
-			return $query->row_array();
 		}
-		return array();
-	}
 	
-	/**
-	 * 根据条件查询站点信息
-	 * 
-	 * @param  array  $where_arr 条件数组
-	 * 
-	 * @return  array
-	 */
-	public function get_site_info_by_cond($where_arr) {
-		$query = $this->db->get_where(self::TBL, $where_arr);
-		
-		if($query->num_rows() > 0 ){
-			return $query->row_array();
-		}
-		
-		return array();
+		return false;
 	}
-	
-// 	/**
-// 	 * 按条件修改uc_site和uc_user表中的isLDAP值
-// 	 * @param 	int 	$site_id
-// 	 * @param 	int 	$isldap
-// 	 * @return 	boolean
-// 	 */
-// 	public function change_ldap($site_id, $isldap) {
-// 		try {
-// 			$this->db->trans_begin();
-			
-// 			// 更新uc_site表
-// 			$res_site = $this->db->update(self::TBL, array('isLDAP' => $isldap), array('siteID' => $site_id));
-// 			if(!$res_site){
-// 				throw new Exception('Update data from uc_site failed which siteID='.$site_id);
-// 			}
-			
-// 			// 更新uc_user表中除了系统管理员之外的记录
-// 			//$res_user = $this->db->update('uc_user', array('isLDAP' => $isldap), array('siteID' => $site_id));
-			
-// 			$this->db->trans_commit();
-// 			return true;
-// 		}catch(Exception $e){
-// 			$this->db->trans_rollback();
-// 			log_message('error',$e->getMessage());
-// 			return false;
-// 		}
-// 	}
 }

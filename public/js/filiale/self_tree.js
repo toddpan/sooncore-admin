@@ -68,26 +68,17 @@ function zTreebeforeExpand(treeId, treeNode) {
 //加载下一级节点
 function onExpand(event, treeId, treeNode) {
 	var expand_path;
-	var len = zNodes.length;
-	var orgid = treeNode.id;
+	var orgid = treeNode.oid;
 	var obj;
-	//obj="ztree";
-	//obj = treeId;
 	var zTree = $.fn.zTree.getZTreeObj(treeId);
-	//create_node11(zNodes);
 	var j = 0;
 	if(treeId=="ztree")
 	{
-		expand_path=path;
+		expand_path = "organize/get_next_OrgList";
 		obj = {
-				"org_id": orgid
+			 "org_id": orgid
 			};
-		//if (treeNode.children != null) {
-		// alert(treeNode.children[1].name);
 		if (j == 0 && treeNode.isParent && treeNode.children==null) { //alert(2);
-			//var path="<?php echo site_url('organize/get_next_OrgList');?>";
-			
-			//$.post(path,obj,function(data)
 			$.ajax({
 				url: expand_path,
 				async: false,
@@ -639,7 +630,9 @@ function showValue(e, treeId, treeNode){
 				   staff_depart = staff_depart +'<span>' + value[i] +'</span>&nbsp;&gt;&nbsp';
 				  }
 			 staff_depart = staff_depart +'<span>' + value[i] +'</span>';
-			 $('#part01').children("div.bread").text('').append(staff_depart).addClass("part0");
+			 $('#part01 .link_limitSet').next('.bread').text('');
+			 $('#part01 .link_limitSet').next('.bread').append(staff_depart);
+			 $('#part01 .link_limitSet').next(".bread").addClass("part0");
 			 $('#part01 .groupLimit .toolBar2').next().remove();
 						//alert(treeNode.name)
 			 if (treeNode.isDisabled == false || treeNode.isDisable==null) {

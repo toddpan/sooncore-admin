@@ -43,16 +43,14 @@ $('.poptip3 .btn_iKnow').click(function() {
 //-->
 </script>
 <div class="contHead">
-	<span class="title01" is_move="<?php if($this->functions['orgMove']){echo true;}else{echo false;}?>" is_rename="<?php if($this->functions['orgRename']){echo true;}else{echo false;}?>" id="org_agru">组织管理</span>
+	<span class="title01" is_move="<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){echo true;}else{echo false;}?>" is_rename="<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){echo true;}else{echo false;}?>" id="org_agru">通讯录管理</span>
 	<?php if(1 > 2): ?>
 	 <span>成功导入100个部门，1000个员工</span>
 	<?php endif;?>
 	<div class="contHead-right">
-	<?php if($this->functions['tagMenu'] || $this->functions['ldapListMenu']){?>
 		<div class="fr rightLine">
 			<a class="btnSet" onclick="toggleMenu('menu1',event)"></a>
 		</div>
-	<?php }?>
 		<div class="headSearch rightLine">
 			<div class="combo searchBox">
 				<b class="bgR"></b>
@@ -62,14 +60,14 @@ $('.poptip3 .btn_iKnow').click(function() {
 			</div>
 		</div>
 		<ul class="menu" id="menu1" style="*height:60px">
-		<?php if($this->functions['tagMenu']){?>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
 			<li style="*margin-top:-10px">
-				<a onclick="qs.linkPage.set({url: 'organize/OrgList'}); loadCont('tag/manageTag/0','group');">员工标签管理</a>
+				<a onclick="loadCont('tag/addTagPage/0','group')">员工标签管理</a>
 			</li>
 		<?php }?>
-		<?php if($this->functions['ldapListMenu']){?>
+		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
 			<li style="*margin-top:-25px">
-				<a onclick="loadCont('ldap/getLdapList');">LDAP设置管理</a>
+				<!--<a onclick="loadCont('ldap/showLdapPage')">LDAP设置</a> -->
 			</li>
 		<?php }?>
 		</ul>

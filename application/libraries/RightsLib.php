@@ -185,49 +185,49 @@ class RightsLib {
 			// 遍历从用户或组织或站点获取到的权限数组
 			foreach ($right_arr as $right_value){
 				
-				if($initial_key == 'summit_ConfDnisAccess' && $right_value['name'] == 'UC'){
-					if($right_value['property']['incomingLocal'] == 1){
-						$initial_value['value'] .= '1,';
-					}
+// 				if($initial_key == 'summit_ConfDnisAccess' && $right_value['name'] == 'UC'){
+// 					if($right_value['property']['incomingLocal'] == 1){
+// 						$initial_value['value'] .= '1,';
+// 					}
 					
-					if($right_value['property']['incoming400'] == 1){
-						$initial_value['value'] .= '2,';
-					}
+// 					if($right_value['property']['incoming400'] == 1){
+// 						$initial_value['value'] .= '2,';
+// 					}
 					
-					if($right_value['property']['incoming800'] == 1){
-						$initial_value['value'] .= '3,';
-					}
+// 					if($right_value['property']['incoming800'] == 1){
+// 						$initial_value['value'] .= '3,';
+// 					}
 					
-					if($right_value['property']['incomingLocalToll'] == 1){
-						$initial_value['value'] .= '4,';
-					}
+// 					if($right_value['property']['incomingLocalToll'] == 1){
+// 						$initial_value['value'] .= '4,';
+// 					}
 					
-					if($right_value['property']['incomingInter'] == 1){
-						$initial_value['value'] .= '5,';
-					}
+// 					if($right_value['property']['incomingInter'] == 1){
+// 						$initial_value['value'] .= '5,';
+// 					}
 					
-					if($right_value['property']['incomingHk'] == 1){
-						$initial_value['value'] .= '7,';
-					}
+// 					if($right_value['property']['incomingHk'] == 1){
+// 						$initial_value['value'] .= '7,';
+// 					}
 					
-					break;
+// 					break;
 					
-				}else if($initial_key == 'summit_ParticipantNameRecordAndPlayback' && $right_value['name'] == 'radisys'){
-					// 是否录制参会人姓名
-					$initial_value['value'] = $right_value['property']['PNR'];
-					break;
+// 				}else if($initial_key == 'summit_ParticipantNameRecordAndPlayback' && $right_value['name'] == 'radisys'){
+// 					// 是否录制参会人姓名
+// 					$initial_value['value'] = $right_value['property']['PNR'];
+// 					break;
 					
-				}else if(($initial_key == 'summit_Pcode2InTone' || $initial_key == 'summit_Pcode2OutTone' || $initial_key == 'summit_Pcode1InTone' || $initial_key == 'summit_Pcode1OutTone') && $right_value['name'] == 'radisys'){
-					// 主持人/参会人入会/退会提示音设置
-					$initial_value['value'] = $right_value['property']['InOutTone'];
-					break;
-				}else{
+// 				}else if(($initial_key == 'summit_Pcode2InTone' || $initial_key == 'summit_Pcode2OutTone' || $initial_key == 'summit_Pcode1InTone' || $initial_key == 'summit_Pcode1OutTone') && $right_value['name'] == 'radisys'){
+// 					// 主持人/参会人入会/退会提示音设置
+// 					$initial_value['value'] = $right_value['property']['InOutTone'];
+// 					break;
+// 				}else{
 					// 如果是当前的boss_name和当前boss_property，则为原始权限数组赋值
 					if(($boss_name == $right_value['name']) && isset($right_value['property'][$boss_property])){
 						$initial_value['value'] = $right_value['property'][$boss_property];
 						break;
 					}
-				}
+//				}
 				
 				 
 			}
@@ -370,16 +370,10 @@ class RightsLib {
 					}
 				}
 				
-				// 所有参会者在加入会议时，是否需要录制姓名
-				if($boss_property == 'ParticipantNameRecordAndPlayback' && $old_right_value['name'] == 'radisys'){
-					$old_right_value['property']['PNR'] = $new_right_value['value'];
-				}
-				
 				// 如果是当前权限，则进行判断
 				if($new_right_value['boss_name'] == $old_right_value['name']){
 					
 					// 如果发生变化，则将新的值赋给旧的权限
-					//echo $boss_property.'<br/>';
 					if($new_right_value['value'] != $old_right_value['property'][$boss_property]){
 						
 						$is_change = POWER_IS_CHANGE;// 权限是否发生变化：0、没有；1、有

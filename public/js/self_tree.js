@@ -29,172 +29,8 @@ function addDiyDom2(treeId, treeNode) {
     }
 }
 
-var curMenu = null, zTree_Menu = null;
-var log, className = "dark";
-//组织结构部分
-var setting = {
-    view: {
-        isSimpleData: true,
-        selectedMulti: false,
-        treeNodeKey: "id",
-        treeNodeParentKey: "pId",
-        showLine: false,
-        showIcon: false,
-        dblClickExpand: false,
-        txtSelectedEnable: true,
-        fontCss: setFontCss,
-        addDiyDom: addDiyDom
-    },
-    edit: {
-        enable: true,
-        showRemoveBtn: false,
-        showRenameBtn: setBtn,
-        editNameSelectAll: true
-        /*drag: {
-         autoExpandTrigger: true
-         }*/
-    },
-    data: {
-        keep: {
-            parent: false,
-            leaf: false
-        },
-        simpleData: {
-            enable: true
-        }
-    },
-    callback: {
-        /*beforeDrag:zTreebeforeDrag,*/
-        onDrag:zTreeonDrag,
-        beforeDragOpen:zTreebeforeDragOpen,
-        onDrop: zTreeonDrog,
-        beforeDrop: zTreebeforeDrop,
-        onExpand: onExpand,
-        beforeExpand: zTreebeforeExpand,
-        beforeRename: beforeRename,
-        onRename: zTreeOnRename,
-        onClick: showValue,
-        beforeClick: zTreeBeforeClick,
-        beforeDrag: zTreeBeforeDrag,
-        /*onDragMove: zTreeOnDragMove,*/
-        onMouseDown: zTreeOnMouseDown
-    }
-};
-
 //组织结构树的所有回调函数
-//是否禁用展开
-function zTreebeforeExpand(treeId, treeNode) {
-    //alert(1);
-    var obj;
-    obj = "ztree";
-    //var zTree = $.fn.zTree.getZTreeObj(obj);
-    //var treeParent=zTree.getNodes()[0].children;
-    //var leng=treeParent.length;
-    if (treeNode.isDisabled == true) {
-        //$('#addZuzhi').addClass("disabled");
-        // $('#deleteZuzhi').addClass("disabled");
-        judge = 1;
-        return false;
-    }
-}
-//加载下一级节点
-function onExpand(event, treeId, treeNode) {
-    var expand_path;
-    var len = zNodes.length;
-    var orgid = treeNode.id;
-    var obj;
-    //obj="ztree";
-    //obj = treeId;
-    var zTree = $.fn.zTree.getZTreeObj(treeId);
-    //create_node11(zNodes);
-    var j = 0;
-    if(treeId=="ztree")
-    {
-        expand_path=path;
-        obj = {
-            "org_id": orgid
-        };
-        //if (treeNode.children != null) {
-        // alert(treeNode.children[1].name);
-        if (j == 0 && treeNode.isParent && treeNode.children==null) { //alert(2);
-            //var path="<?php echo site_url('organize/get_next_OrgList');?>";
 
-            //$.post(path,obj,function(data)
-            $.ajax({
-                url: expand_path,
-                async: false,
-                type: "POST",
-                data: obj,
-                success: function(data) {
-                    if (data != null) {
-                        var childNodes = eval('(' + data + ')');
-                        var leng = childNodes.length;
-                        for (var i = 0; i < leng; i++) {
-                            var count = 0;
-                            for (var j = 0; j < zNodes.length; j++) {
-                                if (childNodes[i].id == zNodes[j].id && childNodes[i].pId == zNodes[j].pId) {
-                                    count++;
-                                }
-                            }
-                            if (count == 0) {
-                                //alert(12121)
-                                zNodes.push(childNodes[i]);
-                            }
-
-                        }
-                        childNodes = zTree.addNodes(treeNode, childNodes);
-                        //zTree.removeNode(treeNode.children[0]);
-                    }
-					else
-				{
-					alert("数据为空")
-				}
-
-                    //alert(treeNode.children[0].id);
-                    //expand_node(childNodes);
-                }
-				
-            })
-        }
-        //}
-    }
-    else
-    {
-        expand_path=cost_next;
-        obj = {
-            "id": orgid
-        };
-        if (treeNode.children != null) {
-            // alert(treeNode.children[1].name);
-            if (j == 0 && treeNode.children==null && treeNode.isParent) { //alert(2);
-                //var path="<?php echo site_url('organize/get_next_OrgList');?>";
-
-                //$.post(path,obj,function(data)
-                $.ajax({
-                    url: expand_path,
-                    async: false,
-                    type: "POST",
-                    data: obj,
-                    success: function(data) {
-                        if (data != null) {
-
-                            data=$.parseJSON(data);
-                            var childNodes=data.data;
-                            var leng = childNodes.length;
-                            costNode.push(childNodes);
-                        }
-						else
-						{
-							alert("数据为空")
-						}
-                        childNodes = zTree.addNodes(treeNode, childNodes);
-                        //zTree.removeNode(treeNode.children[0]);
-                    }
-                })
-            }
-        }
-    }
-}
 //禁用重命名
 function setBtn(treeId, treeNode) {
 	if($('#org_agru').attr("is_rename"))
@@ -632,7 +468,7 @@ function zTreeBeforeClick(treeId, treeNode, clickFlag)
     var re;
     if(treeId=="ztree")
     {
-        var du=$('#part01');
+        var du=$('#part1');
         if(!infor_click_org(du))
         {
             re=false;
@@ -668,107 +504,9 @@ function infor_click_org(t)
     }
     return ass;
 }
-function showValue(e, treeId, treeNode){
-    if(treeId=="ztree")
-    {
-        var zTree = $.fn.zTree.getZTreeObj(treeId);
-        if (treeNode != null) {
-            var value = [];
-            value.push(treeNode.name);
-            var nodes=treeNode;
-            while (nodes.pId != null) {
-                nodes=zTree.getNodesByParam("id", nodes.pId,null);
-                value.push(nodes[0].name);
-                nodes=nodes[0];
-            }
-            var staff_depart = "";
-            //staff_depart=' <div class="bread part0">';
-            for (var i = value.length - 1; i > 0; i--) {
-                staff_depart = staff_depart +'<span>' + value[i] +'</span>&nbsp;&gt;&nbsp';
-            }
-            staff_depart = staff_depart +'<span>' + value[i] +'</span>';
-			$('#part01').children("div.bread").text('').append(staff_depart).addClass("part0");
-            $('#part01 .groupLimit .toolBar2').next().remove();
-            //alert(treeNode.name)
-            if (treeNode.isDisabled == false || treeNode.isDisable==null) {
-                var org_ID = treeNode.id; //获得当前组织id
-                var parent_orgid = treeNode.pId;
-                
-                if (treeNode.is_onclick == true) {
-                	var obj = {
-                            "parent_orgid": parent_orgid,
-                            "org_id": org_ID
-                        };
-                	load_staff(obj, path_user, path_mag);
-                }else{
-                	var obj = {
-                            "parent_orgid": parent_orgid,
-                            "org_id": 0
-                        };
-                	load_staff(obj, path_user, path_mag);
-                }
-               // load_staff(obj, path_user, path_mag);
-            }
-            
-        }
-    }
-    else
-    {
-        $('.treeNode').removeClass("no_setCost");
 
-        var zTree = $.fn.zTree.getZTreeObj(treeId);
-        if (treeNode != null) {
-            var value = [];
-            value.push(treeNode.name);
-            var nodes=treeNode;
-            while (nodes.pId != null) {
-                nodes=zTree.getNodesByParam("id", nodes.pId,null);
-                value.push(nodes[0].name);
-                nodes=nodes[0];
-            }
-            var staff_depart = '';
-            //staff_depart=' <div class="bread part0">';
-            for (var i = value.length - 1; i > 0; i--) {
-                staff_depart = staff_depart +'<span>' + value[i] +'</span>&nbsp;&gt;&nbsp';
-            }
-            staff_depart = staff_depart +'<span>' + value[i] +'</span>';
-            staff_depart="<span>成本中心</span>&nbsp;&gt;&nbsp"+staff_depart;
-            $('#part02 .bread').html('');
-            $("#part02 .bread").append(staff_depart);
-            if (treeNode.isDisabled == false || treeNode.isDisable==null) {
-                $(".deleteCenter").removeClass("disabled");
-                var org_ID = treeNode.id; //获得当前组织id
-                var parent_orgid = treeNode.pId;
-                var Tree=$.fn.zTree.getZTreeObj("ztree2");
-                //var org=Tree.getSelectedNodes();
-                if(Tree==null)
-                {
-                    var org=0;
-                }else
-                {
-                    var org=Tree.getSelectedNodes();
-                    if(org[0]==null)
-                    {
-                        org=0;
-                    }
-                    else
-                    {
-                        org=org[0].id;
-                    }
-                }
-                var obj = {
-                    "id":org_ID,
-                    "org_id":org,
-                    "count":0,
-                    "page":0
-                };
-                load_staff_center(obj, path_cost_user);
-                // alert(111)
-                //load_staff(obj, path_user, path_mag);
-            }
-        }
-    }
-}
+
+
 
 //拖拽节点之后的回调函数
 function zTreebeforeDrop(treeId, treeNodes, targetNode, moveType)
@@ -1153,19 +891,18 @@ function addZuzhi(e) {
 
     if (treeNode) {
 
-//        var newNode= {id:(0), pId:treeNode.id, isParent:false, name:"新建节点" + (newCount++)};
-        var newNode= {id:(0), pId:treeNode.id, isParent:false, name:"输入部门名称"};
+        var newNode= {id:(0), pId:treeNode.id, isParent:false, name:"新建节点" + (newCount++)};
         treeNode1= zTree.addNodes(treeNode,newNode);
         $('#addZuzhi').removeClass("false");
     } else {
-        treeNode = zTree.addNodes(null, {id:(0), pId:0, isParent:false, name:"输入部门名称"});
+        treeNode = zTree.addNodes(null, {id:(0), pId:0, isParent:false, name:"新建节点" + (newCount++)});
         $('#addZuzhi').removeClass("false");
     }
     if (treeNode1) {
         zTree.editName(treeNode1[0]);
 
     } else {
-        alert("该部门无法增加子部门");
+        alert("叶子节点被锁定，无法增加子节点");
     }
     //$('body').trigger('click');
     $("#novalueTable").show().prev("table").hide();
@@ -1642,7 +1379,7 @@ function click_input_node(e, treeId, treeNode)
 }
 var moveSetting = {
     view: {
-        selectedMulti: false,
+        selectedMulti: true,
         showLine: false,
         showIcon: false,
         dblClickExpand: false,
@@ -2630,14 +2367,7 @@ $(function(){
     })
 })
 
-/**
- * 设置组织管理列表的字体样式
- */
-function setFontCss(treeId, treeNode){
-	if(treeNode.is_onclick == false){
-		return {color: "#bcc2c7"};
-	}
-}
+
 
 
 function onSelectGroupDown(event) {

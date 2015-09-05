@@ -6,47 +6,15 @@ var is_auto_del;
 var ldap_name;
 var obj;
 function nextStep5() {
-	var count=0;
     var select_box = 0; //选框的值,如果为0是未选中，为1是选中
     var Exception_rule = [];
     var Re_rule = []; ////设置的例外规则
     var objectclasses=$('#objectclasses').find("input").val();
     var idAttribute=$('#idAttribute').find("input").val();
     var nameAttribute=$('#nameAttribute').find("input").val();
-    var relationshipType = 'DEFAULT';	//ldap的关系类型，1表示默认DEFAULT，2表示一对一OneToOne，3表示多对多ManyToMany
-    var ldapOrgUserMappingObj = {
-    		relationshipType: relationshipType,
-    };
-    
-    if($('#custom_made').hasClass('checked')){
-    	ldapOrgUserMappingObj.relationshipType = 'OneToOne';
-    	ldapOrgUserMappingObj.userAttribute = $('.userAttribute').attr('value');
-    	ldapOrgUserMappingObj.orgAttribute = $('.orgAttribute').attr('value');
-    	
-    	if($('#made2').hasClass('checked')){
-    		ldapOrgUserMappingObj.relationshipType = 'ManyToMany';
-    		ldapOrgUserMappingObj.objectClass = $('.objectClass').attr('value');
-    		ldapOrgUserMappingObj.searchBase = $('.searchBase').attr('value');
-    		ldapOrgUserMappingObj.searchFilter = $('.searchFilter').attr('value');
-    		ldapOrgUserMappingObj.joinUserAttribute = $('.joinUserAttribute').attr('value');
-    		ldapOrgUserMappingObj.joinOrgAttribute = $('.joinOrgAttribute').attr('value');
-    	}
-    }
-    //如果是非标准的ldap则需要进行组织勾选
-    var zTree = $.fn.zTree.getZTreeObj("sync_ldap_tree");
-    var Re_context = zTree.getCheckedNodes(true);
-    var sync_org = [];
-    Re_context.shift();
-    if(Re_context.length > 0){
-    	for (var i = 0; i < Re_context.length; i++) {
-            ///Re_data=Re_data+'{id:'+Re_con[i]+',pid:'+Re_con[i+1]+',name:'+Re_con[i+2]+',},';
-    		sync_org[i] = Re_context[i].id;
-        }
-    }
-    
     $('#select_tag').parent("div").removeClass("error");
     $('#select_Two').parent("div").removeClass("error");
-    if ($("dd .checkbox").hasClass("checked")) {
+    if ($("dd label.checkbox").hasClass("checked")) {
         select_box = 1;
     }
     var i = 0;
@@ -59,43 +27,33 @@ function nextStep5() {
         })
     }
     var strTwo = $('#Select_div').text();
-    if ($('#select_tag').text() != "选择标签" || $('#select_tag').text() != "") {
-		var email_value = $('#select_tag').val();
-		var email_next = $('.site_domain').length ? $('.site_domain').text() : '';
-		
-	} else {
-		email_value = "";
-		$('#select_tag').parent("div").addClass("error");
-		count++;
-	}
-    /*
-	if(strTwo=="使用邮箱作为蜜蜂帐号")
+	if(strTwo=="使用邮箱作为云企帐号")
 	{
-		 if ($('#select_tag').text() != "选择标签" || $('#select_tag').text() != "") {
+		 if ($('#select_tag').text() != "选择标签") {
 				var str = $('#select_tag').text();
 				email_value = str;
 				
 			} else {
 				email_value = "";
-				$('#select_tag').parent("div").addClass("error");
-				count++;
+				$('.error5').show();
+        		$('.error5').text("请设置云企账号") 
 			}
 		 email_next='';
 	}
    else
    {
-	   if ($('#select_tag').text() != "选择标签" || $('#select_tag').text() != "") {
-        var str = $('#select_tag').text();
-		var str1=$('.site_domain').text();
+	   if ($('#select_two').text() != "请选择") {
+        var str = $('#select_two').text();
+		var str1=$('#select_two').parent().parent().attr("name");
         email_value = str;
         email_next=str1;
 		} else {
 			email_value = "";
-			$('#select_tag').parent("div").addClass("error");
-			count++;
+			$('.error5').show();
+        	$('.error5').text("请设置云企账号") 
 		}
    }
-   */
+	var count=0;
     if(objectclasses=='')
     	{
     		$("#objectclasses").addClass("error");
@@ -112,10 +70,11 @@ function nextStep5() {
     		count++;
     }
     
-    if ($('#select_tag').val() == "选择标签" || $('#select_tag').val() == "") {
+    if ($('#select_two').text() == "请选择" && $('#select_tag').text() == "选择标签") {
+        $('#select_two').parent("div").addClass("error");
         $('#select_tag').parent("div").addClass("error");
-//		$('.error5').show();
-//        $('.error5').text("请设置蜜蜂账号") ;
+		$('.error5').show();
+        $('.error5').text("请设置云企账号") ;
 		return false;
     } else {
     	if(count!=0)
@@ -124,29 +83,24 @@ function nextStep5() {
 		}
 		 $('.error5').hide();
         var path = "ldap/checkAllLdapParams";
-        if ($('.del_ldap').hasClass("checked")) {
+        if ($('.ldapSetBox5 .ldapSetCont').children('dd:eq(2)').find('label.checkbox').hasClass("checked")) {
             is_auto_del = 1;
         } else {
             is_auto_del = 0;
         }
-        
         obj = {
             server_info: server_info,//LDAP配置
             org_info: org_info,//同步的组织结构列表
             classes: classes,//员工标签
             property_info: property_info,//设定员工标签对应的组织标签
-            ldapOrgUserMapping: ldapOrgUserMappingObj,
             filter_rule: Exception_rule.join(';'),
             email_next: email_next,
             email_value: email_value,
-            is_auto_del: is_auto_del
+            is_auto_del: is_auto_del,
 //            objectclasses: objectclasses,
 //            idAttribute: idAttribute,
 //            nameAttribute: nameAttribute,
         };
-        if($('#custom_made').hasClass('checked')){	//如果是非标准的ldap则需要添加同步组织属性
-        	obj.sync_org = sync_org;
-        }
         $("#checking").show();
         $.ajax({
             url: path,
@@ -168,21 +122,21 @@ function nextStep5() {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                         $('#select_tag').parent("div").addClass("error");
 						$('.error5').show();
-                        $('.error5').text("请设置蜜蜂账号");
+                        $('.error5').text("请设置云企账号");
                     } else if (json.error == "select_tag") {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                         $('#select_tw0').parent("div").addClass("error");
 						$('.error5').show();
-                        $('.error5').text("请设置蜜蜂账号");
+                        $('.error5').text("请设置云企账号");
                     } else {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                     }
                     return false;
                 }
-//				else
-//					{
-//						alert(json.prompt_text);
-//					}
+				else
+					{
+						alert(json.prompt_text);
+					}
             },
             error: function() {
 				$("#checking").hide();
@@ -250,16 +204,63 @@ function ldapf_select(t)
 {
 	if($(t).attr("target")==1)
 	   {
-		$('.site_domain').hide();
+		   $('#select_tag').parent().parent().show();
+		   $('#select_tag').parent().parent().next().hide();
 	   }
 	   else
 	   {
-		   $('.site_domain').show();
+		   $('#select_two').parent().parent().show();
+		   $('#select_two').parent().parent().prev().hide();
 	   }
 }
-
 $(function()
-{     
+{
+	 $('#dialog #ldap_name_dialog').die('click');
+     $('#dialog #ldap_name_dialog').live('click',
+     function() {
+     	$("#checking").show();
+         ldap_name = $("#dialog .dialogBox .dialogBody .inputBox").find("input").val();
+         obj.ldap_name = ldap_name;
+         var ldap_id = $(".ldapSetBox5 #Select_div").attr("name");
+         var path_ldap;
+         if (ldap_id > 0) {
+              path_ldap = "ldap/updateLdap";
+             obj.ldap_id = ldap_id;
+         } else {
+             path_ldap = "ldap/createLdap";
+         }
+		
+         $.ajax({
+             url: path_ldap,
+             timeout: 6000,
+             type: "POST",
+             data: obj,
+             success: function(data) {
+             	$("#checking").hide();
+             	var json = $.parseJSON(data);
+                 if (json.code == 0) {
+                 	$("#checking").show();
+					$('.rightCont').load('ldap/getLdapList',function(data)
+					 {
+						 $("#checking").hide();
+					 });
+                     //location.href = "ldap/ldaplayout"+"#ldapList";
+                     //loadCont("ldap/getLdapList");
+                     hideDialog();
+                 } else {
+                     $('#' + json.error_id).parent("div").addClass("error");
+                     return false;
+                 }
+             },
+             error:function()
+             {
+             	$("#checking").hide();
+                 $('.ldapSetBox5 .error5').show();
+ 				$('.ldapSetBox5 dd.error5').text("操作超时，请稍后再试");
+ 				hideDialog();
+             }
+         });
+     });
 	$('.ldapSetBox5 .infoTable .selectBox').combo({
         cont: '>.text',
         listCont: '>.optionBox',
@@ -295,15 +296,4 @@ $(function()
 		}
 		
    	})*/
-});
-
-//处理输入属性的时候样式问题
-$('.step5Input').click(function(){
-	$(this).attr('value', '').css('color','#4f4f4f');
-});
-$('.step5Input').bind('blur', function(){
-	if($(this).val() == ''){
-		$(this).attr('value', '选择标签').removeAttr('style');
-	}
-});
-
+})

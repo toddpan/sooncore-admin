@@ -42,7 +42,7 @@ if ( ! function_exists('httpCurl'))
 {
    function httpCurl($url, $body, $method='GET', $header=array(), $xml_format=false, $timeout=10000)
     {
-    	$ci = curl_init();
+        $ci = curl_init();
         /* Curl settings */
         //curl_setopt($ci, CURLOPT_VERBOSE, TRUE);
         curl_setopt($ci, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
@@ -102,49 +102,8 @@ if ( ! function_exists('httpCurl'))
         //curl_setopt($ci, CURLINFO_HEADER_OUT, TRUE );
         //return
         try {
-        	//--性能测试，接口调用起始时间
-        	if(OPEN_PERFORMANCE_TEST){
-        		$callStartTime = microtime(true);
-        	}
-        	//--
-        	
             $response = curl_exec($ci);
-            
-            //--性能测试，接口调用结束时间
-            $callEndTime = microtime(true);
-            $callTime = $callEndTime - $callStartTime;
-            if(OPEN_PERFORMANCE_TEST && ($callTime >= PERFORMANCE_INTERNAL)){
-				$CI = & get_instance();
-				$CI->load->model('performance_model');
-				
-				$platform = 'others';
-				if(preg_match('/core-service/u',$url)){
-					$platform = 'boss';	
-				}
-				
-				if(preg_match('/ums/u',$url)){
-					$platform = 'ums';
-				}
-				
-				if(preg_match('/uccapi/u',$url)){
-					$platform = 'ucc';
-				}
-				
-				if(preg_match('/uniform/u',$url)){
-					$platform = 'uniform';
-				}
-				
-				$one = array(
-					'callurl'   =>$url,
-					'platform'	=>$platform,
-					'calltime'  =>round($callTime, 2),
-					'createtime'=>date('Y-m-d H:i:s'),
-				);
-				$CI->performance_model->add($one);
-				
-            }
-            //--
-            
+           // common_log(LOG_DEBUG, "\r\n \r\n curl response is ".var_export($response, true).",");
             if (!$response){
                 $error_code = curl_errno($ci);
                 $error_msg = curl_error($ci);

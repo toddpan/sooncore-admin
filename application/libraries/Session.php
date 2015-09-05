@@ -85,7 +85,7 @@ class Session {
 		// Fetch the cookie
 		$session = $this->CI->input->cookie($this->sess_cookie_name);
 		
-		//log_message('info', 'session='. $session);
+		log_message('info', 'session='. $session);
 
 		// No cookie?  Goodbye cruel world!...
 		if ($session === FALSE){
@@ -308,7 +308,7 @@ class Session {
 			$cache_arr = array();
 		}
 		
-		//log_message('info', 'cache=' . var_export($cache_arr, true));
+		log_message('info', 'cache=' . var_export($cache_arr, true));
 		
 		// 遍历userdata数组
 		foreach($this->userdata as $user_key => $user_value){

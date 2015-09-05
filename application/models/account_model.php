@@ -20,7 +20,6 @@ class Account_Model extends CI_Model{
 				'area'			=>'uc_area',//客户地址表
 				'customer'		=>'uc_customer',//客户合同信息表
 				'site'			=>'uc_site',//站点信息表
-				'site_config'	=>'uc_site_config',//站点配置表
 				'org_config'	=>'uc_organization',//组织权限
 				'user_config' 	=>'uc_user_config',//用户权限
 				'admin'			=>'uc_user_admin',//管理员信息表
@@ -28,9 +27,6 @@ class Account_Model extends CI_Model{
 				'user'			=>'uc_user',//用户信息表
 				'org_manager'	=>'uc_org_manager',//组织管理者
 				'request'		=>'uc_request',//本地向boss发送账号操作请求表
-				'user_org_rela' =>'user_org_rela',//同事关系
-				'tag'  			=>'uc_user_tags',//标签
-				'tag_value'		=>'uc_user_tag_value'//标签值
 		);
 	}
 	
@@ -58,7 +54,7 @@ class Account_Model extends CI_Model{
 			);
 			
 			if(!$this->_save($this->tbl['area'], $where, $data)){
-				throw new Exception('save area data to db failed');
+				throw new Exception('insert area data to db failed');
 			}
 			
 				
@@ -76,7 +72,7 @@ class Account_Model extends CI_Model{
 			);
 			
 			if(!$this->_save($this->tbl['customer'], $where, $data)){
-				throw new Exception('save customer contract data to db failed');
+				throw new Exception('insert customer contract data to db failed');
 			}
 			
 			//站点信息
@@ -94,23 +90,7 @@ class Account_Model extends CI_Model{
 			);
 				
 			if(!$this->_save($this->tbl['site'], $where, $data)){
-				throw new Exception('save site data to db failed');
-			}
-
-			//站点配置信息，站点根组织id
-			$where = array(
-				'site_id'=>$uc['site_id'],
-				'key'=>'siteRootOrgId',
-			);
-			$data = array(
-				'site_id'=>$uc['site_id'],
-				'key'=>'siteRootOrgId',
-				'value'=>$uc['root_id'],
-				'create_time'=>date('Y-m-d H:i:s', time()),
-			);
-
-			if(!$this->_save($this->tbl['site_config'], $where, $data)){
-				throw new Exception('save site data to db failed');
+				throw new Exception('insert site data to db failed');
 			}
 			
 			$this->db->trans_commit();
@@ -150,10 +130,10 @@ class Account_Model extends CI_Model{
 			$this->db->trans_begin();
 			$user_where = array(
 				'userID'		=>$user['id'], 
+				'siteId'		=>$uc['site_id'], 
+				'customerCode'	=>$uc['customer_code']
 			);
 			$user_data = array(
-				'siteId'				=>$uc['site_id'],
-				'customerCode'		 	=>$uc['customer_code'],
 				'status'				=>UC_USER_STATUS_ENABLE,
 				'Collect'				=>$uc['collect'],
 				'billingcode'			=>$user['billingCode'],
@@ -165,7 +145,7 @@ class Account_Model extends CI_Model{
 				'update_time'			=>date('Y-m-d H:i:s'),
 				'expired_time'			=>''
 			);
-			$query = $this->db->get_where($this->tbl['user'], array('userID'=>$user['id']));
+			$query = $this->db->get_where($this->tbl['user'], $user_where);
 			
 			if($query->num_rows()>0){
 				$ret = $this->db->where($user_where)->update($this->tbl['user'], $user_data);
@@ -341,9 +321,9 @@ class Account_Model extends CI_Model{
 	 * @param int $site_id
 	 * @return string
 	 */
-	public function getSitePower($customer_code, $site_id, $contract_id){
+	public function getSitePower($site_id){
 		$value = '';
-		$rs = $this->db->select('value')->get_where($this->tbl['site'], array('customerCode'=>$customer_code,'siteID'=>$site_id, 'contractId'=>$contract_id));
+		$rs = $this->db->select('value')->get_where($this->tbl['site'], array('siteId'=>$site_id));
 		if($rs->num_rows()>0){
 			$value = $rs->first_row()->value;
 		}
@@ -479,17 +459,6 @@ class Account_Model extends CI_Model{
 		return $rst->num_rows() > 0 ? $rst->first_row()->accountId : false;
 	}
 	
-	public function getSystemManagerUserId($site_id){
-		//获取系统管理员id
-		$this->db->select('b.userID');
-		$this->db->from($this->tbl['admin_role'].' as a');
-		$this->db->join($this->tbl['admin'].' as b', 'a.user_id=b.userID', 'left');
-		$this->db->where(array('a.role_id'=>SYSTEM_MANAGER, 'a.state'=>1, 'b.siteID'=>$site_id));
-		$rst = $this->db->get();
-	
-		return $rst->num_rows() > 0 ? $rst->first_row()->userID : false;
-	}
-	
 	public function getUserAccountId($user_id){
 		//获取用户的分账id
 		$rst = $this->db->select('accountId')->get_where($this->tbl['user'], array('userID'=>$user_id));
@@ -516,121 +485,6 @@ class Account_Model extends CI_Model{
 		return $query->num_rows() > 0 ? $query->first_row()->siteID : false;
 	}
 	
-	/*
-	 * 保存同事关系缓存数据，以供后面的c++程序去批量执行
-	 */
-	public function saveColleagueData($data){
-		return $this->db->insert($this->tbl['user_org_rela'], $data);
-	}
 	
-	/*
-	 * 获取站点配置项(是否发送邮件，是否发送短信)
-	 */
-	
-	public function getSiteConfigs($site_id){
-		$ret = array(
-			'accountNotifyEmail'			=>1,//1-发送 0-不发送
-			'accountNotifySMS'				=>1,//1-发送 0-不发送
-			'password_existing_prompt' 		=> '',
-			'accountDefaultPassword'		=> '',
-			'isLDAP'						=>0,//0-非ldap类型  其他-ldap类型
-		);
-		
-		//邮件、短信发送开关
-		$query = $this->db->select('key,value')->get_where($this->tbl['site_config'],array('site_id'=>$site_id));
-		if($query->num_rows() > 0){
-			$_keys = array_keys($ret);
-			foreach($query->result_array() as $item){
-				if(in_array($item['key'], $_keys)){
-					$ret[$item['key']] = $item['value'];
-				}
-			}
-		}
-		
-		//站点类型（是否为ldap）
-		$query2 = $this->db->select('isLDAP')->get_where($this->tbl['site'],array('siteID'=>$site_id));
-		if($query2->num_rows() > 0){
-			$ret['isLDAP'] = $query2->first_row()->isLDAP;
-		}
-		
-		return $ret;	
-	}
-	
-	public function isBelongToSite($customer_code, $site_id, $user_id){
-		$query = $this->db->get_where($this->tbl['user'], array('customerCode'=>$customer_code, 'siteId'=>$site_id, 'userID'=>$user_id));
-		return $query->num_rows() > 0;
-	}
-	
-	public function getConfigedUser($customer_code, $site_id){
-		$rst = array();
-		$query = $this->db->select('userID,value')->get_where($this->tbl['user_config'], array('siteID'=>$site_id, 'customerCode'=>$customer_code));
-		if($query->num_rows()>0){
-			foreach($query->result_array() as $item){
-				$rst[$item['userID']] = $item['value'];
-			}
-		}
-		return $rst;
-	}
-	
-	public function getConfigedOrganizationIds($customer_code, $site_id){
-		$rst = array();
-		$query = $this->db->select('orgID')->get_where($this->tbl['org_config'], array('siteID'=>$site_id, 'customerCode'=>$customer_code));
-		if($query->num_rows()>0){
-			foreach($query->result_array() as $item){
-				$rst[] = $item['orgID'];
-			}
-		}
-		return $rst;
-	}
-
-	public function saveCustomTags($tags){
-		foreach($tags as $tag){
-			$this->saveCustomTag($tag);
-		}
-		return true;
-	}
-
-	//保存自定义标签，有则修改，无则添加
-	public function saveCustomTag($tag){
-		$q = $this->db->get_where($this->tbl['tag_value'], array('user_id'=>$tag['user_id'],'tag_id'=>$tag['tag_id']));
-		if($q->num_rows()>0){
-			$tag['modified'] = time();
-			return $this->db->where(array('id'=>$q->first_row()->id))->update($this->tbl['tag_value'],$tag);
-		}else{
-			$tag['created']  = time();
-			$tag['modified'] = time();
-			return $this->db->insert($this->tbl['tag_value'],$tag);
-		}
-	}
-
-	//获取站点下所有的标签
-	public function getSiteCustomTags($site_id){
-		$q = $this->db->get_where($this->tbl['tag'], array('site_id'=>$site_id));
-		$ret = array();
-		if($q->num_rows()>0){
-			foreach($q->result_array() as $item){
-				$ret[$item['tag_code']] = $item;
-			}
-		}
-
-		return  $ret;
-	}
-
-
-	public function getRootOrgIdFromUserAdminTable($user_id){
-		$q = $this->db->select('orgID')->get_where($this->tbl['admin'], array('userID'=>$user_id));
-		if($q->num_rows()>0){
-			return $q->first_row()->orgID;
-		}
-		return false;
-	}
-
-	public function getRootOrgIdFromSiteConfigTable($site_id){
-		$q = $this->db->select('value')->get_where($this->tbl['site_config'], array('site_id'=>$site_id, 'key'=>'siteRootOrgId'));
-		if($q->num_rows()>0){
-			return $q->first_row()->value;
-		}
-		return false;
-	}
 	
 }
