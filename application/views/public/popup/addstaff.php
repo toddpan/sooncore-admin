@@ -201,6 +201,7 @@
 	</dd>
 </dl>
 <script type="text/javascript">
+
 if(!$('#sex .radio').hasClass("radio_on")){
     $('#sex .radio:eq(0)').addClass("radio_on");
 }
@@ -247,7 +248,7 @@ if (add_type!=3)
 {
 	var obj = getSelectNode();
         var nodeName = obj.name;
-	if (obj.oid != null) {
+	if (obj.oid != null && obj.pid != "0") {
 		//var value = [];
             $('#inputVal2').find("input").val(nodeName);//'{"id":"' + treeNode.id + '","value": "' + treeNode.name + '"},'
             default_user_org_json='{"id":"'+obj.oid+'","value":"'+nodeName+'"}';
@@ -378,7 +379,7 @@ function add_staff(e,t) {
     <?php
     continue;
     }
-    if ($umsapifield == 'position') : //职位?>
+    if ($umsapifield == 'position') { //职位?>
     ns_value = $("#<?php echo $umsapifield;?>").val();; //拿到值
     if (sys_tag_value != '') { //有值则加一个逗号
         sys_tag_value = sys_tag_value + ',';
@@ -401,7 +402,7 @@ function add_staff(e,t) {
 
     <?php
     continue;
-    endif; ?>
+    } ?>
     <?php
     if ($umsapifield == 'loginName') : //帐号?> 
     ns_value = $("#<?php echo $umsapifield;?>").val(); //拿到值
@@ -554,13 +555,17 @@ function add_staff(e,t) {
 	{
                 var treeNode = getSelectNode("#departmentTree");	
                 //alert(treeNode.name);
-                
+                if(treeNode.pid==="0"){//如果部门PID（父类ID）等于0 那么说明是根组织
+                    $("#organizationId").parent('div').addClass('error');
+                    alert("根组织禁止添加员工！");
+                    return;
+                }
                 if(treeNode.oid && $("#organizationId").val())
 		{
                         $("#organizationId").parent('div').removeClass('error');
                         org_tag_value = org_tag_value + '{"id":"' + treeNode.oid + '","value": "' + treeNode.name + '"},';
                         var pid = treeNode.pid;
-                        
+                        //var nodeCode = treeNode.nodeCode;
                         if (pid != null) {
                                 var pNode = $("#ztree [org_id='"+pid+"']");
                                 var nodeId = pid;
@@ -734,7 +739,7 @@ function add_staff(e,t) {
                                         //alert(111);
                                         showValue(obj);//显示数据
                                 },1000);
-        
+
                         }
                         hideDialog();
                         $(this).addClass('hide').siblings('.btn_infoEdit').removeClass('hide').siblings('.btn_infoCancel').addClass('hide');
@@ -752,10 +757,13 @@ function add_staff(e,t) {
     });
     //hideDialog();
 }
+
+
 function showTreeList(event) {
     if(!$("#departmentTree").text()){
         var oldTreeDOM = $("#ztree").html();
         $("#departmentTree").html(oldTreeDOM);
+        //$("#departmentTree a.nodeBtn").removeClass("curSelectedNode");
     }
     $('#treeOption').toggle();
     if ($('.optionBox').attr('target') == '1') {
@@ -772,126 +780,81 @@ function onTreeListDown(event) {
         hideTreeList();
     }
 }
-function disable_select() {
-//    var zTree = $.fn.zTree.getZTreeObj("departmentTree");
-//    var treeNode = zTree.getSelectedNodes();
-//    if (treeNode[0] != null) {
-//
-//        if (treeNode[0].isDisabled == true) {
-//            zTree.cancelSelectedNode(treeNode[0]);
-//        }
-//    }
+
+function disable_select(t) {
+    var _t = t;
+    var pid = _t.attr("parent_id");
+    //alert(pid);
+    if(pid==="0"){
+        _t.removeClass("curSelectedNode");
+        alert("根组织不允许添加员工！");
+        _t.next("ul").find("a.nodeBtn:first").click();//模拟点击下一级第一个节点以防空值
+    }
+    
+    exit();
 }
 
-$(function() {
-//点击添加账户
-$('#acount_user dd').click(function()
-{       
-	$(this).parent().find("dd.selected").removeClass("selected");
-	$(this).addClass("selected");
-	$(this).parent().parent().prev().css("color","#4f4f4f");
-});
-	$('#treeOption a').live("click",
-    function() {
-        //disable_select();
+    //点击选择账户
+    $('#acount_user dd').click(function(){       
+            $(this).parent().find("dd.selected").removeClass("selected");
+            $(this).addClass("selected");
+            $(this).parent().parent().prev().css("color","#4f4f4f");
     });
-	if(add_type==3)
-	{
-		var tree_path="organize/get_org_tree";
-		$.post(tree_path,[],function(data)
-		{
-			if(data.code==0)
-			{
-				zNodes=$.parseJSON(data.prompt_text);
-				alert(zNodes);
-				$.fn.zTree.init($("#departmentTree"), inputSetting, zNodes);
-			}
-			else
-				{
-					alert(data.prompt_text)	
-				}
-		},'json')
-	}
-	else
-	{
-   	 	$.fn.zTree.init($("#departmentTree"), inputSetting, zNodes);
-	}
-   /* $('.infoTable .selectBox').combo({
-        cont: '>.text',
-        listCont: '>.optionBox',
-        list: '>.optionList',
-        listItem: ' .option'
-    });*/
+
+    $('#treeOption a').live("click",function() {
+            disable_select($(this));
+    });
+
+
+    //账户和部门的浮出菜单隐藏操作
     $('.infoTable tbody .combo').toggle(function() {
-        // $(this).siblings('.optionBox').show();
-        //alert(23)
-        //
-        //alert($(this).siblings('.optionBox').attr('target'))
-        if ($(this).find('.optionBox').attr('target') == '0') {
-            // alert(1)
-            $('#treeOption').hide();
-            $('.infoTable tbody .combo ').find('.optionBox').hide();
-            $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
-            $(this).find('.optionBox').show();
-            $(this).find('.optionBox').attr('target', '1');
-        } else {
-            // alert(2)
-            $(this).find('.optionBox').hide();
-            $(this).find('.optionBox').attr('target', '0');
-        }
+            if ($(this).find('.optionBox').attr('target') == '0') {
+                // alert(1)
+                $('#treeOption').hide();
+                $('.infoTable tbody .combo ').find('.optionBox').hide();
+                $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
+                $(this).find('.optionBox').show();
+                $(this).find('.optionBox').attr('target', '1');
+            } else {
+                // alert(2)
+                $(this).find('.optionBox').hide();
+                $(this).find('.optionBox').attr('target', '0');
+            }
 
-    },
-    function() {
-        if ($(this).find('.optionBox').attr('target') == '0') {
-            // alert(1)
-            $('#treeOption').hide();
-            $('.infoTable tbody .combo ').find('.optionBox').hide();
-            $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
-            $(this).find('.optionBox').show();
-            $(this).find('.optionBox').attr('target', '1');
-        } else {
-            // alert(2)
-            $(this).find('.optionBox').hide();
-            $(this).find('.optionBox').attr('target', '0');
+        },
+        function() {
+            if ($(this).find('.optionBox').attr('target') == '0') {
+                // alert(1)
+                $('#treeOption').hide();
+                $('.infoTable tbody .combo ').find('.optionBox').hide();
+                $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
+                $(this).find('.optionBox').show();
+                $(this).find('.optionBox').attr('target', '1');
+            } else {
+                // alert(2)
+                $(this).find('.optionBox').hide();
+                $(this).find('.optionBox').attr('target', '0');
+            }
+            //$(this).siblings('.optionBox').hide();
         }
-        //$(this).siblings('.optionBox').hide();
-    });
-	$(document).click(function(e) {
-        var t = $(e.target) ;
-		if (!t.hasClass('combo')) {
-            $('.infoTable tbody .combo ').find('.optionBox').hide();
-            $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
-        }
-    });
-    $('.optionBox dd').click(function() {
-
-        $('.infoTable tbody .combo ').find('.optionBox').hide();
-        $('.infoTable tbody .combo ').find('.optionBox').attr('target', '0');
-		var text=$(this).text();
-		$(this).parent().parent().prev().val(text);
-		/*
-		if(text.length>12)
-		{
-			var leng=text.length*16;
-			 $('.infoTable tbody .combo ').css("width",leng);
-		}
-		else
-		{
-			 $('.infoTable tbody .combo ').css("width",208);
-		}*/
-    }) 
-	$('#addstaff_count_close,#addstaff_count_open').click(function() {
-		$(this).removeClass("checked");
-		$(this).siblings().removeClass("checked");		
+    );
+    
+    
+    //帐户开通选择切换
+    $('#addstaff_count_close,#addstaff_count_open').click(function() {
+        $(this).removeClass("checked");
+        $(this).siblings().removeClass("checked");		
         $(this).siblings().removeClass("radio_on");
         $(this).addClass("radio_on");
-    })
+    });
+    
+    //性别选择切换
     $('#addstaff_man,#addstaff_women').click(function() {
-		$(this).removeClass("checked");
-		$(this).siblings().removeClass("checked");	
+        $(this).removeClass("checked");
+        $(this).siblings().removeClass("checked");	
         $(this).siblings().removeClass("radio_on");
         $(this).addClass("radio_on");
 
-    })
-})
+    });
+
 </script>

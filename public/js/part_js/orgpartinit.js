@@ -43,15 +43,16 @@ $(function()
    
    
    
-   //添加员工的部分选择部门事件
+   //添加员工的 选择部门事件
    $("#departmentTree .nodeBtn").live("click",function(){
        var _this = $(event.target);
         if(!_this.hasClass("button")){ //排除节点前三角箭头的点击事件
             $("#departmentTree .curSelectedNode").removeClass("curSelectedNode");
             $(this).addClass("curSelectedNode");
-            
+            $("#inputVal2").removeClass("error");
             //var selectNodeName = _this.attr("title").split(" > ");
-            $('#inputVal2').find("input").val($.trim($(this).text()));
+            $("#inputVal2").find("input").val($.trim($(this).text()));
+            $("#treeOption").hide();//隐藏浮出的层
        }
        
    });
@@ -105,12 +106,16 @@ $(function()
             var _t=$(this);
             var dgtree = $("#dgmoveorg a.curSelectedNode");
             var new_org_id = dgtree.attr("org_id");
-            var new_title = dgtree.text();
+            var new_title = $.trim(dgtree.text());
             if (new_org_id != null) {
                 var neworgid = new_org_id;
                 // alert(orgid1)
             } else {
                 alert("请选择要调入的部门！");
+                return false;
+            }
+            if(new_org_id == orgid ){
+                alert("新部门不能为当前所在部门");
                 return false;
             }
             var orgname = treeNode.name;
@@ -128,7 +133,7 @@ $(function()
                // alert(data);
                 var json = $.parseJSON(data);
 
-                if (json.code === 0) {
+                if (json.code == 0) {
                     //重新加载当前组织帐号列表
 			org_del_staff();
                   /*  var obj = {

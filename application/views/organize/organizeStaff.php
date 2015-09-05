@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>云企管理中心</title>
+		<title>通讯录</title>
 	</head>
 	<body>
 		<?php 
@@ -21,17 +21,7 @@
 			var path_new_org = 'organize/saveNewOrg';//
 			var drag_path ='organize/move_org'; //拖拽结束后当前的组织ID处理
 			var cost_get_staff ='organize/get_next_orguser_list'; //组织结构和成本中心部分的调入员工
-			var zNodes;
-			//var costNode;
-			//var path_cost_user = "costcenter/members"; //加载的成本中心员工列表
-			//var cost_path ='costcenter/nextGroups';//加载第一级成本中心
-			//var cost_next='costcenter/nextGroups';//点击小三角加载下一级的成本中心
-			//var add_cost='costcenter/addGroup';//点击增加成本中心
-			//var cost_org_staff='costcenter/unGroupedMembers';//在成本中心下，选中全部组织中的某一个部门加载该部门下成本中心员工
-			//var change_cost="costcenter/modifyGroup";//修改成本中心的名称
-			//var add_cost_dialog="costcenter/addCostCenterStaff";//添加了成本中心后弹窗
 			var dG = 0; //0为删除员工，1为需要删除组织时，删除员工
-			//var count_name;
 			var clear_null = 1; //是否清除了空的节;点
 		</script>
                 <script type="text/javascript">
@@ -52,12 +42,9 @@
                         });
                     });    
                 </script>
-<!--		<script type="text/javascript" src="public/js/jquery.ztree.all-3.5.min.js"></script>-->
 		<script type="text/javascript" src="public/js/self_tree.js"></script>
 		<script type="text/javascript" src="public/js/common.js"></script>
-<!--		<script type="text/javascript" src="public/js/part_js/input_radio_tree.js"></script>-->
 		<script type="text/javascript" src="public/js/part_js/orgpart.js"></script>
 		<script type="text/javascript" src="public/js/part_js/orgpartinit.js"></script>
-<!--		<script type="text/javascript" src="public/js/part_js/costcenterpart.js"></script>-->
 	</body>
 </html>

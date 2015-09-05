@@ -2,6 +2,7 @@
 <!--
 //批量导入提示气泡
 var login = <?php echo $this->p_has_login ?>;
+
 if (login) {
     $('.poptip').hide();
 } else {
@@ -43,10 +44,16 @@ $('.poptip3 .btn_iKnow').click(function() {
 //-->
 </script>
 <div class="contHead">
-	<span class="title01" is_move="<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){echo true;}else{echo false;}?>" is_rename="<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){echo true;}else{echo false;}?>" id="org_agru">通讯录管理</span>
-	<?php if(1 > 2): ?>
-	 <span>成功导入100个部门，1000个员工</span>
-	<?php endif;?>
+        <div class="contHead-left">
+            <div class="name">组织架构</div>
+            
+            <div class="toolBar">
+                    <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
+                    <a class="addGroup" id="addZuzhi"  style="cursor: pointer" title="添加组织结构"></a>
+                    <a class="delGroup disabled" id="deleteZuzhi" style="cursor: pointer" title="删除组织结构"></a>
+                    <?php }?>
+            </div>
+        </div>
 	<div class="contHead-right">
 		<div class="fr rightLine">
 			<a class="btnSet" onclick="toggleMenu('menu1',event)"></a>
@@ -63,11 +70,6 @@ $('.poptip3 .btn_iKnow').click(function() {
 		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
 			<li style="*margin-top:-10px">
 				<a onclick="loadCont('tag/addTagPage/0','group')">员工标签管理</a>
-			</li>
-		<?php }?>
-		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
-			<li style="*margin-top:-25px">
-				<!--<a onclick="loadCont('ldap/showLdapPage')">LDAP设置</a> -->
 			</li>
 		<?php }?>
 		</ul>

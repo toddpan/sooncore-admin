@@ -16,33 +16,30 @@
 var _checked = $('#part01 .table:first tbody .checked');
 var _name = _checked.parent().next().find('.userName').text();
 setTimeout(function(){
-$('#dialog .dialogBody .text01').html('您确定要将 '+_name+' 指定为该部门的管理者吗？');},10)
+$('#dialog .dialogBody .text01').html('您确定要将 <font color="red">'+_name+'</font> 指定为该部门的管理者吗？');},10);
 function assure_setManager(){
-	  var user_id;
-	  //alert(user_id.length)
-      var zTree = $.fn.zTree.getZTreeObj("ztree");
-		nodes = zTree.getSelectedNodes();
-	    treeNode = nodes[0];
-		if(treeNode!=null)
-		{
-		   var orgid=treeNode.id;
-		   var parent_orgid=treeNode.pId;
-		    //alert(orgid)
-		}
-     $('#part01 table tbody label').each(function()
-	 {
+    var user_id;
+      //alert(user_id.length)
+    var treeNode = getSelectNode("#ztree");
+        if(treeNode.oid != null)
+        {
+           var orgid = treeNode.oid;
+           var parent_orgid = treeNode.pid;
+            //alert(orgid)
+        }
+    $('#part01 table tbody label').each(function(){
 	   //alert(3);
 	   if($(this).hasClass("checked"))
 	   {
-	      user_id=$(this).find("input").val();
+	      user_id = $(this).find("input").val();
 	   }
 	   
-	 }) 
-	 var staff={
+    }) 
+	 var staff ={
 		   "orgid": orgid,
 		   "parent_orgid":parent_orgid,
 		   "user_id":user_id
-		 }
+		 };
 		 //code0成功,重新加载用户列表
 		 var path_setmanager = 'organize/save_set_manager';
 		 $.post(path_setmanager,staff,function(data)
@@ -51,29 +48,12 @@ function assure_setManager(){
 		   var json=$.parseJSON(data);
 		   if(json.code==0)
 		   {
-		   		 /*$('#part01 table tbody label').each(function()
-				 {
-				   //alert(3);
-				   if($(this).hasClass("checked"))
-				   {
-					 // user_id=$(this).find("input").val();
-					 $(this).parent().next().find("a").addClass("manage");
-					 $(this).trigger("click");
-					 return false;
-				   }
-				   
-				 })*/
-				var obj={
-			  "parent_orgid":parent_orgid,
-			  "org_id":orgid
-			  }
-			  load_staff(obj,path_user,path_mag);
-			  hideDialog();
-		   }else
-				{
-					alert(json.prompt_text)	
-				}
-		 }) 
+			hideDialog();
+                        $("#ztree a.curSelectedNode").click();//模拟点击当前选择的节点以代表load_staff
+		   }else{
+                        alert(json.prompt_text);	
+                    }
+		 });
 }
 $(function(){
 	//setTimeout(function(){
