@@ -115,7 +115,7 @@ a:focus {
 body {
     position: relative;
     font: 12px "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
-    background: #f7fdff;
+    background: #fbfbfb;
     color: #4f4f4f;
 }
 .pageBody {
@@ -407,14 +407,12 @@ li{
 .select-box  {
     display: inline-block;
     position: relative;
-    height: 26px;
-    background: url(../images/loginInputBg.png) 0 0 repeat-x #fbfdff;
-    border: 1px solid #b2bdcd;
+    height: 30px;
+    background: #FFF;
+    border: 1px solid #E2E2E2;
     padding: 0;
     vertical-align: top;
-    _float: left;
-    width: 185px;
-    _margin-right: 5px;
+    border-radius: 3px;
 }
 *+html .combo {
     margin-right: 5px;
@@ -455,7 +453,7 @@ li{
 .select-box .icon {
     display: block;
     position: absolute;
-    top: 1px;
+    top: 3px;
     right: 4px;
     width: 24px;
     height: 24px;
@@ -470,7 +468,7 @@ li{
     z-index: 10;
     margin: 0 30px 0 0;
     height: 18px;
-    padding: 4px;
+    padding: 6px;
     border-width: 0;
     background: transparent;
     line-height: 18px;
@@ -482,13 +480,13 @@ li{
 .select-box  .label {
     display: block;
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 5px;
+    left: 6px;
     z-index: 0;
     height: 20px;
-    line-height: 17px;
+    line-height: 20px;
     font-size: 14px;
-    color: #ccc;
+    color: #666;
 }
 .inputBox label {
     display: block;
@@ -652,7 +650,7 @@ li{
 }
 
 .contHead-right .rightLine {
-    height: 28px;
+    height: 32px;
 }
 .rightLine02 {
     background: url(../images/rightLine02.png) right center no-repeat;
@@ -660,29 +658,61 @@ li{
 .rightLine03 {
     background: url(../images/rightLine03.png) right center no-repeat;
 }
+
+
 .contHead {
-    height: 54px;
-    padding: 24px 0 20px;
-    line-height: 54px;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 30px;
-    _margin-bottom: 30px;
+    border: 1px solid #cbcbcb;
+    clear:both;
     position: relative;
     z-index: 2;
+    margin: 30px auto 0;
+    width: 100%;
+    height: 50px;
+    overflow: visible;
+    background: #f6f6f6;
 }
+
+
+.contHead .contHead-left{
+    font-size: 16px;
+    border-right: 1px solid #cbcbcb;
+    float: left;
+    width: 260px;
+}
+
+.contHead .contHead-left .name{
+    height: 50px;
+    line-height: 50px;
+    margin-left: 15px;
+    float: left;
+}
+
+.contHead-left .toolBar {
+    float:right;
+    padding:15px;
+    height: 20px;
+    font-size: 0;
+    letter-spacing: -3px;
+}
+.contHead-left .toolBar a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url(../images/icon.png);
+    margin-left: 5px;
+}
+.contHead-left .toolBar a.addGroup {
+    background-position: 0 -60px;
+}
+.contHead-left .toolBar a.delGroup {
+    background-position: 0 -90px;
+}
+
+
 .contHead-right {
     float: right;
     position: relative;
-    margin-top: 14px;
-    _margin-top: 14px;
-}
-.contHead .title01 {
-    float: left;
-    display: inline-block;
-    font-size: 18px;
-    color: #4f4f4f;
-    padding-right: 27px;
-
+    margin-top: 9px;
 }
 .contHead .title02 {
     float: left;
@@ -705,7 +735,7 @@ li{
     display: inline-block;
     width: 24px;
     height: 24px;
-    margin: 2px 9px 2px 8px;
+    margin: 4px 9px 4px 8px;
     background: url(../images/icon.png) 0 0 no-repeat;
 }
 .contHead .btnSet {
@@ -728,7 +758,7 @@ li{
 }
 .contHead .headSearch {
     float: right;
-    padding-right: 14px;
+    padding-right: 6px;
     _display:inline;
 }
 .contHead .searchBox {
@@ -739,33 +769,24 @@ li{
 }
 .contMiddle {
     position: relative;
+    margin-top:0;
 }
-/*.contMiddle .resizeBar {
-    display: block;
-    position: relative;
-    top: 0;
-    left: 202px;
-    width: 6px;
-    height: 100%;
-    background: none;
-    cursor: col-resize;
-}*/
+
 .conTabs {
     float: left;
-    width: 202px;
-    background: #eef3f4;
+    width: 260px;
+    background: #fff;
     border: 1px solid #d1d5d7;
+    border-top: none;
     border-bottom: none;
     position: relative;
-    _display:inline;
     /*z-index:99;*/
 }
-.conTabsCont {/*width:200px;*/
+
+.conTabsCont {
     min-height: 350px;
     height: auto !important;
-    _height: 350px;
-    padding: 0 1px 63px;
-    background:url(../images/contabsfooter.png) repeat-x 0 bottom ;
+    padding-bottom: 63px;
 }
 .contabs-left,
 .contabs-right {
@@ -822,26 +843,7 @@ li{
 .conTabsCont dd {
     display: none;
 }
-.conTabsCont .toolBar {
-    padding: 12px 8px 10px;
-    height: 20px;
-    text-align: right;
-    font-size: 0;
-    letter-spacing: -3px;
-}
-.conTabsCont .toolBar a {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url(../images/icon.png);
-    margin-left: 5px;
-}
-.conTabsCont .toolBar a.addGroup {
-    background-position: 0 -60px;
-}
-.conTabsCont .toolBar a.delGroup {
-    background-position: 0 -90px;
-}
+
 .tree {
     display: none;
 }
@@ -892,7 +894,7 @@ li{
     background-position: 0 -60px;
 }
 .contRight {
-    margin-left: 208px;
+    margin-left: 262px;
     position: relative;
     min-width: 534px;
     _margin-left: 0;
@@ -911,9 +913,10 @@ li{
 .bread {
     padding: 10px 0 10px 14px;
    /* height: 24px;*/
-   height:auto;
+    height:auto;
     line-height: 24px;
     font-size: 13px;
+    font-family: "宋体";
     color: #4f4f4f;
     margin-right: 80px;
 }
@@ -3045,7 +3048,7 @@ h3.conH3 {
     color: #fff;
 }
 #treeOption {
-    display: block;
+    //display: block;
     width: 100%;
     border: 1px solid #b2bdcd;
     height: 180px;

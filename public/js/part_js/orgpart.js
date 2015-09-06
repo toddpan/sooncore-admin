@@ -80,7 +80,7 @@ function toggleGroupLimit(t,e) {
                 return false;
 
             })
-        } else {alert(2222);
+        } else {
             _this.removeClass("false");
             var _e = e || window.event;
             $("#org_power").toggle();

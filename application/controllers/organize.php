@@ -195,7 +195,7 @@ class Organize extends Admin_Controller {
                 form_json_msg('1','', '未能获得数据');
             }
             $data['org_json'] = $ret['data'][0];
-            print_r($data['org_json']);
+            //print_r($data['org_json']);
             
             
             //$site_id = $this->p_site_id;//站点代码

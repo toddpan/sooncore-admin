@@ -15,72 +15,45 @@
 var _checked = $('#part01 .table:first tbody .checked');
 var _name = _checked.parent().next().find('.userName');
 setTimeout(function(){
-		$('.D_confirm .dialogBody .text01').html('您确定要取消 '+_name.text()+' 的部门管理者身份吗？');
-	},10)
+            $('.D_confirm .dialogBody .text01').html('您确定要取消 <font color="red">'+_name.text()+'</font> 的部门管理者身份吗？');
+    },10);
 function assure_moveManager(){
-	  var user_id;
-	  //alert(user_id.length)
-      var zTree = $.fn.zTree.getZTreeObj("ztree");
-		nodes = zTree.getSelectedNodes();
-	    treeNode = nodes[0];
-		if(treeNode!=null)
-		{
-		   var orgid=treeNode.id;
-		   var parent_orgid=treeNode.pId;
-		    //alert(orgid)
-		}
-     $('#part01 table tbody label').each(function()
+    var user_id;
+      //alert(user_id.length)
+    treeNode = getSelectNode("#ztree");
+    if(treeNode.oid != null)
+    {
+       var orgid=treeNode.oid;
+       var parent_orgid=treeNode.pid;
+        //alert(orgid)
+    }
+    $('#part01 table tbody label').each(function()
 	 {
 	   //alert(3);
 	   if($(this).hasClass("checked"))
 	   {
 	      user_id=$(this).find("input").val();
 	   }
-	 }) 
-	 var staff={
+	 });
+	 var staff = {
 		   "orgid": orgid,
 		    "parent_orgid":parent_orgid,
 		   "user_id":user_id
-		 }
-		// alert(user_id);
-		 //code0成功,重新加载用户列表
-		 var path_setmanager = 'organize/save_unset_manager';
-		 $.post(path_setmanager,staff,function(data)
-		 {
-		  // alert(data);
-		   var json=$.parseJSON(data);
-		   if(json.code==0)
-		   {
-		   		 /*$('#part01 table tbody label').each(function()
-				 {
-				   //alert(3);
-				   if($(this).hasClass("checked"))
-				   {
-					   $(this).parent().next().find("a").removeClass("manage");
-					   $(this).trigger("click");
-					  return false;
-				   }
-				 }) */
-		      var obj={
-			  "parent_orgid":parent_orgid,
-			  "org_id":orgid
-			  }
-			  load_staff(obj,path_user,path_mag);
-			   hideDialog();
-		   }else
-				{
-					alert(json.prompt_text)	
-				}
-		 }) 
-}
-$(function(){
-	//setTimeout(function(){
-		var _checked = $('#part01 .table tbody .checked');
-			var _name = _checked.parent().next().find('.userName');
-			
-		
-		//$('.D_confirm .btn_confirm') = null;
-	//},100)	
-})
+		 };
+        // alert(user_id);
+         //code0成功,重新加载用户列表
+         var path_setmanager = 'organize/save_unset_manager';
+         $.post(path_setmanager,staff,function(data){
+            // alert(data);
+            var json=$.parseJSON(data);
+            if(json.code==0)
+            {
+                hideDialog();
+                $("#ztree a.curSelectedNode").click();//模拟点击当前选择的节点以代表load_staff
 
+            }else{
+                alert(json.prompt_text);
+            }
+        });
+}
 </script>
