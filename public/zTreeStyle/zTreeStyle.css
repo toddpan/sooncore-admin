@@ -25,7 +25,7 @@ website:	http://code.google.com/p/jquerytree/
 .ztree li a.tmpTargetNode_next {}
 .ztree li a input.rename {height:16px; width:80px; padding:3px 0; line-height: 16px; margin:0;
 	font-size:12px; border:1px #7EC4CC solid; *border:0px}
-.ztree li span {line-height:16px; margin-right:2px}
+.ztree li span {line-height:16px; }
 .ztree li span.button {line-height:0; margin:0; width:16px; height:16px; display: inline-block; vertical-align:middle;
 	border:0 none; cursor: pointer;outline:none;
 	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
@@ -105,7 +105,7 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 .ztree li a:hover {text-decoration:none; background-color: #E7E7E7;}
 #appGroupTree li a:hover {background: none;}
 .ztree.showIcon li a span.button.switch {visibility:visible}
-.ztree li a.curSelectedNode {background-color:#1aa7aa;color:#fff;border:0;height:24px;}
+.ztree li a.curSelectedNode {background-color:#006BAE;color:#fff;border:0;height:24px;}
 #appGroupTree li a.curSelectedNode { background: none; color: #333}
 .ztree li span {line-height:24px;}
 /*.ztree li span.button {top: 0px; position: relative; margin-top: -2px;}*/

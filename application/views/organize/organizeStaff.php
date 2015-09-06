@@ -42,9 +42,34 @@
                         });
                     });    
                 </script>
-		<script type="text/javascript" src="public/js/self_tree.js"></script>
+<!--		<script type="text/javascript" src="public/js/self_tree.js"></script>-->
 		<script type="text/javascript" src="public/js/common.js"></script>
 		<script type="text/javascript" src="public/js/part_js/orgpart.js"></script>
 		<script type="text/javascript" src="public/js/part_js/orgpartinit.js"></script>
+                <div id="addMoreBox" style="position: fixed; left: 50%; top: 50%; width: 400px; height: 280px; margin-left: -200px; margin-top: -140px; z-index: 10; background: #fff; border: 1px solid #eee; box-shadow: 5px 5px 12px rgba(0,0,0,0.1);">
+                    <ul class="addMoreUl">
+                        <li>
+                            <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+                            <a class="btnBlue yes btnAddUser">
+                                    <span class="text" onclick="addNewMember_one()">添加员工</span>
+                                    <span id="add_up" class="more">&nbsp;</span>
+                                    <b class="bgR"></b>
+                            </a>
+                            <?php }?>
+                        </li>
+                        <li>
+                            <a class="addGroup" id="addZuzhi" onclick="addZuzhi(event);return false;"  style="cursor: pointer" title="添加部门">添加部门</a>
+                        </li>
+                        <li>
+                            <a href="">团队邀请</a>
+                        </li>
+                        <li>
+                            <a href="">批量处理</a>
+                        </li>
+                    </ul>
+                </div>
+        <style>
+            .addMoreUl li{}
+        </style>
 	</body>
 </html>

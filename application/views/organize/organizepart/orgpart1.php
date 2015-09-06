@@ -49,10 +49,14 @@ $('.poptip3 .btn_iKnow').click(function() {
             
             <div class="toolBar">
                     <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
-                    <a class="addGroup" id="addZuzhi"  style="cursor: pointer" title="添加组织结构"></a>
                     <a class="delGroup disabled" id="deleteZuzhi" style="cursor: pointer" title="删除组织结构"></a>
                     <?php }?>
             </div>
+        </div>
+    <div class="orgNode" id="orgNode" style="float: left;">
+                <div class="bread">
+                    <span><?php echo $org_json['dept_list']['org_name'];?></span>
+                </div>
         </div>
 	<div class="contHead-right">
 		<div class="fr rightLine">
@@ -68,10 +72,15 @@ $('.poptip3 .btn_iKnow').click(function() {
 		</div>
 		<ul class="menu" id="menu1" style="*height:60px">
 		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
-			<li style="*margin-top:-10px">
+			<li>
 				<a onclick="loadCont('tag/addTagPage/0','group')">员工标签管理</a>
 			</li>
 		<?php }?>
+                <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+                        <li>
+                        <a class="link_limitSet"  onclick="toggleGroupLimit(this,event)" title="部门权限">部门权限</a>
+                        </li>
+                <?php }?>
 		</ul>
  	</div>
 </div>
