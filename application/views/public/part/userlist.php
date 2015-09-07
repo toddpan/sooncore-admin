@@ -31,7 +31,7 @@
                 ?>
             </td>
             <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
-            <td><a  class="countType <?php if($productStatus == 82): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"></a></td>
+            <td><a  class="countType <?php if($productStatus == 82): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"><em class="btnFixed"></em></a></td>
             <?php }?>
         </tr>
     <?php endforeach;?>

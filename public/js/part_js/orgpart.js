@@ -198,9 +198,8 @@ function staff_information1(t,user_id)
 function showValue(treeNode){
     if (treeNode.oid) {
         var staff_depart = '<span>' + treeNode.title +'</span>';
-        $('#part01 .link_limitSet').next('.bread').text('');
-        $('#part01 .link_limitSet').next('.bread').append(staff_depart);
-        $('#part01 .link_limitSet').next(".bread").addClass("part0");
+        $('#orgNode .bread').text('');
+        $('#orgNode .bread').html(staff_depart);
         $('#part01 .groupLimit .toolBar2').next().remove();
         //alert(treeNode.name)
         

@@ -17,7 +17,7 @@ $(function()
             };
             load_staff(obj2, "organize/get_users_list");
             var orgNameStr = '<span>'+$(this).attr("title")+'</span>';
-            $("#part01 .p1 .bread").html(orgNameStr);
+            $('#orgNode .bread').html(orgNameStr);
        
        }
        
@@ -163,7 +163,7 @@ $(function()
 		var _this=$(this);
         showDialog("staff/deleteStaff");
 		_this.removeClass("false");
-		$('#dialog .dialogBottom  #deleteStaff').die('click');
+	$('#dialog .dialogBottom  #deleteStaff').die('click');
         $('#dialog .dialogBottom  #deleteStaff').live('click', function() {
 			/*if($(this).hasClass("false"))
 			{
@@ -172,15 +172,13 @@ $(function()
 			$(this).addClass("false");*/
 			var _t=$(this);
 			var user_id='';
-	  //alert(user_id.length)
-      		var zTree = $.fn.zTree.getZTreeObj("ztree");
-			var nodes = zTree.getSelectedNodes();
-	   		var  treeNode = nodes[0];
-			if(treeNode!=null)
-				{
-		  		 var orgid=treeNode.id;
-		   		 var parent_orgid=treeNode.pId;
-				}
+                        //alert(user_id.length)
+	   		var  treeNode = getSelectNode("#ztree");
+			if(treeNode.oid!=null)
+                        {
+                         var orgid=treeNode.oid;
+                         var parent_orgid=treeNode.pid;
+                        }
     	 $('#part01 table tbody label').each(function()
 		 {
 	   //alert(3);
@@ -192,19 +190,8 @@ $(function()
 		}) 
 	 	 var lastIndex =user_id.lastIndexOf(',');
       	 if (lastIndex > -1) {
-         user_id = user_id.substring(0,lastIndex) + user_id.substring(lastIndex + 1,user_id.length);
+            user_id = user_id.substring(0,lastIndex) + user_id.substring(lastIndex + 1,user_id.length);
            }
-    	var id_2=treeNode.pId;
-     	var org_code='-'+treeNode.id;
-     	var node;
-     	while(zTree.getNodesByParam('id',id_2,null)[0]!=null)
-    	 {
-        	node=zTree.getNodesByParam('id',id_2,null)[0];
-        	id_2=node.pId;
-        	org_code ='-'+node.id+org_code;
-
-     	}
-	 	//alert(user_id)
 	 	var staff={
 	 	//"parent_orgid":parent_orgid,
 		//"orgid": orgid,
@@ -245,16 +232,16 @@ $(function()
 					 }else
 						{
 							
-							alert(json.prmopt_text)
+							alert(json.prmopt_text);
 									
 							hideDialog();
 						}
 			
 			_t.removeClass("false");
-		})
+		});
 		
 		 //返回code是否成功，如果成功：重新加载当前组织帐号列表。
-	})
+	});
  });
    
     //设置初始化组织的禁用
@@ -369,7 +356,7 @@ $(function()
                 var json = $.parseJSON(data);
 
                 if (json.code == 0) {
-                    _this.removeClass('btnOn').addClass('btnOff');
+                    _this.animate({backgroundPositionX: "-40px"}).removeClass('btnOn').addClass('btnOff');
                     hideDialog();
 
                 } else {
@@ -407,7 +394,7 @@ $(function()
             var json = $.parseJSON(data);
             if (json.code == 0) {
                 //alert(444);
-                _this.removeClass('btnOff').addClass("btnOn");
+                _this.animate({backgroundPositionX: "0px"}).removeClass('btnOff').addClass("btnOn");
             }
 			else
 			{

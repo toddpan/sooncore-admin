@@ -1,21 +1,8 @@
 
-<div class="contRight" style="">
-	<div id="part01" style="">
-            <div class="p1" style=" height: 45px;">
-            <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
-                    <a class="link_limitSet"  onclick="toggleGroupLimit(this,event)" title="部门权限">部门权限</a>
-            <?php }?>
-                    <div class="bread">
-                        <span><?php echo $org_json['dept_list']['org_name'];?></span>
-                    </div>
-                </div>
+<div class="contRight">
+	<div id="part01">
 		<div class="tabToolBar">
 		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
-			<a class="btnBlue yes btnAddUser">
-				<span class="text" onclick="addNewMember_one()">添加员工</span>
-				<span id="add_up" class="more">&nbsp;</span>
-				<b class="bgR"></b>
-			</a>
 			<div class="tabToolBox" style="display:none;">
 			
 				<a class="btnGray btn btnChangeUser_O" >
@@ -93,7 +80,7 @@
                                 ?>
                             </td>
                             <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
-                            <td><a  class="countType <?php if($productStatus == 5): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"></a></td>
+                            <td><a  class="countType <?php if($productStatus == 5): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"><em class="btnFixed"></em></a></td>
                             <?php }?>
                         </tr>
                     <?php endforeach;?>
