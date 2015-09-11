@@ -381,7 +381,7 @@ function set_mange(staff_id, path_mag) {
     // $('.btnBeManage').hide();
     //}
 }
-//点击组织，加载员工
+//点击组织，加载员工 
 function load_staff(obj, path_user) {
     
     var loadStr = '<div class="org_loading"><span class="msg">正在加载请稍候。</span></div>';

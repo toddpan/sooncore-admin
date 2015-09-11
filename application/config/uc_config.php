@@ -13,7 +13,7 @@ define('POST_HEAD_HTML','text/html; charset=utf-8');//接口post head HTML数据
 //系统常量配置
 //define('BOSS_CALLBACK_IP','192.168.35.155');//集群中指定的唯一做域分配处理的ip  地址[当前uc站点ip];注意最后没有/
 //define('BOSS_CALLBACK_URL','devyt.xiezuoyun.cn');//集群中指定的唯一做域分配处理的url  地址[当前uc站点url];注意最后没有/
-define('UC_DOMAIN_DIR','/ucadmin');//uc域接口目录,相对于域表中的url,如果'/ucadmin' ，如果没有目录，则为空 ，注意后台没有/
+define('UC_DOMAIN_DIR','/sooncore-admin');//uc域接口目录,相对于域表中的url,如果'/ucadmin' ，如果没有目录，则为空 ，注意后台没有/
 //define('MAILIMG', '/mailimg/'); // 邮件中的图片存放地址
 define('IS_OPEN_TEST',0);//是否开通测试输出文件0不开启1开启
 define('IS_OPEN_DEV',0);//是否开启正式环境功能，当前开发或测试时暂时还不能开启0不开启1开启
@@ -58,11 +58,11 @@ define('DEFAULT_PWD_COMPLEXITY_TYPE', 2);// 默认密码复杂性：8-30位数�
 
 
 //公司信息配置
-define('COMPANY_NAME','易开会通信服务有限公司');//公司名称
+define('COMPANY_NAME','快合科技通信服务有限公司');//公司名称
 define('COMPANY_COPR','©Copyright 2014-2015');//版权
-define('COMPANY_ICP','京ICP备08005473号');//站点备案号
+define('COMPANY_ICP','京ICP备15000001号');//站点备案号
 define('COMPANY_SERVE_TEL','400-899-9999');//24小时服务热线
-define('COMPANY_MSG_SEND_NAME','易开会');//系统通知发送者名称
+define('COMPANY_MSG_SEND_NAME','快合科技');//系统通知发送者名称
 //正则配置
 define('USER_REGEX','/^[\S]{8,30}$/');//帐号正则表达式
 //系统角色

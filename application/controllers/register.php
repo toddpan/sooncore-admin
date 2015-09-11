@@ -184,12 +184,12 @@ class Register extends Web_Controller {
 	private function sendEmail($to,$title,$content)
 	{
 		$this->load->library('email');
-		$this->email->from('fuwuyuan8@163.com',COMPANY_MSG_SEND_NAME);            //发送者，签名
+		$this->email->from('service@sooncore.com',COMPANY_MSG_SEND_NAME);            //发送者，签名
 		$this->email->to($to);					//接收者
 		$this->email->subject($title);			//邮件主题
-		$this->email->message($content); 		//邮件内容
-		return $this->email->send();
-		//echo $this->email->print_debugger();	//调试模式
+		$this->email->message($content); 
+		//echo $this->email->print_debugger();		//邮件内容
+		return $this->email->send();	//调试模式
 	}
         
         //验证邮件格式

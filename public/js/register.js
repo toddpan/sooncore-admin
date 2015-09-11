@@ -173,7 +173,7 @@ function sendMail(){
             email:emailStr,
             code:picCode
         },//序列化表单里所有的内容
-        timeout:4000,
+        timeout:10000,
         success: function(data){
             var obj = $.parseJSON(data);
             if(obj.code === 1){

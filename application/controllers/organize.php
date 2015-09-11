@@ -184,25 +184,24 @@ class Organize extends Admin_Controller {
 	 * -# 仅得到根组织和下一级组织数据，下一级的子级为保证页面速度将使用AJAX实现
          */
         public function OrgList(){
-            $user_id = $this->p_user_id;//获得用户ID（管理员）
-            $session_id = $this->p_session_id;//获得 SESSION_ID
-            $org_id = $this->p_org_id;//获得组织ID
             $customer_code = $this->p_customer_code;//客户编码
+            $org_id = $this->p_org_id;//组织ID
+            $site_id = $this->p_site_id;//站点ID
+            //$ret = $this->ucc->getOrgList($user_id, $session_id, $org_id, $customer_code);
             
-            $ret = $this->ucc->getOrgList($user_id, $session_id, $org_id, $customer_code);
-            if(!$ret){
-		log_message('error', __FUNCTION__ . " input->\n" . var_export($ret, true));
-                form_json_msg('1','', '未能获得数据');
+            //首级及下一级组织数组
+            $org_arr = $this->OrganizeLib->get_first_next_org_arr($customer_code);
+            if(isemptyArray($org_arr)){
+		log_message('error', __FUNCTION__ . " input->\n" . var_export($org_arr, true));
+                form_json_msg('1','', '没有得到组织信息，请尝试重新登陆');
             }
-            $data['org_json'] = $ret['data'][0];
-            //print_r($data['org_json']);
+            //首级组织下的所有用户
+            $first_org_user = $this->OrganizeLib->get_users_list($org_id,$site_id);
+            //print_r($org_arr);
+            $data['org_json'] = $org_arr;
             
+            $data['user_arr'] = $first_org_user;
             
-            //$site_id = $this->p_site_id;//站点代码
-            //获取当前选择的组织的员工列表 管理者在前
-            //$user_arr = $this->OrganizeLib->get_users_list($org_id ,$site_id );
-            
-            //$data['user_arr'] = $user_arr;//根组织的用户列表
             $this->load->view('organize/organizeStaff.php',$data);
         }
 
@@ -213,7 +212,7 @@ class Organize extends Admin_Controller {
 	 * @abstract 组织结构树
 	 */
 	public function get_org_tree(){
-		$this->load->library('OrganizeLib','','OrganizeLib');
+		//$this->load->library('OrganizeLib','','OrganizeLib');
 
 		//获得客户编码
 		$customer_code = $this->p_customer_code;
@@ -223,7 +222,7 @@ class Organize extends Admin_Controller {
 
 		//首级及下一级组织json串
 		$in_arr = array(
-            'is_first' => 1 ,//是否第一级0不是1是       
+                    'is_first' => 1 ,//是否第一级0不是1是       
 		);
 		$org_arr = $this->OrganizeLib->InitzTree_arr($first_next_org_arr ,1,$in_arr);//格式化成目录树结构
 		$org_json = '[]';
@@ -458,13 +457,10 @@ class Organize extends Admin_Controller {
 		form_json_msg('0','','是否是有组织管理者',array('manager_user_id' => $org_manager_user_id));//返回信息json格式
 	}
 
+        
 	/**
 	 * @brief 组织结构页面-ajax保存新的组织结构名称--?需要接口2.5.2：
 	 * @details
-	 * -# 前置条件：在组织结构页面，输入新的组织结构名称，输入框失去焦点时，
-	 *    先js对比是否与同级组织结构重名，重名则js提示，输入框重新获得焦点，
-	 *    不重名则运行ajax保存
-	 * -# js post 新加的组织结构名称 newOrgName
 	 * -# 有效规则验证
 	 * -# 返回保存状态 0失败 成功返回新保存的组织结构标识
 	 * -# 后置条件,保存成功,需要JS把此组织结构加入js维护的页面组织结构
@@ -476,8 +472,8 @@ class Organize extends Admin_Controller {
 		$org_name = strtolower($this->input->post('name' , true));
 
 		$data = array(
-                    'name' => $org_name,//"创想空间北京分公司",
-                    'code' => $this->p_customer_code,//"900144",
+                    'name' => $org_name,
+                    'code' => $this->p_customer_code,
 		//"siturl" => null,
 		// "childOrder" => null,
                     "parentId" => $org_pId,
@@ -533,26 +529,26 @@ class Organize extends Admin_Controller {
 			$data['type'] = $new_org_type;// 1:企业 2：生态企业 3：部门 4：生态企业部门 5：分公司
 			$ums_arr = $this->API->UMS_Special_API(json_encode($data),9);
 			if(api_operate_fail($ums_arr)){//失败
-				$err_msg = 'ums api rs/organizations add org fail.';
+				$err_msg = 'UMS API rs/organizations添加组织失败！';
 				log_message('error', $err_msg);
 				form_json_msg('1','',$shos_title . '失败',array('org_id' => 0));//返回错误信息json格式
 			}else{
-				log_message('debug', 'ums api rs/organizations add org success.');
+				log_message('debug', 'UMS API rs/organizations添加组织成功！');
 				$org_id = arr_unbound_value($ums_arr,'org_id',2,0);
 				//组织机构交换机创建(包括聊天和状态)
 				//$data = 'session_id=' . $this->p_session_id . '&user_id=' . $this->p_user_id . '&org_id=' . $org_id;
 				$data = 'site_id=' . $this->p_site_id . '&org_id=' . $org_id;
 				$ucc_msg_arr = $this->API->UCCServerAPI($data,18);
 				if(!api_operate_fail($ucc_msg_arr)){//成功
-					log_message('info', '  uccserver api async/orgCreate ' . $data . ' success .');
+					log_message('info', '  UCC API async/orgCreate ' . $data . ' 成功 .');
 				}else{//失败
-					log_message('info', '  uccserver api async/orgCreate ' . $data . ' fail .');
+					log_message('info', '  UCC API async/orgCreate ' . $data . ' 失败 .');
 				}
 				//消息
 				$ns_org_arr = $this->OrganizeLib->get_org_by_id($org_id);
 				$new_nodeCode = arr_unbound_value($ns_org_arr,'nodeCode',2,'');
 				$this->load->library('NoticeLib','','NoticeLib');
-				$ok_org_code = $this->OrganizeLib->get_orgnamearr_by_orgcode($new_nodeCode);
+				$ok_org_code = $this->OrganizeLib->get_orgnamearr_by_orgcode($new_nodeCode);//得到组织名称数组
 				$new_org_code = implode('/', $ok_org_code);
 				$format_arr = array(
                             'parent_org_names' => $new_org_code,//$this->p_site_name. '/[一级部门]/[二级部门]/[三级部门]',//[公司名称]/[一级部门]/[二级部门]/[三级部门]
@@ -564,8 +560,10 @@ class Organize extends Admin_Controller {
                             'operate_id' => $this->p_user_id,//添加员工编号
 				);
 				log_message('info', '4444');
-				$this->NoticeLib->set_notice(2,array('3','1'),$format_arr,$in_notice_arr);
-				log_message('info', '5555');
+                                //////////////////////////////////////////////////////////////////////////////
+				//$this->NoticeLib->set_notice(2,array('3','1'),$format_arr,$in_notice_arr);//循环向其他部门发消息通知  很费时间。。。后续把这一步做成后台任务去跑
+                                //////////////////////////////////////////////////////////////////////////////
+                                log_message('info', '5555');
 				//日志
 				$this->load->library('LogLib','','LogLib');
 				$log_in_arr = $this->p_sys_arr;
@@ -687,7 +685,7 @@ class Organize extends Admin_Controller {
 // 	}
 
 	/**
-	 * @abstract 弹窗-提醒添加组织结构
+	 * @abstract 弹窗-添加组织结构
 	 */
 	public function addOrg(){
 		$this->load->view('public/popup/addOrg.php');
@@ -700,6 +698,11 @@ class Organize extends Admin_Controller {
 	public function staInfoPowPage(){
 		$this->load->view('organize/staffInfoPower.php');
 	}
+        
+        public function add_org_page(){
+		$this->load->view('public/popup/addOrgPage.php');
+	}
+
 
 	/**
 	 * @access public
