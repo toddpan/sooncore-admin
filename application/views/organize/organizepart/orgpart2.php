@@ -1,40 +1,69 @@
 <div class="contMiddle" >
     <div class="conTabs">
+        <div id="addMoreBox">
+            <ul class="addMoreUl">
+                <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
+                <li>
+                    <a class="btn addOrg" id="addZuzhi" onclick="addOrg(event)">
+                        <em class="ico"></em>
+                        <span class="text">添加部门</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn addUser" onclick="addNewMember_one()">
+                        <em class="ico"></em>
+                        <span class="text">添加员工</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn addMore" onclick="javascript:alert('正在开发中');">
+                        <em class="ico"></em>
+                        <span class="text">批量添加</span>
+                    </a>
+                </li>
+                <?php }?>
+                <li>
+                    <a class="btn ttYaoqing" onclick="javascript:alert('正在开发中');">
+                        <em class="ico"></em>
+                        <span class="text">团队邀请</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
         <dl class="conTabsCont">
                 <dd style="display:block;">
                         <div id="tree">
                             <ul class="ztree treeorg" id="ztree">
-                                <li id="ztree_1" class="level0" tabindex="0" hidefocus="true" level="0">
+                                <li class="level0" tabindex="0" hidefocus="true" level="0">
                                 <?php
-                                    $baseJson = $org_json;
+                                    $base_org = $org_json[0];
                                     //print_r($baseJson);
-                                    foreach ($baseJson as $k0=>$org){
-                                        echo '<a class="nodeBtn curSelectedNode" org_id="'.$org['org_id'].'" parent_id="'.$org['parent_id'].'" title="'.$org['org_name'].'" node_code="'.$org['node_code'].'">
-                                                    <span class="button level0 switch noline_open"></span>
-                                                    <span>'.$org['org_name'].'</span>
-                                                </a>';
-                                        $child_org = $org['dept_list'];
-                                        if(count($child_org)>0){
-                                            echo '<ul id="ztree_1_ul" class="level0" level="0">';
-                                            $k_start = 2;
-                                            foreach($child_org as $k=>$c_org){
-                                                $k += $k_start;
-                                                if($c_org['count']>0){
-                                                    $icoClassName = 'noline_close';
-                                                }  else {
-                                                    $icoClassName = 'noline_docu';
-                                                }
-                                                echo '<li id="ztree_1_'.$k.'" class="level1" tabindex="0" level="1">
-                                                        <a class="nodeBtn" org_id="'.$c_org['org_id'].'" parent_id="'.$c_org['parend_id'].'" title="'.$org['org_name'].' > '.$c_org['org_name'].'" node_code="'.$c_org['node_code'].'">
-                                                            <span style="display: inline-block;width:'.(15*($k0+1)).'px"></span>
-                                                            <span class="button level1 switch '.$icoClassName.'"></span>
-                                                            <span>'.$c_org['org_name'].'</span>
-                                                        </a>
-                                                    </li>';
+                                    echo '<a class="nodeBtn curSelectedNode" org_id="'.$base_org['id'].'" parent_id="'.($base_org['parentId'] ? $base_org['parentId'] : 0).'" title="'.$base_org['name'].'" node_code="'.$base_org['nodeCode'].'">
+                                                <span class="button level0 switch noline_open"></span>
+                                                <span>'.$base_org['name'].'</span>
+                                            </a>';
+                                    
+                                    $child_org = array_slice($org_json,1); //排除首级数组
+                                    print_r($child_org);
+                                    if(count($child_org)>0){
+                                        echo '<ul class="level0" level="0">';
+                                        $k_start = 2;
+                                        foreach($child_org as $k=>$c_org){
+                                            $k += $k_start;
+                                            if($c_org['childNodeCount']>0){
+                                                $icoClassName = 'noline_close';
+                                            }  else {
+                                                $icoClassName = 'noline_docu';
                                             }
-                                            echo '</ul>';
+                                            echo '<li class="level1" tabindex="0" level="1">
+                                                    <a class="nodeBtn" org_id="'.$c_org['id'].'" parent_id="'.$c_org['parentId'].'" title="'.$base_org['name'].' > '.$c_org['name'].'" node_code="'.$c_org['nodeCode'].'">
+                                                        <span style="margin-left:'.(15*($k0+1)).'px" class="button level1 switch '.$icoClassName.'"></span>
+                                                        <span>'.$c_org['count'].$c_org['name'].'</span>
+                                                    </a>
+                                                </li>';
                                         }
-
+                                        echo '</ul>';
                                     }
 
                                 ?>

@@ -24,10 +24,11 @@ $(function()
    });
    
    //点击三角箭头加载下一级节点
-   $(".nodeBtn .button").live("click",function(){
+   $("a.nodeBtn>.button").live("click",function(){
+       //alert($(event.target).hasClass("button"));
        var status = $(this).hasClass("noline_close");
        var childrenNode = $(this).parent(".nodeBtn").next("ul");//获得子部门
-        childrenNode.slideToggle("fast");
+       childrenNode.slideToggle();
        if(status){//判断节点是否展开
            $(this).removeClass("noline_close").addClass("noline_open");
            //alert(childrenNode.length);
@@ -40,7 +41,6 @@ $(function()
            $(this).removeClass("noline_open").addClass("noline_close");
        }
    });
-   
    
    
    //添加员工的 选择部门事件
@@ -244,22 +244,7 @@ $(function()
 	});
  });
    
-    //设置初始化组织的禁用
-    // alert(3)
-    $('#tree a').die("click");
-    $('#tree a').live("click", function() {
-       /* if (judge == 1) {
-            //$('#addZuzhi').addClass("disabled");
-            $('#deleteZuzhi').addClass("disabled");
-            judge = 2;
-        } else {
-            $('#addZuzhi').removeClass("disabled");
-            $('#deleteZuzhi').removeClass("disabled");
-        }*/
-        disable_select();
-        //disable_add();
-        disable_del();
-    });
+
     //删除组织
     $('#deleteZuzhi').click(function() {
         // alert(43324)
@@ -405,45 +390,7 @@ $(function()
         });
 
     });
-	  //批量导入提示气泡
-//    if (login) {
-//        $('.poptip').hide();
-//    } else {
-//        $('.poptip').show();
-//    }
-//    $('.poptip .btn_iKnow').click(function() {
-//        $('.poptip').animate({
-//           'opacity': 0
-//        }, 300, function() {
-//            $('.poptip').hide();
-//            $('.poptip1').show();
-//        });
-//        login = 1;
-//		
-//    });
-//    $('.poptip1 .btn_iKnow').click(function() {
-//        $('.poptip1').animate({
-//           'opacity': 0
-//        }, 300, function() {
-//            $('.poptip1').hide();
-//            $('.poptip2').show();
-//        });
-//        login = 1;
-//    });
-//    $('.poptip2 .btn_iKnow').click(function() {
-//        $('.poptip2').animate({
-//           'opacity': 0
-//        }, 300, function() {
-//            $('.poptip2').hide();
-//        });
-//        login = 1;
-//    });
-//    $('.poptip3 .btn_iKnow').click(function() {
-//        $('.poptip3').fadeOut();
-//        dG = 1;
-//		$('#deleteZuzhi').removeClass("false");
-//
-//    });
+
 	 $("#add_up").click(function(event) {
         $("#menu3").toggle();
         event.stopPropagation();

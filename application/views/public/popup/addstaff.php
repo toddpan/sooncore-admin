@@ -72,7 +72,7 @@
 					<tr>
 						<td class="tr">账户：</td>
 						<td>
-							<div class="combo selectBox" style="width:208px;*width:213px;word-break:keep-all;">
+							<div class="combo selectBox" style="width:212px;">
 								<a class="icon" ></a>
 								<input class="text" value="<?php echo $account_names[0]['name'];?>" style="width: 175px" readonly="readonly" onfocus="$(this).blur();"/>
 								<div class="optionBox" target="0" id="<?php echo $umsapifield ;?>">
@@ -120,7 +120,7 @@
 							</div>
 							<div class="inputBox">
 								<label class="label"><?php echo $country_mobile ;?></label>
-								<input class="input" id="<?php echo $umsapifield ;?>"  value="<?php echo $country_mobile ;?>" style="width: 135px;*width: 134px;">
+								<input class="input" id="<?php echo $umsapifield ;?>"  value="<?php echo $country_mobile ;?>" style="width: 134px;">
 							</div>
 						</td>
 					</tr>
@@ -131,7 +131,7 @@
 					<tr>
 						<td class="tr">办公地址：</td>
 						<td>
-							<div class="inputBox" style="width: 209px;*width: 214px;">
+							<div class="inputBox" style="width: 212px;">
 								<label class="label"></label>
 								<input class="input" id="<?php echo $umsapifield ;?>" value="<?php echo $address;?>" style="width: 200px;" />
 							</div>

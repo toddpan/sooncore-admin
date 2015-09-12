@@ -417,15 +417,14 @@ li{
 }
 
 .inputBox {
-    position: relative;
-    height: 26px;
-
-    background: url(../images/loginInputBg.png) 0 0 repeat-x #fbfdff;
-    border: 1px solid #b2bdcd;
-    border-radius: 1px;
     display: inline-block;
-    _float: left;
-    _margin-right: 5px;
+    position: relative;
+    height: 30px;
+    background: #FFF;
+    border: 1px solid #E2E2E2;
+    padding: 0;
+    vertical-align: top;
+    border-radius: 3px;
 }
 *+html .inputBox {
     float: left;
@@ -490,7 +489,7 @@ li{
     position: absolute;
     top: 0;
     left: 0;
-    padding: 4px;
+    padding: 6px;
     font-size: 14px;
     color: #c4c5c6;
     line-height: 18px;
@@ -498,7 +497,7 @@ li{
 }
 .inputBox input {
     height: 18px;
-    padding: 4px;
+    padding: 6px;
     border: none;
     background: none;
     line-height: 18px;
@@ -555,9 +554,9 @@ li{
     position: relative;
     border: none;
     margin: 0 30px 0 6px;
-    height: 15px;
+    height: 18px;
     line-height: 18px;
-    padding: 4px 0;
+    padding: 6px 0;
     font-size: 14px;
     color: #c4c5c6;
     cursor: pointer;
@@ -686,24 +685,26 @@ li{
 
 .contHead-left .toolBar {
     float:right;
-    padding:15px;
-    height: 20px;
+    padding:10px;
+    height: 30px;
     font-size: 0;
     letter-spacing: -3px;
 }
-.contHead-left .toolBar a {
+.contHead-left .toolBar a.addFunction {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url(../images/icon.png);
-    margin-left: 5px;
+    background: url(../images/addButton.png) no-repeat 0 0;
+    width: 30px;
+    height: 30px;
 }
-.contHead-left .toolBar a.addGroup {
-    background-position: 0 -60px;
+
+.contHead-left .toolBar a.addFunction.hover{
+    background-position-y: -60px;
 }
-.contHead-left .toolBar a.delGroup {
-    background-position: 0 -90px;
+
+.contHead-left .toolBar a.addFunction:hover{
+    background-position-y: -30px;
 }
+
 
 .orgNode{
     display: inline-block;
@@ -954,11 +955,17 @@ li{
 }
 .btnBlue, .btnGray, .btnGray2, .btnRed {
     display: inline-block;
-    position:relative;
-    height: 20px;
-    background: url(../images/btn_bg.png) 0 0 no-repeat;
-    padding: 4px;
+    height: 26px;
+    position: relative;
+    background: #32A9CB;
+    border-radius: 4px;
+    padding: 0;
+    border: 1px solid #eee;
     text-decoration: none;
+}
+.btnBlue:hover, .btnGray:hover, .btnGray2:hover, .btnRed:hover {
+    background: #236D9D;
+    border-color: #fff;
 }
 .right_btn
 {
@@ -987,28 +994,15 @@ li{
     background-position: center right;
 }*/
 
-.btnBlue .bgR, .btnGray .bgR, .btnGray2 .bgR, .btnRed .bgR {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 0;
-    width: 4px;
-    height: 28px;
-    background: url(../images/btn_bg.png) right 0 no-repeat;
-    overflow: hidden;
-}
 .btnBlue .text, .btnGray .text, .btnGray2 .text, .btnRed .text {
-    display: inline-block;
-    padding: 0 6px;
-    font-size: 13px;
-    letter-spacing: normal;
-    line-height: 20px;
-    color: #fff;
     float: left;
-    _display:inline;
+    padding: 0 10px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 26px;
+    color: #fff;
     text-align: center;
-    margin:0 !important;
+    cursor: pointer;
 }
 .btnGray {
     background: url(../images/btn_bg.png) 0 -90px no-repeat;
@@ -1915,28 +1909,27 @@ td.ellipsis {
     position: relative;
     _z-index:2000;
     z-index:2;
-    border: 1px solid #b0b1b2;
-    background: #f1f6f8;
+    background: #FFF;
+    box-shadow: 5px 5px 10px #999;
 }
 .dialogBox {
     position: relative;
-
-    padding-bottom: 40px;
+    padding-bottom: 0;
 }
 .dialogHeader {
-    border-bottom: 1px solid #7d9697;
-    height: 16px;
+    border-bottom: 1px solid #0C7DC4;
+    height: 24px;
     padding: 8px;
-    background: url(../images/dialog_header_bg.png) repeat-x;
+    background: #0894ec;
     overflow: hidden;
 }
 .dialogHeader .title {
     float: left;
     display: inline-block;
-    line-height: 16px;
-    color: #bdbfbf;
+    line-height: 24px;
+    color: #FFF;
     font-size: 14px;
-    font-weight: bold;
+    padding-left: 5px;
 }
 .dialogHeader .title label {
     color: #bdbfbf;
@@ -1944,24 +1937,23 @@ td.ellipsis {
 .dialogHeader .close {
     float: right;
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     overflow: hidden;
-    background: url(../images/dialog_close.png) no-repeat 0 0;
+    background: url(../images/d_close.png) no-repeat 0 0;
 }
 .dialogHeader .close:hover {
-    background-position: 0 -16px;
+    background-position: 0 -24px;
 }
 .dialogBody {
     padding: 0 30px;
     overflow: hidden;
 }
 .dialogBottom {
-    position: absolute;
-    bottom: 0;
-    right: 0;
     height: 28px;
     padding: 6px 32px;
+    background: #F7F7F7;
+    text-align: right;
 }
 .dialogBottomLeft {
     position: absolute;
@@ -2346,6 +2338,17 @@ td.ellipsis {
     overflow: hidden;
     border: 1px solid #d1d5d7;
 }
+.D_addOrg{
+    width: 400px;
+}
+.D_addOrg .dialogBody {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+.D_addOrg .infoTable .tr {
+  padding: 0;
+  width: 80px;
+}
 .toolBar3 {
     padding: 15px 0 5px;
     height: 28px;
@@ -2489,7 +2492,7 @@ td.ellipsis {
     display: inline-block;
     height: 26px;
     position:relative;
-    background: #3388BE;
+    background: #32A9CB;
     border-radius: 4px;
     padding: 0;
     border:1px solid #eee;
@@ -2524,17 +2527,8 @@ td.ellipsis {
 .contTitle02 .btnGray .text{
     line-height: 20px;
 }
-.yes {
-    background: url(../images/btn_bg.png) 0 0 no-repeat;
-}
-.yes:hover {
-    background-position: 0 -28px;
-}
 .yes .bgR {
-    background: url(../images/btn_bg.png) right 0 no-repeat;
-}
-.yes:hover .bgR {
-    background-position: right -28px;
+    display: none;
 }
 .yes .text {
     color: #fff;
@@ -2964,13 +2958,14 @@ h3.conH3 {
 }
 .selectInput a.icon {
     display: block;
-    width: 20px;
-    height: 20px;
     position: absolute;
     top: 3px;
-    right: 0;
-    background: url(../images/arrowDown.png) no-repeat center center;
-    _background: url(../images/arrowDown.gif) no-repeat center center;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    background: url(../images/icon.png) no-repeat 0 -180px;
+    overflow: hidden;
+    z-index: 1;
 }
 .dp {
     background: url(../images/dpIcon.gif) no-repeat right 5px #fbfdff;
@@ -3459,6 +3454,59 @@ input, textarea, select {
 
 
 #ztree li {line-height:34px;}
-#ztree li a {width:100%;height:34px;padding: 0px;}
-#ztree li a.curSelectedNode {background-color:#006BAE;color:#fff;border:0;height:34px;}
-#ztree li span {line-height:34px;}
+#ztree li a {width:100%; line-height:20px; height: 20px; padding: 7px 5px;}
+#ztree li a.curSelectedNode {background-color:#006BAE;color:#fff;border:0;}
+#ztree li span {line-height:20px; height: 20px; display: inline-block; float: left;}
+
+#addMoreBox{
+    //position: absolute;
+    width: 260px;
+    background: #FFFFFF;
+    z-index: 1;
+    border-bottom: 5px solid #EFEFEF;
+    display: none;
+}
+#addMoreBox .addMoreUl{
+    text-align: center;
+    border-bottom: 1px solid #DADADA;
+}
+#addMoreBox .addMoreUl li{ 
+    display: inline-block; 
+    margin: 10px;
+}
+#addMoreBox .btn{
+    background: #A4C1D6;
+    height: auto;
+    border: none;
+}
+#addMoreBox .btn:hover{
+    background: #006BAE;
+}
+#addMoreBox a.btn:hover .ico{
+    background-position-y: -50px;
+}
+#addMoreBox .btn .text{
+    color: #E4EDF3;
+    padding: 0 24px;
+}
+#addMoreBox .btn:hover .text{
+    color: #FFF;
+}
+#addMoreBox .btn .ico{
+    margin: 0 auto;
+    background:url(../images/add_btn.png) no-repeat 0 0;
+    width: 50px;
+    height: 50px;
+    display: block;
+    overflow: hidden;
+}
+
+#addMoreBox .btn.addOrg .ico{
+    background-position: -50px 0px;
+}
+#addMoreBox .btn.addMore .ico{
+    background-position: -100px 0px;
+}
+#addMoreBox .btn.ttYaoqing .ico{
+    background-position: -150px 0px;
+}

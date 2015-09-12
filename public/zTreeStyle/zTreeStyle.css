@@ -116,9 +116,9 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 .ztree li span.button.edit {margin-right:2px; background-position: 0px -79px; margin-top: 2px; vertical-align:top; *vertical-align:middle}
 .ztree li span.button.switch.level0 {width: 20px; height:20px}
 .ztree li span.button.switch.level1 {width: 20px; height:20px}
-.ztree li span.button.noline_open {background-position: 0 -1px;}
-.ztree li span.button.noline_close {background-position: -18px -1px;}
-.ztree li a.curSelectedNode span.button.noline_open {background-position: 0 -40px;}
+.ztree li span.button.noline_open {background-position: 0 0;}
+.ztree li span.button.noline_close {background-position: -18px 0px;}
+.ztree li a.curSelectedNode span.button.noline_open {background-position: 0 -38px;}
 .ztree li a.curSelectedNode span.button.noline_close {background-position: -18px -40px;}
 /*.ztree li span.button.noline_open.level0 {background-position: 0 -18px;}
 .ztree li span.button.noline_close.level0 {background-position: -18px -18px;}

@@ -60,27 +60,26 @@
                     </thead>
                     <tbody>
                     <?php
-                    $user_arr = $org_json['dept_list']['member_list'];
+                    $user_arr = $user_arr;
                        //var_dump($user_arr);
                     foreach($user_arr as $k => $v):
-                        $productStatus = arr_unbound_value($v,'status',2,'0');
                         ?>
                         <tr>
-                            <td><label class="checkbox"><input type="checkbox" value="<?php echo $v['user_id'];?>" /></label></td>
-                            <td class="tl"><a style="cursor: pointer" class="userName <?php if($v['is_admin'] == 1): ?> manage <?php endif;?>  ellipsis"  onclick="staff_information1(this,<?php echo $v['user_id'];?>)"><?php echo $v['display_name'];?></a></td>
-                            <td class="tl"><span class="userCount ellipsis"><?php echo $v['user_account'];?></span></td>
-                            <td class="telephone"><?php echo $v['mobile'];?></td>
+                            <td><label class="checkbox"><input type="checkbox" value="<?php echo $v['id'];?>" /></label></td>
+                            <td class="tl"><a style="cursor: pointer" class="userName <?php if($v['is_org_manager'] == 1): ?> manage <?php endif;?>  ellipsis"  onclick="staff_information1(this,<?php echo $v['id'];?>)"><?php echo $v['displayName'];?></a></td>
+                            <td class="tl"><span class="userCount ellipsis"><?php echo $v['loginName'];?></span></td>
+                            <td class="telephone"><?php echo $v['mobileNumber'] ? $v['mobileNumber'] : $v['officePhone'];?></td>
                             <td class="logintime">
                                 <?php
-                                if(!bn_is_empty($v['last_login_time'])){
-                                    echo dgmdate($v['last_login_time'], 'dt');
+                                if(!bn_is_empty($v['lastlogintime'])){
+                                    echo dgmdate($v['lastlogintime'], 'dt');
                                 }else{
                                         echo '未登录';
                                 }
                                 ?>
                             </td>
                             <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER || $this->p_role_id == ACCOUNT_MANAGER){?>
-                            <td><a  class="countType <?php if($productStatus == 5): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"><em class="btnFixed"></em></a></td>
+                            <td><a  class="countType <?php if($v['productStatus'] == 82): ?>  btnOn <?php else: ?> btnOff <?php endif;?>"><em class="btnFixed"></em></a></td>
                             <?php }?>
                         </tr>
                     <?php endforeach;?>

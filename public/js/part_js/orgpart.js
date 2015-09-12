@@ -1,43 +1,13 @@
 // JavaScript Document
 
 
-//是否禁用节点
-    //禁用选中状态
-function disable_select() {
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        var treeNode = zTree.getSelectedNodes();
-        if (treeNode[0] != null) {
-
-            if (treeNode[0].isDisabled == true) {
-                zTree.cancelSelectedNode(treeNode[0]);
-                $('#addZuzhi').addClass("disabled");
-                $('#deleteZuzhi').addClass("disabled");
-            }
-        }
-    }
-//是否可以添加组织
-function disable_add() {
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        var treeNode = zTree.getSelectedNodes();
-        if (treeNode[0] != null) {
-            if (treeNode[0].isaddnext == false || treeNode[0].isDisabled == true) {
-                $('#addZuzhi').addClass("disabled");
-            }
-        }
-    }
-//是否可以删除组织
-function disable_del() {
-    var zTree = $.fn.zTree.getZTreeObj("ztree");
-    var treeNode = zTree.getSelectedNodes();
-    if (treeNode[0] != null) {
-        if (treeNode[0].isdel == false || treeNode[0].isDisabled == true) {
-            $('#deleteZuzhi').addClass("disabled");
-        }
-    }
-}
-
+//显示添加员工
 function addNewMember_one() {
     showDialog("staff/add_staff_page");
+}
+//显示添加部门
+function addOrg() {
+    showDialog("organize/add_org_page");
 }
 //点击设置为管理者
 function showSetManager() {
@@ -215,4 +185,10 @@ function showValue(treeNode){
         var path_user = "organize/get_users_list"; //加载的员工列表
         load_staff(obj, path_user);
     }
+}
+
+//添加功能
+function addFunction(){
+    $("#addMoreBox").slideToggle();
+    $("#addFunction").toggleClass("hover");
 }

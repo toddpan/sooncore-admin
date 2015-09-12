@@ -49,13 +49,13 @@ $('.poptip3 .btn_iKnow').click(function() {
             
             <div class="toolBar">
                     <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
-                    <a class="delGroup disabled" id="deleteZuzhi" style="cursor: pointer" title="删除组织结构"></a>
+                <a class="addFunction" id="addFunction" onclick="addFunction();" title="添加功能"></a>
                     <?php }?>
             </div>
         </div>
     <div class="orgNode" id="orgNode" style="float: left;">
                 <div class="bread">
-                    <span><?php echo $org_json['dept_list']['org_name'];?></span>
+                    <span><?php echo $org_json[0]['name'];?></span>
                 </div>
         </div>
 	<div class="contHead-right">
