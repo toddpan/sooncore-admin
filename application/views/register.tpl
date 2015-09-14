@@ -8,7 +8,7 @@
 		<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
 		<base href="{site_url('')}"/>
 		<base target="_blank" />
-		<title>新用户注册 - {$COMPANY_NAME}</title>
+		<title>新用户注册 - {$UC_NAME_EN}</title>
 		<link href="public/css/login.css" rel="stylesheet" />
 		<link href="public/css/register.css" rel="stylesheet" />
         <script type="text/javascript" src="public/js/jquery.js"></script>
@@ -21,9 +21,9 @@
                             <span style="font-size:45px;">
                                 <img src="public/images/guaji_logo.png" />
                             </span>
-                            <span class="logoText">呱唧用户注册</span>
+                            <span class="logoText">用户注册</span>
 			</a>
-			<span style="float:right;font-size:15px;margin:40px 30px 0 0;"><i>guaji.yikaihui.com</i></span>
+			<span style="float:right;font-size:15px;margin:40px 30px 0 0;"><i>www.sooncore.com</i></span>
 		  </div>
 		</div>
                 <div class="regCont">

@@ -46,7 +46,7 @@ $(function()
    //添加员工的 选择部门事件
    $("#departmentTree .nodeBtn").live("click",function(){
        var _this = $(event.target);
-        if(!_this.hasClass("button")){ //排除节点前三角箭头的点击事件
+        if(!_this.hasClass("button")){ //排除节点前 三角箭头的点击事件
             $("#departmentTree .curSelectedNode").removeClass("curSelectedNode");
             $(this).addClass("curSelectedNode");
             $("#inputVal2").removeClass("error");

@@ -26,9 +26,12 @@ define('PC3_PRODUCT_ID',60000);//PC3.0产品编号
 define('UC_PRODUCT_OPEN_STATUS',82);//uc产品开通状态值
 define('UC_PRODUCT_CODE','UC');//UC产品,会议接口applicationId 值也是此值
 define('UC_CHECK_CODE','asdfqwerreqqwerd342');//检验码，由各应用从portal处申请，用于进行检验身份
+
 //系统邮件信息配置
-define('UC_SENDER_NAME','蜜蜂');//邮件sender_name 发件人
-define('UC_SENDER_ADDRESS','yan.zou@quanshi.com');//发件人邮件地址sender_address
+define('UC_SENDER_NAME','快合科技');//邮件sender_name 发件人
+define('UC_SENDER_ADDRESS','service@sooncore.com');//发件人邮件地址sender_address
+define('UC_NAME_EN','sooncore'); //系统英文名称
+define('UC_NAME_CN','快合科技'); //系统中文名称
 
 //Acm配置
 define('ACM_LINK',"tcp -h 192.168.61.7 -p 9012:tcp -h 192.168.61.7 -p 9012");
@@ -62,7 +65,6 @@ define('COMPANY_NAME','快合科技通信服务有限公司');//公司名称
 define('COMPANY_COPR','©Copyright 2014-2015');//版权
 define('COMPANY_ICP','京ICP备15000001号');//站点备案号
 define('COMPANY_SERVE_TEL','400-899-9999');//24小时服务热线
-define('COMPANY_MSG_SEND_NAME','快合科技');//系统通知发送者名称
 //正则配置
 define('USER_REGEX','/^[\S]{8,30}$/');//帐号正则表达式
 //系统角色

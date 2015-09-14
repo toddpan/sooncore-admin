@@ -55,7 +55,7 @@
                         <th>帐号</th>
                         <th>手机</th>
                         <th>上次登录</th>
-                        <th>帐号操作</th>
+                        <th>帐号状态</th>
                     </tr>
                     </thead>
                     <tbody>

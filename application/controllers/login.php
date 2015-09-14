@@ -37,6 +37,7 @@ class Login extends Web_Controller {
 		$this->assign('COMPANY_COPR', COMPANY_COPR);
 		$this->assign('COMPANY_ICP', COMPANY_ICP);
 		$this->assign('COMPANY_SERVER_TEL', COMPANY_SERVE_TEL);
+		$this->assign('UC_NAME_EN', UC_NAME_EN);
 		
 		// 加载登录页面
 		$this->display('login.tpl');

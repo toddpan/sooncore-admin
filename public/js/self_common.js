@@ -15,27 +15,6 @@ function valitateUserName(value) {
     else return false;
 };
 
-//获得当前选择的组织的节点相关数据
-function getSelectNode(tagName){
-    var tagName = arguments[0] ? arguments[0] : "#ztree";//指定默认值
-    //alert(tagName);
-    var node;
-    node = $(tagName+" a.curSelectedNode");
-    var org_id = node.attr("org_id");
-    var parent_id = node.attr("parent_id");
-    var title = node.attr("title");
-    var node_code = node.attr("node_code");
-    var node_name = $.trim(node.text());
-    var obj = {
-        oid : org_id,
-        pid : parent_id,
-        nodeCode : node_code,
-        title : title,
-        name : node_name
-    };
-    return obj;
-}
-
 function valitateUserPwd(value, chose) {
     if (chose == 1) {
         if (value.length >= 6 && value.length <= 30) {

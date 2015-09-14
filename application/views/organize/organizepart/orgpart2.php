@@ -45,7 +45,7 @@
                                             </a>';
                                     
                                     $child_org = array_slice($org_json,1); //排除首级数组
-                                    print_r($child_org);
+                                    //print_r($child_org);
                                     if(count($child_org)>0){
                                         echo '<ul class="level0" level="0">';
                                         $k_start = 2;

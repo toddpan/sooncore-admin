@@ -148,7 +148,7 @@ body {
     display: inline-block;
     float: left;
     height: 70px;
-    width: 200px;
+    min-width: 200px;
     text-decoration: none;
     line-height: 80px;
 }
@@ -697,14 +697,15 @@ li{
     height: 30px;
 }
 
-.contHead-left .toolBar a.addFunction.hover{
-    background-position-y: -60px;
-}
 
 .contHead-left .toolBar a.addFunction:hover{
     background-position-y: -30px;
 }
 
+.contHead-left .toolBar a.addFunction.hover,
+.contHead-left .toolBar a.addFunction.hover:hover{
+    background-position-y: -60px;
+}
 
 .orgNode{
     display: inline-block;
@@ -714,7 +715,32 @@ li{
     height: 50px;
     line-height: 50px;
     padding: 0 0 0 15px;
+    display: inline-block;
 }
+.orgNode .editBtn{
+    display: inline-block;
+    
+}
+.orgNode .editBtn span{
+    padding: 4px 5px;
+    height: 1em;
+    line-height: 1em;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #333;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.orgNode .editBtn:hover span{
+    background: #df0000;
+    border: 1px solid #af0000;
+    color: #fff;
+    
+}
+
 .contHead-right {
     float: right;
     position: relative;
@@ -776,6 +802,7 @@ li{
 .contMiddle {
     position: relative;
     margin-top:0;
+    clear: both;
 }
 
 .conTabs {
@@ -924,7 +951,7 @@ li{
     font-size: 13px;
     font-family: "宋体";
     color: #4f4f4f;
-    margin-right: 80px;
+    margin-right: 10px;
 }
 .tabToolBar {
 /*    padding: 5px 13px;
@@ -967,6 +994,8 @@ li{
     background: #236D9D;
     border-color: #fff;
 }
+
+
 .right_btn
 {
     display: inline-block;
@@ -1026,10 +1055,14 @@ li{
     line-height: 14px;
 }
 .btnRed {
-    background: url(../images/btn_bg.png) 0 -330px no-repeat;
+    background: #df0000;
 }
+.btnRed:hover {
+    background: #fb0000;
+}
+
 .btnRed .bgR {
-    background: url(../images/btn_bg.png) right -330px no-repeat;
+    display: none;
 }
 .btnRed .text {
     color: #fff;
@@ -1951,10 +1984,15 @@ td.ellipsis {
 }
 .dialogBottom {
     height: 28px;
-    padding: 6px 32px;
+    padding: 6px 18px;
     background: #F7F7F7;
     text-align: right;
 }
+
+.dialogBottom .floatLeft{
+    float: left;
+}
+
 .dialogBottomLeft {
     position: absolute;
     bottom: 0;

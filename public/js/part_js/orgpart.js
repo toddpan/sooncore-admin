@@ -164,6 +164,27 @@ function staff_information1(t,user_id)
     );
 }
 
+//获得当前选择的组织的节点相关数据
+function getSelectNode(tagName){
+    var tagName = arguments[0] ? arguments[0] : "#ztree";//指定默认值
+    //alert(tagName);
+    var node;
+    node = $(tagName+" a.curSelectedNode");
+    var org_id = node.attr("org_id");
+    var parent_id = node.attr("parent_id");
+    var title = node.attr("title");
+    var node_code = node.attr("node_code");
+    var node_name = $.trim(node.text());
+    var obj = {
+        oid : org_id,
+        pid : parent_id,
+        nodeCode : node_code,
+        title : title,
+        name : node_name
+    };
+    return obj;
+}
+
 //把当前组织节点显示到页面右侧上方 并加载被添加的节点员工列表 treeNode = obj {};
 function showValue(treeNode){
     if (treeNode.oid) {
@@ -191,4 +212,51 @@ function showValue(treeNode){
 function addFunction(){
     $("#addMoreBox").slideToggle();
     $("#addFunction").toggleClass("hover");
+}
+
+
+
+//得到下级所有部门并查检新名字是否重复 有重复返回大于0的值  oId 父部门ID;   orgName 部门名字
+function getChildrenNode(oId,orgName){
+    var checkOrgName = orgName;
+    var tmpVal=0;
+    var data = {
+            'org_id':oId
+            };
+    $.ajax({
+        url: 'organize/get_next_OrgList',
+        async: false,
+        type: "POST",
+        data: data,
+        success: function(data) {
+            var json = $.parseJSON(data);
+            if (json.length > 0) {
+                //alert(json.length);
+                for(var i=0;i<json.length;i++){
+                    //alert(json[i].name);
+                    if(json[i].name == checkOrgName){
+                        //alert("有相同");
+                        tmpVal++;
+                        break;
+                    }
+                }
+            }
+
+        }
+    });
+    return tmpVal;
+}
+
+
+
+//编辑部门
+function editOrg(){
+    var selectTree = getSelectNode();
+    if(selectTree.pid==0){
+        alert("根部门禁止更名或删除！");
+        return false;
+    }
+    
+    showDialog("organize/edit_org_page");
+    //alert(selectTree.name);
 }
