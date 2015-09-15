@@ -8,7 +8,7 @@
 		<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
 		<base href="{site_url('')}"/>
 		<base target="_blank" />
-		<title>云企管理中心</title>
+		<title>{$UC_NAME_EN} 管理中心</title>
 		<link href="public/css/login.css" rel="stylesheet" />
             <script type="text/javascript" src="public/js/jquery.js"></script>
             <script type="text/javascript" src="public/js/placeholder.js"></script>

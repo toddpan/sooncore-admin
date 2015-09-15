@@ -40,6 +40,7 @@ class Register extends Web_Controller {
 		$this->assign('COMPANY_COPR', COMPANY_COPR);
 		$this->assign('COMPANY_ICP', COMPANY_ICP);
 		$this->assign('COMPANY_SERVER_TEL', COMPANY_SERVE_TEL);
+                $this->assign('UC_NAME_EN',UC_NAME_EN);
                 $step = $this->uri->segment(3) ? $this->uri->segment(3) : 1;
 		$this->assign('REGISTER_STEP', $step);
                 if($step==2){
@@ -184,7 +185,7 @@ class Register extends Web_Controller {
 	private function sendEmail($to,$title,$content)
 	{
 		$this->load->library('email');
-		$this->email->from('service@sooncore.com',COMPANY_MSG_SEND_NAME);            //发送者，签名
+		$this->email->from(UC_SENDER_ADDRESS,UC_SENDER_NAME);            //发送者，签名
 		$this->email->to($to);					//接收者
 		$this->email->subject($title);			//邮件主题
 		$this->email->message($content); 

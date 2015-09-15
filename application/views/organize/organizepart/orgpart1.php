@@ -57,6 +57,9 @@ $('.poptip3 .btn_iKnow').click(function() {
                 <div class="bread">
                     <span><?php echo $org_json[0]['name'];?></span>
                 </div>
+                <div class="editBtn" onclick="editOrg();">
+                    <span>编辑</span>
+                </div>
         </div>
 	<div class="contHead-right">
 		<div class="fr rightLine">

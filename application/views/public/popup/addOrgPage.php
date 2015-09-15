@@ -88,38 +88,6 @@
     }
 
 
-//得到下级所有部门并查检新名字是否重复 有重复返回大于0的值  oId 父部门ID;   orgName 部门名字
-function getChildrenNode(oId,orgName){
-    var checkOrgName = orgName;
-    var tmpVal=0;
-    var data = {
-            'org_id':oId
-            };
-    $.ajax({
-        url: 'organize/get_next_OrgList',
-        async: false,
-        type: "POST",
-        data: data,
-        success: function(data) {
-            var json = $.parseJSON(data);
-            if (json.length > 0) {
-                for(var i=0;i<json.length;i++){
-                    //alert(json[i].name);
-                    if(json[i].name == checkOrgName){
-                        //alert("有相同");
-                        tmpVal++;
-                        break;
-                    }
-                }
-            } else {
-                tmpVal++;
-            }
-
-        }
-    });
-    return tmpVal;
-}
-
 
 
 //添加保存新的组织
@@ -135,6 +103,7 @@ function saveOrg(t){
     var obj = getSelectNode("#departmentTree");
     
     var checkStatus = getChildrenNode(obj.oid , newOrgName);
+    //alert(checkStatus);
     if(checkStatus>0){
         $(".infoTable #newOrgName").parents(".inputBox").addClass("error");
         alert("部门名字已经存在了");

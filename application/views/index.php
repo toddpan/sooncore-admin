@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 	<base href="<?php echo site_url();?>"/>
         <base target="_blank" />
-	<title>管理中心</title>
+	<title><?php echo UC_NAME_EN;?> 管理中心</title>
 	<link href="public/css/common.css" rel="stylesheet" />
 	<!--//<link href="public/css/self_common.css" rel="stylesheet" />//-->
 	<link href="public/css/datepicker.css" rel="stylesheet" />
@@ -20,7 +20,7 @@
     <div class="headerBox">
         <div class="header">
   	<a class="logo" href="main/index" target="_self">
-            <span class="text1">海尔</span>
+            <span class="text1">公司</span>
             <span class="text2">管理中心</span>
   	</a>
     <!-- end logo -->

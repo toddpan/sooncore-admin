@@ -425,24 +425,6 @@ class Organize extends Admin_Controller {
 		}
 	}
 
-	/**
-	 * @brief 成本中心调入员工时，根据post过来的组织id，获得当前组织的帐号列表信息[部门管理者在前，其它人员在后]：注意会排除已经有成本中心的用户
-	 * @param array $cost_user_arr 已有的成本中心用户数组，如果不想排除已经有成本中心的用户，则传空数组
-	 */
-	public function get_costusers_json_by_orgid($cost_user_arr = array()){
-		$org_id=$this->input->post('org_id', true);
-		$org_id = empty_to_value($org_id,0);//517
-		$site_id = $this->p_site_id;
-		$site_id = empty_to_value($site_id,0);//517
-		$this->load->library('OrganizeLib','','OrganizeLib');
-		$ns_user_arr = $this-> OrganizeLib->get_users_list($org_id ,$site_id );
-		if(is_array($ns_user_arr)){//是数组
-			$user_arr = $this-> OrganizeLib->user_to_user_tree($ns_user_arr,$org_id,1);
-			form_json_msg('0','','组织所属帐号信息',array('user_json' => json_encode($user_arr)));//返回信息json格式
-		}else{//不是数组
-			form_json_msg('1','','获得组织所属帐号信息错误',array('user_json' =>'' ));//返回信息json格式
-		}
-	}
 
 	/**
 	 * @brief 根据用户当前组织$org_id，获得当前组织管理者user_id：
@@ -471,6 +453,7 @@ class Organize extends Admin_Controller {
 		$org_pId = strtolower($this->input->post('pId' , true));
 		$org_name = strtolower($this->input->post('name' , true));
 
+		$shos_title = '新加';
 		$data = array(
                     'name' => $org_name,
                     'code' => $this->p_customer_code,
@@ -480,15 +463,20 @@ class Organize extends Admin_Controller {
                     "customercode" => $this->p_customer_code,
 		//"type" => null,
 		);
-		$shos_title = '新加';
+                
 		if($org_id > 0){//修改名称
 			log_message('info', '2222');
+			$shos_title = '修改';
 			//根据组织id获得组织信息
-			$org_arr = $this-> OrganizeLib->get_org_by_id($org_id);
+                        if($org_id==$org_pId){
+                            $err_msg = '父级部门不能为现在准备修改的部门';
+                            log_message('error', $err_msg);
+                            form_json_msg('1','',$shos_title . '失败，'.$err_msg);//返回错误信息json格式
+                        }
+			$org_arr = $this->OrganizeLib->get_org_by_id($org_id);
 			$org_old_name = arr_unbound_value($org_arr,'name',2,'');
 			$org_pId =  arr_unbound_value($org_arr,'parentId',2,'');
 			$data['id'] = $org_id;
-			$shos_title = '修改';
 			$ums_arr = $this->API->UMS_Special_API(json_encode($data),10);
 			if(api_operate_fail($ums_arr)){//失败
 				$err_msg = 'ums api rs/organizations modify org fail.';
@@ -701,6 +689,10 @@ class Organize extends Admin_Controller {
         
         public function add_org_page(){
 		$this->load->view('public/popup/addOrgPage.php');
+	}
+
+        public function edit_org_page(){
+		$this->load->view('public/popup/editOrgPage.php');
 	}
 
 
