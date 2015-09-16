@@ -26,8 +26,8 @@ class Ldap_internation{
 	private $chose_ldap_message = '';	//请选择对应的LDAP信息
 	private $must_staff_label = '';	//必选的员工标签
 	private $tags_label = null;		//同步员工信息标签（数组类型）
-	private $set_uc_account = '';	//请设置云企账号
-	private $use_email_label = '';		//使用邮箱作为云企帐号
+	private $set_uc_account = '';	//请设置sooncore平台账号
+	private $use_email_label = '';		//使用邮箱作为sooncore平台帐号
 	private $use_prefix_label = '';	//指定统一的标签作为帐号前缀
 	private $chose_label = '';			//选择标签
 	private $assure	= '';			//确定
@@ -38,7 +38,7 @@ class Ldap_internation{
 	
 	private $message0 = '';			//请选择
 	private $message1 = '';			//同步后，如果在 LDAP 找不到用户信息立即停用并删除
-	private $message2 = '';			//请输入不用开通云企帐号的例外规则
+	private $message2 = '';			//请输入不用开通sooncore平台帐号的例外规则
 	private $message3 = '';			//您可以写入这样一个规则 OU=labourer
 	
 	public function __construct(){

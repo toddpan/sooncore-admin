@@ -743,7 +743,7 @@ class PowerLib{
 	 *							'power_arr' => array(
 	 *	 							'UC_passDoc' => array(
 	 *	 								'enable' 		=> 1,
-	 *	 								'name' 			=> 可使用全时云企 IM 互传文档,
+	 *	 								'name' 			=> 可使用全时sooncore平台 IM 互传文档,
 	 *	 								'boss_name' 	=> UC,
 	 *	 								'boss_property' => passDoc,
 	 *	 								'value_arr' 	=> array(

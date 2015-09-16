@@ -49,7 +49,7 @@ $('.poptip3 .btn_iKnow').click(function() {
             
             <div class="toolBar">
                     <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER){?>
-                <a class="addFunction" id="addFunction" onclick="addFunction();" title="添加功能"></a>
+                <a class="addFunction hover" id="addFunction" onclick="addFunction();" title="收缩/展开功能区"></a>
                     <?php }?>
             </div>
         </div>
@@ -57,7 +57,7 @@ $('.poptip3 .btn_iKnow').click(function() {
                 <div class="bread">
                     <span><?php echo $org_json[0]['name'];?></span>
                 </div>
-                <div class="editBtn" onclick="editOrg();">
+        <div class="editBtn" style="display: none;" onclick="editOrg();">
                     <span>编辑</span>
                 </div>
         </div>

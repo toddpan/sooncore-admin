@@ -3,7 +3,7 @@
 <head>
 <base href="{$tag_base_url}" />
 <meta charset="utf-8">
-<title>免费试用云企</title>
+<title>免费试用sooncore平台</title>
 <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -14,9 +14,9 @@
 <!-- end header -->
 
 <div class="main">
-  <div class="breadcrumb">免费试用云企</div>
+  <div class="breadcrumb">免费试用sooncore平台</div>
   <h2 style="margin-top: 50px;">手机验证成功！<br>
-恭喜您已经获得免费体验云企的机会！</h2>
+恭喜您已经获得免费体验sooncore平台的机会！</h2>
   <div class="form-footer" style="margin: 50px 0;"> <a class="form-btn" value="" href="{site_url('crippleware/crippleware/set_crippleware_page?user_id')}={$user_id}">设置您的管理员信息</a> <a href="http://www.quanshi.com" class="gray-link">取消</a></div>
 </div>
 <div class="footer">

@@ -20,9 +20,9 @@
                             <span style="font-size:45px;">
                                 <img src="public/images/guaji_logo.png" />
                             </span>
-                            <span class="logoText">呱唧用户注册</span>
+                            <span class="logoText">管理中心</span>
 			</a>
-			<span style="float:right;font-size:15px;margin:40px 30px 0 0;"><i>guaji.yikaihui.com</i></span>
+			<span style="float:right;font-size:15px;margin:40px 30px 0 0;"><i>www.sooncore.com</i></span>
 		  </div>
 		</div>
             <div class="mainBox">
@@ -142,6 +142,8 @@
 				   return false;
 				 }
 			   }
+                        $('.error').text("");
+                        _t.children(".loginspan").text("验证中");
 			var path="login/loginin";
 			var obj={
 				"userName":userName,
@@ -162,7 +164,8 @@
 				  }else{
 					//$('#remPwd').removeClass("checked");
 					setCookie('username','',365);
-				  }					 
+				  }
+                                  _t.children(".loginspan").text("验证通过");
 				  location = "{site_url('main/index')}";
 				  _t.removeClass("false");	
 				}else{
@@ -170,11 +173,16 @@
 				   countNumber=data.other_msg.login_num;
 				   showcode(countNumber);
 				   $('.error').text(data.prompt_text);	
+                                    _t.children(".loginspan").text("登 录");
 				   _t.removeClass("false");		   
 				   return false;
 				}
                             },
-                            error:function(){}
+                            error:function(){
+                                _t.removeClass("false");
+                                _t.children(".loginspan").text("登 录");
+                                $('.error').text("服务器无响应，请检查您的网络是否通畅");
+                            }
                           });
 			  
 			}

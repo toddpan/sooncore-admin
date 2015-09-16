@@ -225,7 +225,7 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);//选中的属性，即同步的员工信息
 		$property_info		= $this->input->get_post('property_info', true);//选中的属性，即同步的员工信息
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为sooncore平台标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 // 		$objectclasses		= $this->input->get_post('objectclasses', true);    //组织objectclasses
 // 		$idAttribute		= $this->input->get_post('idAttribute', true);    //组织id
@@ -245,7 +245,7 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
 		$email_next			= $this->input->get_post('email_next', true);    //使用统一的标签做为账号前缀时，对应的标签
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为sooncore平台标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 		$ldap_name			= $this->input->get_post('ldap_name', true);    //ldap名称
 		$objectclasses		= empty($server_info['orgObjectclasses']) ? 'organizationalUnit' : $server_info['orgObjectclasses'];    //组织objectclasses
@@ -394,7 +394,7 @@ class Ldap extends Admin_Controller {
 		$classes			= $this->input->get_post('classes', true);
 		$filter_rule		= $this->input->get_post('filter_rule', true);  //过滤规则
 		$email_next			= $this->input->get_post('email_next', true);    //使用统一的标签做为账号前缀时，对应的标签
-		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为云企标签时，对应的标签
+		$email_value		= $this->input->get_post('email_value', true);  //使用邮箱做为sooncore平台标签时，对应的标签
 		$is_auto_del		= $this->input->get_post('is_auto_del', true);  //同步后，如果在 LDAP 找不到用户信息，是否立即停用并删除 0-否 1-是
 		$ldap_name			= $this->input->get_post('ldap_name', true);    //ldap名称
 		$objectclasses		= empty($server_info['orgObjectclasses']) ? 'organizationalUnit' : $server_info['orgObjectclasses'];    //组织objectclasses
@@ -665,7 +665,7 @@ class Ldap extends Admin_Controller {
 		$loginNameAttribute 	= $res['ldapUserMapping']['loginNameAttribute'];
 		$customLoginNameSuffix	= $res['ldapUserMapping']['customLoginNameSuffix'];
 		$account 				= $loginNameAttribute.$customLoginNameSuffix;
-		//不开通全时云企的例外规则
+		//不开通全时sooncore平台的例外规则
 		$rule_arr = $this->ldap->getRuleByLdapId($ldap_id);
 		if(empty($rule_arr)){
 			$rule_arr = array('this ldap has not filter_rule');

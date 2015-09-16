@@ -27,7 +27,7 @@ function nextStep5() {
         })
     }
     var strTwo = $('#Select_div').text();
-	if(strTwo=="使用邮箱作为云企帐号")
+	if(strTwo=="使用邮箱作为sooncore平台帐号")
 	{
 		 if ($('#select_tag').text() != "选择标签") {
 				var str = $('#select_tag').text();
@@ -36,7 +36,7 @@ function nextStep5() {
 			} else {
 				email_value = "";
 				$('.error5').show();
-        		$('.error5').text("请设置云企账号") 
+        		$('.error5').text("请设置sooncore平台账号") 
 			}
 		 email_next='';
 	}
@@ -50,7 +50,7 @@ function nextStep5() {
 		} else {
 			email_value = "";
 			$('.error5').show();
-        	$('.error5').text("请设置云企账号") 
+        	$('.error5').text("请设置sooncore平台账号") 
 		}
    }
 	var count=0;
@@ -74,7 +74,7 @@ function nextStep5() {
         $('#select_two').parent("div").addClass("error");
         $('#select_tag').parent("div").addClass("error");
 		$('.error5').show();
-        $('.error5').text("请设置云企账号") ;
+        $('.error5').text("请设置sooncore平台账号") ;
 		return false;
     } else {
     	if(count!=0)
@@ -122,12 +122,12 @@ function nextStep5() {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                         $('#select_tag').parent("div").addClass("error");
 						$('.error5').show();
-                        $('.error5').text("请设置云企账号");
+                        $('.error5').text("请设置sooncore平台账号");
                     } else if (json.error == "select_tag") {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                         $('#select_tw0').parent("div").addClass("error");
 						$('.error5').show();
-                        $('.error5').text("请设置云企账号");
+                        $('.error5').text("请设置sooncore平台账号");
                     } else {
                         $('#' + json.error_id + '').parent("div").addClass("error");
                     }

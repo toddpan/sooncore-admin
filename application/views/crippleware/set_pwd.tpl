@@ -3,7 +3,7 @@
 <head>
 <base href="{$tag_base_url}" />
 <meta charset="utf-8">
-<title>免费试用云企</title>
+<title>免费试用sooncore平台</title>
 <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -18,13 +18,13 @@
 	<!-- end header -->
 	
     <div class="main">
-    	<div class="breadcrumb">免费试用云企</div>
+    	<div class="breadcrumb">免费试用sooncore平台</div>
         <h2>创建您的管理员密码</h2>
         
         <div class="form-box" style="width:540px; margin-top: 10px; margin-bottom: 60px">
 		    <div class="form-box-bar" style="">
 企业域名： 　12345678901.quanshi.com<br>
-<span style="font-size:12px;color:#9f9f9f;display:block;padding:0 0 10px 100px;">您可以通过企业域名访问云企管理中心，正式用户可以定制自己的企业域名。</span>
+<span style="font-size:12px;color:#9f9f9f;display:block;padding:0 0 10px 100px;">您可以通过企业域名访问sooncore平台管理中心，正式用户可以定制自己的企业域名。</span>
 管理员帐号： jiecheng.zhang@quanshi.com
 			</div>
 			

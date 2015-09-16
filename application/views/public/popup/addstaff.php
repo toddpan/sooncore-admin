@@ -6,6 +6,12 @@
            
 	<dd class="dialogBody" style="overflow: inherit">
 		<table class="infoTable">
+                    <tr>
+                            <td class="tr"></td>
+                            <td colspan="3" id="msgBox">
+                                <span class="msg"><!--信息提示--></span>
+                            </td>
+                    </tr>
 		   <?php 
 		   //print_r($system_must_tag_arr);
 		  //必选员工标签
@@ -69,7 +75,7 @@
 				continue;
 				endif;?> 
 				<?php if ($umsapifield == 'accountId')://账户?> 
-					<tr>
+                                        <tr style="display:none;">
 						<td class="tr">账户：</td>
 						<td>
 							<div class="combo selectBox" style="width:212px;">
@@ -196,11 +202,19 @@
 		</table>
 	</dd>
 	<dd class="dialogBottom">
-		<a class="btnBlue yes"  onclick="add_staff(event,this)"><span class="text">添加</span><b class="bgR"></b></a>
+		<a class="btnBlue yes"  onclick="add_staff(event,this,1)"><span class="text">保存并继续</span><b class="bgR"></b></a>
+		<a class="btnBlue yes"  onclick="add_staff(event,this,0)"><span class="text">保存</span><b class="bgR"></b></a>
 		<a class="btnGray btn btn_cancel"  onclick="hideDialog();"><span class="text">取消</span><b class="bgR"></b></a>
 	</dd>
 </dl>
 <script type="text/javascript">
+
+if(!$("#departmentTree").text()){
+        var oldTreeDOM = $("#ztree").html();
+        $("#departmentTree").html(oldTreeDOM);
+        //$("#departmentTree a.nodeBtn").removeClass("curSelectedNode");
+    }
+
 
 if(!$('#sex .radio').hasClass("radio_on")){
     $('#sex .radio:eq(0)').addClass("radio_on");
@@ -288,8 +302,8 @@ if(add_type==3)
 	$('#mobileNumber').remove();
 	
 }
-//提交添加员工操作
-function add_staff(e,t) {
+//提交添加员工操作  e为当前事件event; t为当前被点击的对象; cType=1保存并继续添加 cType=0保存并关闭
+function add_staff(e,t,cType) {
     if($(t).hasClass("false"))
     {
             return;
@@ -427,7 +441,14 @@ function add_staff(e,t) {
 		}
 		else
 		{
-			sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield;?>"}';
+                        var checkStatus = exitsUser(ns_value);
+                        
+                        if(checkStatus==1){
+                            $("#<?php echo $umsapifield ;?>").parent('div').addClass('error');
+                            count++;
+                        }else{
+                            sys_tag_value = sys_tag_value + '{"name": "<?php echo  $title ;?>","value": "' + ns_value + '","umsapifield": "<?php echo  $umsapifield;?>"}';
+                        }
 		}
     }
     
@@ -706,7 +727,7 @@ function add_staff(e,t) {
     };
     
     var nowTreeHtml = $("#departmentTree").html();//取出添加员工页面中已经展开的目录树以方便后面完成后调用
-    
+    var ctype = cType;
     $.ajax({
                 url: "staff/add_staff_open_product",
                 async: false,
@@ -721,6 +742,7 @@ function add_staff(e,t) {
                                 $('#addstaff' + add_json.type_arr.task_id + '').parents("li").removeClass("new");
                                 $('#addstaff' + add_json.type_arr.task_id + '').parents(".li-ml").html("已处理");
                         } else {
+                            
                                 var newOrgId = json.other_msg;
                                 var node = $("#departmentTree a[org_id='"+newOrgId+"']");
                                 var parent_id = node.attr("parent_id");
@@ -731,7 +753,6 @@ function add_staff(e,t) {
                                     pid : parent_id,
                                     title : title
                                 };
-                                
                                 $("#ztree").html(nowTreeHtml);//把现有展开的组织结构复制到左边原组织树 以减少调用下级部门的请求
                                 
                                 setTimeout(function()
@@ -739,11 +760,24 @@ function add_staff(e,t) {
                                         //alert(111);
                                         showValue(obj);//显示数据
                                 },1000);
-
                         }
-                        hideDialog();
-                        $(this).addClass('hide').siblings('.btn_infoEdit').removeClass('hide').siblings('.btn_infoCancel').addClass('hide');
-                        $('#part1 .infoTitle .personName').text($('.infoTable .infoText').next().find("input").val());
+                        if(ctype==1){
+                            $(".infoTable #lastName").val("");
+                            $(".infoTable #loginName").val("");
+                            $(".infoTable #position").val("");
+                            $(".infoTable #mobileNumber").val("");
+                            $(".infoTable #officeaddress").val("中国");
+                            $(".infoTable #msgBox .msg").text("已添加并保存！").addClass("ok-msg");
+                            setTimeout(function()
+                            { 
+                                $(".infoTable #msgBox .msg").text("");
+                            },5000);
+                        }else{
+                            hideDialog();
+                        }
+                        
+                        //$(this).addClass('hide').siblings('.btn_infoEdit').removeClass('hide').siblings('.btn_infoCancel').addClass('hide');
+                        //$('#part1 .infoTitle .personName').text($('.infoTable .infoText').next().find("input").val());
                         _t.removeClass("false");
                 }
                 else
@@ -760,11 +794,7 @@ function add_staff(e,t) {
 
 
 function showTreeList(event) {
-    if(!$("#departmentTree").text()){
-        var oldTreeDOM = $("#ztree").html();
-        $("#departmentTree").html(oldTreeDOM);
-        //$("#departmentTree a.nodeBtn").removeClass("curSelectedNode");
-    }
+    
     $('#treeOption').toggle();
     if ($('.optionBox').attr('target') == '1') {
         $('.optionBox').attr('target', '0');
@@ -794,6 +824,34 @@ function disable_select(t) {
     exit();
 }
 
+//检查用户是否已存在
+function exitsUser(loginName){
+    var count = 0;
+    $.ajax({
+        url: "staff/exist_user",
+        async: false,
+        type: "POST",
+        data: {login_name:loginName},
+        success: function(data) {
+            //alert(data)
+            var json = $.parseJSON(data);
+            if (json.code != 0) {
+                count = 1;
+                alert(json.prompt_text);
+                //hideDialog();
+            }
+
+        },
+        error:function(){
+            count = 1;
+            alert("网络可能不通畅，请稍候再试");
+        }
+    });
+    return count;
+}
+
+
+
     //点击选择账户
     $('#acount_user dd').click(function(){       
             $(this).parent().find("dd.selected").removeClass("selected");
@@ -801,7 +859,7 @@ function disable_select(t) {
             $(this).parent().parent().prev().css("color","#4f4f4f");
     });
 
-    $('#treeOption a').live("click",function() {
+    $('.D_addAccounts #treeOption a').live("click",function() {
             disable_select($(this));
     });
 

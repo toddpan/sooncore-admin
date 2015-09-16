@@ -12,7 +12,7 @@ $lang['authtype_name1'] = 'LDAP';
 $lang['authtype_name2'] = 'LDAPS';
 
 //网页展示中文信息
-$lang['html_title']				= '云企管理中心';
+$lang['html_title']				= 'sooncore平台管理中心';
 $lang['org_name']				= '组织管理';
 $lang['ldap_syn_setting']		= 'ldap同步设置';
 $lang['link_ladp']				= '连接LDAP服务器';
@@ -40,8 +40,8 @@ $lang['chose_syn_struct']		= '选择要同步的组织结构';
 $lang['chose_staff_label']		= '请选择代表员工的标签';
 $lang['chose_ldap_message']		= '请选择对应的LDAP信息';
 $lang['must_staff_label']		= '必选的员工标签';
-$lang['set_uc_account']			= '请设置云企账号';
-$lang['use_email_label']		= '使用邮箱作为云企帐号';
+$lang['set_uc_account']			= '请设置sooncore平台账号';
+$lang['use_email_label']		= '使用邮箱作为sooncore平台帐号';
 $lang['use_prefix_label']		= '指定统一的标签作为帐号前缀';
 $lang['chose_label']			= '选择标签';
 $lang['assure']					= '确定';
@@ -52,7 +52,7 @@ $lang['save_set']				= '保存设置';
 
 $lang['message0']				= '请选择';
 $lang['message1']				= '同步后，如果在 LDAP 找不到用户信息立即停用并删除';
-$lang['message2']				= '请输入不用开通云企帐号的例外规则';
+$lang['message2']				= '请输入不用开通sooncore平台帐号的例外规则';
 $lang['message3']				= '您可以写入这样一个规则 OU=labourer';
 
 //员工标签信息

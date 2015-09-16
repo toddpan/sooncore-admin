@@ -1981,6 +1981,7 @@ td.ellipsis {
 .dialogBody {
     padding: 0 30px;
     overflow: hidden;
+    min-height: 80px;
 }
 .dialogBottom {
     height: 28px;
@@ -2325,9 +2326,20 @@ td.ellipsis {
     width: 500px;
 }
 .D_addAccounts .dialogBody {
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 10px;
 }
+.D_addAccounts #msgBox{
+    height:20px;
+    line-height:20px;
+    padding-bottom: 0;
+}
+.D_addAccounts #msgBox .msg{
+    height:20px;
+    line-height:20px;
+    display: block;
+}
+
 .D_addAccounts .infoTable .tr {
     padding: 0;
     width: 80px;
@@ -2677,7 +2689,9 @@ span.chart-e {
 }
 .error-msg {
     color: #ec6764;
-    font-size: 14px;
+}
+.ok-msg {
+    color: #28D000;
 }
 .gray {
     font-size: 12px;
@@ -3510,31 +3524,46 @@ input, textarea, select {
 }
 #addMoreBox .addMoreUl li{ 
     display: inline-block; 
-    margin: 10px;
+    margin: 10px auto;
 }
 #addMoreBox .btn{
-    background: #A4C1D6;
+    //background: #A4C1D6;
+    background: none;
     height: auto;
     border: none;
 }
-#addMoreBox .btn:hover{
-    background: #006BAE;
-}
 #addMoreBox a.btn:hover .ico{
+    background-color: #006BAE;
     background-position-y: -50px;
 }
+
+
 #addMoreBox .btn .text{
-    color: #E4EDF3;
-    padding: 0 24px;
+    color: #666;
+    padding: 0 6px;
 }
 #addMoreBox .btn:hover .text{
-    color: #FFF;
+    color: #006BAE;
 }
+
+#addMoreBox .btn.false .ico,
+#addMoreBox .btn.false:hover .ico{
+    background-color: #E2E2E2;
+    background-position-y: 0px;
+    cursor: no-drop;
+}
+#addMoreBox .btn.false .text,
+#addMoreBox .btn.false:hover .text{
+    color: #E2E2E2;
+    cursor: no-drop;
+}
+
 #addMoreBox .btn .ico{
     margin: 0 auto;
-    background:url(../images/add_btn.png) no-repeat 0 0;
+    background:#A4C1D6 url(../images/add_btn.png) no-repeat 0 0;
     width: 50px;
     height: 50px;
+    border-radius: 25px;
     display: block;
     overflow: hidden;
 }

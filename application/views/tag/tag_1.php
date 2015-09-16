@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<base href="<?php echo site_url('');?>"/>
 		<base target="_blank" />
-		<title>云企管理中心</title>
+		<title>sooncore平台管理中心</title>
 	</head>
 	<body>
 		<div class="contHead">

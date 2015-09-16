@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云企管理中心</title>
+<title>sooncore平台管理中心</title>
 </head>
 <body>
 <!--搜索_消息管理.html-->
@@ -63,7 +63,7 @@
     </div>
     <ul class="msg-li">
       
-      <li><a  onclick="showDetailPage('msg1.html',this)">欢迎使用全时云企</a> <span class="time">17:35</span> </li>
+      <li><a  onclick="showDetailPage('msg1.html',this)">欢迎使用全时sooncore平台</a> <span class="time">17:35</span> </li>
     </ul>
     <!--<div class="page"> <a class="disabled" >首页</a> <a class="disabled" >上一页</a> <a class="num selected" >1</a> <a class="num " >2</a> <a class="num " >3</a> <a class="" >下一页</a> <a class="" >尾页</a> <span class="text ml10">第</span>
                 <input class="page-input"  type="text" value="" size="2" />

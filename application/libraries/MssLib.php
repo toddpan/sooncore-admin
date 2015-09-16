@@ -63,18 +63,18 @@ class MssLib{
         switch ($mb_num) {
             case 1: //1管理员帐号开通(试用版)
                 $mb_method = "admin_open_try";
-                $mb_title = '欢迎试用全时云企';//模板标题
+                $mb_title = '欢迎试用全时sooncore平台';//模板标题
                 break;
             case 2: //2管理员帐号开通(正式版)
                 $mb_method = "admin_open_official";
-                $mb_title = '欢迎试用全时云企';//模板标题
+                $mb_title = '欢迎试用全时sooncore平台';//模板标题
                 break;
             case 3: //3一般用户帐号开通(正式版)
                // $mb_baoqian_arr = array(
                 //    'user_name' => 'user_name',//#用户名称#                    
                // );//标签
                 $mb_method = "user_open_official";
-                $mb_title = '{user_name}，您的云企帐号已经开通，请立即启用';//模板标题
+                $mb_title = '{user_name}，您的sooncore平台帐号已经开通，请立即启用';//模板标题
                 break;
         }
         if(bn_is_empty($mb_method)){

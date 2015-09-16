@@ -10,6 +10,16 @@ $(function()
             $(this).addClass("curSelectedNode");
             $(".tabToolBox").css("display","none");
             var obj = getSelectNode();
+            
+            var addStaffBtn = $("#addMoreBox a.addUser");
+            var editOrgBtn = $("#orgNode .editBtn");
+            if(obj.pid!=0){
+                addStaffBtn.removeClass("false");
+                editOrgBtn.removeAttr("style");
+            }else{
+                addStaffBtn.addClass("false");
+                editOrgBtn.css({'display':'none'});
+            }
 
             var obj2 = {
                 org_id : obj.oid,

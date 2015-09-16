@@ -5,7 +5,7 @@
             <th width="6%"><span class="checkbox"><input type="checkbox" /></span></th>
             <th width="10%" style="text-align: left; text-indent: 24px">姓名</th>
             <th>角色</th>
-            <th>云企帐号</th>
+            <th>sooncore平台帐号</th>
             <th>手机</th>
             <th>上次登录时间</th>
         </tr>

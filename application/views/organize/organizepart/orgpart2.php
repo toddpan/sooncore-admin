@@ -1,6 +1,6 @@
 <div class="contMiddle" >
     <div class="conTabs">
-        <div id="addMoreBox">
+        <div id="addMoreBox" style="display: block;">
             <ul class="addMoreUl">
                 <?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == ORGANIZASION_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
                 <li>
@@ -10,7 +10,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="btn addUser" onclick="addNewMember_one()">
+                    <a class="btn addUser false" onclick="addNewMember_one()">
                         <em class="ico"></em>
                         <span class="text">添加员工</span>
                     </a>

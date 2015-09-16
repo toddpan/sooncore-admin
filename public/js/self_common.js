@@ -465,7 +465,7 @@ function save_ecology_power() {
     return obj;
 }
 function org_user_right(value) {
-	// 可使用全时云企 IM 互传文档
+	// 可使用全时sooncore平台 IM 互传文档
 	//    if (value.UC_passDoc.value == '2') {
 	//        $('label.im_file').addClass('checked');
 	//        //$('.groupLimit label.im_file').find('input').attr('checked','checked');
@@ -508,7 +508,7 @@ function org_user_right(value) {
         }
     }
     
-    // 允许使用云企拨打电话
+    // 允许使用sooncore平台拨打电话
     if (value.UC_isCall.value == '1') {
         $('label.accept_cloud').addClass('checked');
     } else if (value.UC_isCall.value == '2') {
@@ -835,7 +835,7 @@ function right_save() {
         obj = obj + '"UC_answerStrategyOverseas":"2",';
     }
     if ($('label.accept_cloud').hasClass('checked')) {
-        obj = obj + '"UC_isCall":"1",'; //允许用户使用云企电话
+        obj = obj + '"UC_isCall":"1",'; //允许用户使用sooncore平台电话
     } else {
         obj = obj + '"UC_isCall":"2",';
     }

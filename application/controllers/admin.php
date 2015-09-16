@@ -16,7 +16,7 @@ class Admin extends Admin_Controller{
      * @brief获取该账号的列表
      * @details
      * -# 通过SESSION中权限获取该站点ID下的所有的管理账号
-     * -# 通过所有的管理员的USERID获取对应的信息（手机号、云企账号、姓名）等
+     * -# 通过所有的管理员的USERID获取对应的信息（手机号、sooncore平台账号、姓名）等
      */
     public function adminList() {
         $role = $_REQUEST['role'];//代表某种类型的管理员，其中role为0时，则代表所有的用户

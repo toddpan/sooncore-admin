@@ -11,7 +11,7 @@
     	<td>
         	<table style="margin:0 auto; width:600px;" align="center">
             	<tr>
-                	<td style="font:500 26px/45px \5FAE\8F6F\96C5\9ED1; color:#333;"><img src="<?php echo $imgpreurl ?>img/blueline.jpg" width="9" height="24" style="vertical-align:middle"/> 海尔云企</td>
+                	<td style="font:500 26px/45px \5FAE\8F6F\96C5\9ED1; color:#333;"><img src="<?php echo $imgpreurl ?>img/blueline.jpg" width="9" height="24" style="vertical-align:middle"/> 海尔sooncore平台</td>
                 </tr>
             </table>
         	<table cellpadding="0" cellspacing="0" style="margin:0 auto; width:600px;" align="center">
@@ -30,7 +30,7 @@
                             	<td style=" height:30px;"></td>
                             </tr>
                             <tr>
-                            	<td style="font:14px/24px \5FAE\8F6F\96C5\9ED1;">您的海尔云企帐号已经开通，请立即启用。</td>
+                            	<td style="font:14px/24px \5FAE\8F6F\96C5\9ED1;">您的海尔sooncore平台帐号已经开通，请立即启用。</td>
                             </tr>
                             <tr>
                             	<td style=" height:20px;"></td>
@@ -96,7 +96,7 @@
                             	<td style="font:13px/24px \5FAE\8F6F\96C5\9ED1; color:#000;">1. 您的初始化密码有效期为 7 天，请在收到邮件后立即启用，并且创建您的新密码。</td>
                             </tr>
                             <tr>
-                            	<td style="font:13px/24px \5FAE\8F6F\96C5\9ED1; color:#000;">2. 如果您下载或安装客户端出现问题，请立即与本公司云企管理小组联系。</td>
+                            	<td style="font:13px/24px \5FAE\8F6F\96C5\9ED1; color:#000;">2. 如果您下载或安装客户端出现问题，请立即与本公司sooncore平台管理小组联系。</td>
                             </tr>
                             <tr>
                             	<td style=" height:20px;"></td>
@@ -105,7 +105,7 @@
                             	<td style="font:13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">顺颂时祺</td>
                             </tr>
                             <tr>
-                            	<td style="font:bold 13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">XX 云企管理小组
+                            	<td style="font:bold 13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">XX sooncore平台管理小组
 </td>
                             </tr>
                         </table>

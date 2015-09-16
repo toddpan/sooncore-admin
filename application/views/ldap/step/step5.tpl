@@ -1,7 +1,7 @@
 <!--设置账号规则-->
 <div class="ldapSetBox5" style="display:none" target="5">
     <dl class="ldapSetCont">
-    	<dt class="setTitle" style="margin:0px 0 5px;">请设置云企账号</dt>
+    	<dt class="setTitle" style="margin:0px 0 5px;">请设置sooncore平台账号</dt>
     	<dt class="error-text error5" style="color:#FF0000;display:none"></dt>
         <dd style=" margin-bottom: 10px;">
             <table class="infoTable">
@@ -9,10 +9,10 @@
                     <td width="326">
                         <div class="combo selectBox w318" >
                             <a class="icon" ></a>
-                            <span class="text selected" id='Select_div' name="{$ldap_id}">使用邮箱作为云企帐号</span>
+                            <span class="text selected" id='Select_div' name="{$ldap_id}">使用邮箱作为sooncore平台帐号</span>
                             <div class="optionBox">
                                 <dl class="optionList" id="zhType">
-                                    <dd class="option selected" target="1" onclick="ldapf_select(this)">使用邮箱作为云企帐号</dd>
+                                    <dd class="option selected" target="1" onclick="ldapf_select(this)">使用邮箱作为sooncore平台帐号</dd>
                                     <dd class="option" target="2" onclick="ldapf_select(this)">指定统一的标签作为帐号前缀</dd>
                                 </dl>
                             </div>
@@ -49,7 +49,7 @@
 				<input name="" type="checkbox" checked="checked" value="" />同步后，如果在 LDAP 找不到用户信息立即停用并删除
 			</label>
 		</dd>
-        <dt class="setTitle" style="margin:30px 0 5px;">请输入不用开通云企帐号的例外规则</dt>
+        <dt class="setTitle" style="margin:30px 0 5px;">请输入不用开通sooncore平台帐号的例外规则</dt>
         <dd class="addRule">
             <table class="infoTable">
             {if $rule[0]}
