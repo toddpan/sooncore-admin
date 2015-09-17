@@ -7,7 +7,7 @@
 		<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
 		<base href="<?php echo site_url('');?>"/>
 		<base target="_blank" />
-		<title>云企管理中心</title>
+		<title>sooncore平台管理中心</title>
 		<link href="public/css/login.css" rel="stylesheet" />
 	</head>
 	<body>
@@ -22,14 +22,14 @@
 		  <div class="front-scroll">
 				<div class="page" id="page1" style="display: block">
 					<h2 data-left="0">为移动互联网而生的企业社交协作平台</h2>
-					<p data-left="0">全时云企全面支持 PC 与智能手机同步使用。<br />随时随地查看最新的消息、实时沟通与开会。</p>
+					<p data-left="0">全时sooncore平台全面支持 PC 与智能手机同步使用。<br />随时随地查看最新的消息、实时沟通与开会。</p>
 					<img src="public/images/ad/img1.png" data-left="76" class="img1" width="231" height="147" alt="" />
 					<img src="public/images/ad/img2.png" data-left="429" class="img2" width="79" height="139" alt="" />
 					<img src="public/images/ad/img3.png" data-left="332" class="img3" width="61" height="61" alt="" />
 				</div>
 				<div class="page" id="page2" style="display:none">
 					<h2 data-left="0">管理你的组织与员工更轻松了</h2>
-					<p data-left="0">通过 LDAP 或API 同步，在全时云企有效管理企业生态的组织与员工。</p>
+					<p data-left="0">通过 LDAP 或API 同步，在全时sooncore平台有效管理企业生态的组织与员工。</p>
 					<img src="public/images/ad/img4.png" data-left="182" class="img1" width="236" height="196" alt="" />
 					<img src="public/images/ad/img5.png" data-left="203" class="img2" width="140" height="106" alt="" />
 					<img src="public/images/ad/pic24.gif" data-left="350" data-top="248" class="img3" width="24" height="24" alt="" />
@@ -49,7 +49,7 @@
 				</div>
 				<div class="page" id="page4" style="display: none">
 					<h2 data-left="0">通过应用集成，提升整个公司决策效能</h2>
-					<p data-left="0">全时云企提供完整的API，让企业可以快速与内部系统集成，<br />以消息来驱动人们快速决策。</p>
+					<p data-left="0">全时sooncore平台提供完整的API，让企业可以快速与内部系统集成，<br />以消息来驱动人们快速决策。</p>
 					<div class="pic1" data-left="185"></div>
 					<div class="pic2" data-left="263"></div>
 					<div class="pic3" data-left="341"></div>

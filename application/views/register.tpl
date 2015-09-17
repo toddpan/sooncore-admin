@@ -80,7 +80,7 @@
                                                 </td>
                                                 <td class="code">
                                                   <div style="padding-left:10px;">
-                                                      <img id="forgetpwdcode" src="register/code/{time()}" width="78" height="26" title="看不清，换一张？" onclick="this.src='register/code/'+Math.random();" style="cursor: pointer;vertical-align: top;">
+                                                      <img id="forgetpwdcode" src="register/code/{time()}" title="看不清，换一张？" onclick="this.src='register/code/'+Math.random();" style="cursor: pointer;vertical-align: top;">
                                                       <span class="sendCode" onclick="sendMail();" style="cursor: pointer">发送验证邮件</span>
                                                   </div>
                                                 </td>

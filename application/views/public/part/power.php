@@ -2,7 +2,7 @@
 	<!-- 	<h3 class="setTitle">IM设置</h3> -->
 	<!-- 	<label class="checkbox im_file checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
-	<!-- 	可使用全时云企 IM 互传文档</label> -->
+	<!-- 	可使用全时sooncore平台 IM 互传文档</label> -->
 	<!-- 	<label class="checkbox add_link checked"> -->
 	<!-- 	<input type="checkbox" checked="checked"> -->
 	<!-- 	自动将联系过的联系人添加到常用联系人列表</label> -->
@@ -20,7 +20,7 @@
 		</label>
 		<label class="checkbox accept_cloud checked">
 			<input type="checkbox" checked="checked">
-				允许使用云企拨打电话
+				允许使用sooncore平台拨打电话
 		</label>
 		<label class="checkbox accept_areaPhone checkbox2 checked">
 			<input type="checkbox" checked="checked" />

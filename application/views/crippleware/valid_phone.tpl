@@ -3,7 +3,7 @@
 <head>
 <base href="{$tag_base_url}" />
 <meta charset="utf-8">
-<title>免费试用云企</title>
+<title>免费试用sooncore平台</title>
 <link href="public/css/css_trycount/style.css" rel="stylesheet" />
 </head>
 
@@ -14,7 +14,7 @@
 <!-- end header -->
 
 <div class="main">
-  <div class="breadcrumb">免费试用云企</div>
+  <div class="breadcrumb">免费试用sooncore平台</div>
   <h2 style="margin-top: 50px;">请输入短信验证码</h2>
   <h3>短信验证码已经发送到您的手机 {$mobileNumber}上，请在下框中输入验证码。</h3>
   <div class="form-box">

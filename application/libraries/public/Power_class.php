@@ -73,7 +73,7 @@ class Power_class {
       
          array(
             'enable' => 1,//是否可用0不可用1可用
-            'name' => '可使用全时云企 IM 互传文档',//说明 passDoc=>1：不允许2：允许  UC_passDoc
+            'name' => '可使用全时sooncore平台 IM 互传文档',//说明 passDoc=>1：不允许2：允许  UC_passDoc
             'boss_name' => 'UC',//boss权限所属名称
             'boss_property' => 'passDoc',//权限在BOSS中的属性名称[注意大小写]
             'value_arr' => array(
@@ -180,7 +180,7 @@ class Power_class {
          ) ,   
          array(
             'enable' => 1,//是否可用0不可用1可用
-            'name' => '允许使用云企拨打电话',//说明 1是2：否  UC_isCall
+            'name' => '允许使用sooncore平台拨打电话',//说明 1是2：否  UC_isCall
             'boss_name' => 'UC',//boss权限所属名称
             'boss_property' => 'isCall',//权限在BOSS中的属性名称[注意大小写]
             'value_arr' => array(

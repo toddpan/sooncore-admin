@@ -3,6 +3,11 @@
 
 //显示添加员工
 function addNewMember_one() {
+    var _t = $("#addMoreBox a.addUser");
+    if(_t.hasClass("false")==true){
+        alert("根组织不能添加员工，请选择下级部门或添加新的部门");
+        return false;
+    }
     showDialog("staff/add_staff_page");
 }
 //显示添加部门

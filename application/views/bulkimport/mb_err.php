@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云企管理中心</title>
+<title>sooncore平台管理中心</title>
 <link href="css/common.css" rel="stylesheet" />
 <link href="css/datepicker.css" rel="stylesheet" />
 <link href="css/tree.css" rel="stylesheet" />

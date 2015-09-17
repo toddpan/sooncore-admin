@@ -425,7 +425,7 @@ class Allocation extends Domain_Controller{
 	}
 
 	/**
-	 * @brief 展示【建立您的全时云企帐号以及使用者帐号】页面
+	 * @brief 展示【建立您的全时sooncore平台帐号以及使用者帐号】页面
 	 */
 	public function showTrialPage(){
 

@@ -365,7 +365,7 @@ function save_manger_detail(user_id){
 
 function toggleAccount(t){
 		if($(t).find("span.text").text()=="关闭帐号") {
-		showDialog('弹窗_关闭云企帐号.html');
+		showDialog('弹窗_关闭sooncore平台帐号.html');
 			var _this = $(t);
 			$("#dialog .dialogBottom .btn_confirm").live("click",function(){
 				_this.find("span.text").text("开启帐号");

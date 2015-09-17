@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云企管理中心</title>
+<title>sooncore平台管理中心</title>
 </head>
 <body>
 <!--组织与员工-管理员-ldap.html-->
@@ -48,7 +48,7 @@
                         <th width="6%"><label class="checkbox" style="display: none"><input type="checkbox" /></label></th>
                         <th width="14%" style="text-align:left; text-indent: 24px;">姓名</th>
                         <th>权限</th>
-                        <th>云企帐号</th>
+                        <th>sooncore平台帐号</th>
                         <th width="16%">手机</th>
                         <th width="18%">上次登录</th>
                     </tr>

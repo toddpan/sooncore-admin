@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>云企管理中心</title>
+		<title>sooncore平台管理中心</title>
 	</head>
 	<body>
 		<div class="contHead">
 			<span class="title01 rightLine">首页</span>
-			<span class="title02">欢迎使用云企管理后台，管理通讯录与员工请先为员工设置统一的标签。</span>
+			<span class="title02">欢迎使用sooncore平台管理后台，管理通讯录与员工请先为员工设置统一的标签。</span>
 		</div>
 		<?php if($this->p_role_id == SYSTEM_MANAGER || $this->p_role_id == EMPPLOYEE_MANAGER){?>
 		<a class="setLabelBtn" onclick="set_tag(this);">设置员工标签</a>

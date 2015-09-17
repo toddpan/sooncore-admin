@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云企管理中心</title>
+<title>sooncore平台管理中心</title>
 </head>
 <body>
 <!--init-ldap2-home.html-->
 <div class="contHead">
-	<span class="title01 rightLine">首页</span><span class="title02">欢迎使用云企管理后台。</span>
+	<span class="title01 rightLine">首页</span><span class="title02">欢迎使用sooncore平台管理后台。</span>
 </div>
 
 <div class="block" style="padding-top: 0; margin: 0; border: none">

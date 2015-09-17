@@ -55,7 +55,9 @@ class Login extends Web_Controller {
 		// 调用辅助函数生成验证码
 		$vals = array(
 				'word_length' 	=> 	4,		//长度
-				'img_width'   	=> 	'78'	//宽度
+				'img_width'   	=> 	'80',	//宽度
+				'img_height'   	=> 	'33',	//宽度
+                                'font_path'     => './system/fonts/3d.ttf'
 		);
 		$code = create_captcha($vals);
 		

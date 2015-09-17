@@ -8,7 +8,7 @@
 		?>
 		<base href="/ucadmin/" />
 		<base target="_blank" />
-		<title>云企管理中心</title>
+		<title>sooncore平台管理中心</title>
 	</head>
 	<body>
 		<?php 

@@ -70,9 +70,6 @@
             //$("#departmentTree a.nodeBtn").removeClass("curSelectedNode");
         }
         $('#treeOption').toggle();
-        if ($('.optionBox').attr('target') == '1') {
-            $('.optionBox').attr('target', '0');
-        }
         $("body").bind("mousedown", onTreeListDown);
     }
     

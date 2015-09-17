@@ -109,7 +109,7 @@ if ( ! function_exists('create_captcha'))
 	   if ($word == '')
 	   {
 			//$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                        $pool = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ';
+                        $pool = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 
 			$str = '';
 			for ($i = 0; $i < $word_length; $i++)
@@ -149,8 +149,8 @@ if ( ! function_exists('create_captcha'))
 
 		$bg_color		= imagecolorallocate ($im, 255, 255, 255);
 		$border_color	= imagecolorallocate ($im, 255, 255, 255);//imagecolorallocate ($im, 153, 102, 102);
-		$text_color		= imagecolorallocate ($im, 44, 149, 181);//imagecolorallocate ($im, 0, 0, 0);//imagecolorallocate ($im, 204, 153, 153);
-		$grid_color		= imagecolorallocate ($im, 131, 242, 231);//imagecolorallocate($im, 255, 182, 182);
+		$text_color		= imagecolorallocate ($im, 9, 59, 129);//imagecolorallocate ($im, 0, 0, 0);//imagecolorallocate ($im, 204, 153, 153);
+		$grid_color		= imagecolorallocate ($im, 97, 190, 248);//imagecolorallocate($im, 255, 182, 182);
 		$shadow_color	= imagecolorallocate($im, 255, 240, 240);
 
 		// -----------------------------------
@@ -198,8 +198,8 @@ if ( ! function_exists('create_captcha'))
 		}
 		else
 		{
-			$font_size	= 16;
-			$x = rand(0, $img_width/($length/1.5));
+			$font_size	= 18;
+			$x = rand(0, $img_width/($length/0.5));
 			$y = $font_size+2;
 		}
 

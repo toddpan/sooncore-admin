@@ -11,7 +11,7 @@
     	<td>
         	<table style="margin:0 auto; width:600px;" align="center">
             	<tr>
-                	<td style="font:500 26px/45px \5FAE\8F6F\96C5\9ED1; color:#333;"><img src="<?php echo $imgpreurl ?>img/blueline.jpg" width="9" height="24" style="vertical-align:middle"/> 海尔云企</td>
+                	<td style="font:500 26px/45px \5FAE\8F6F\96C5\9ED1; color:#333;"><img src="<?php echo $imgpreurl ?>img/blueline.jpg" width="9" height="24" style="vertical-align:middle"/> 海尔sooncore平台</td>
                 </tr>
             </table>
         	<table cellpadding="0" cellspacing="0" style="margin:0 auto; width:600px;" align="center">
@@ -30,7 +30,7 @@
                             	<td style=" height:30px;"></td>
                             </tr>
                             <tr>
-                            	<td style="font:14px/24px \5FAE\8F6F\96C5\9ED1;">感谢您试用全时云企。您的公司即将展开一场连接互联网的旅程，全时已经为您开通管理员帐号，请您立即登录启用。</td>
+                            	<td style="font:14px/24px \5FAE\8F6F\96C5\9ED1;">感谢您试用全时sooncore平台。您的公司即将展开一场连接互联网的旅程，全时已经为您开通管理员帐号，请您立即登录启用。</td>
                             </tr>
                             <tr>
                             	<td style=" height:20px;"></td>
@@ -87,7 +87,7 @@
                             	<td style="font:13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">顺颂时祺</td>
                             </tr>
                             <tr>
-                            	<td style="font:bold 13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">全时云企小组</td>
+                            	<td style="font:bold 13px/24px \5FAE\8F6F\96C5\9ED1; color:#333;">全时sooncore平台小组</td>
                             </tr>
                         </table>
                     

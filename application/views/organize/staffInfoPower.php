@@ -145,13 +145,13 @@
 				</div>
 				<!-- end tabToolBar -->
 				  <h3 class="setTitle">IM设置</h3>
-                    <label class="checkbox checked"><input type="checkbox" checked="checked"> 可使用全时云企 IM 互传文档</label>
+                    <label class="checkbox checked"><input type="checkbox" checked="checked"> 可使用全时sooncore平台 IM 互传文档</label>
             <label class="checkbox checked"><input type="checkbox" checked="checked"> 自动将联系过的联系人添加到常用联系人列表</label>
             <label class="checkbox checked"><input type="checkbox" checked="checked"> 自动将联系过的讨论组添加到讨论组列表</label>
                     <h3 class="setTitle">通话设置</h3>
                     <label class="checkbox checked"><input type="checkbox" checked="checked"> 允许用户设置接听策略</label>
             <label class="checkbox  checkbox2"><input type="checkbox" checked=""> 用户可设定接听策略到海外直线电话</label>
-            <label class="checkbox checked"><input type="checkbox" checked="checked"> 允许使用云企拨打电话</label>
+            <label class="checkbox checked"><input type="checkbox" checked="checked"> 允许使用sooncore平台拨打电话</label>
             <label class="checkbox checkbox2 checked"><input type="checkbox" checked="checked"> 允许拨打海外电话</label>
                     <h3 class="setTitle"><label class="checkbox checked"><input type="checkbox" checked="checked">电话会议设置(允许召开电话会议)</label></h3>
                     <label class="checkbox checked"><input type="checkbox" checked="checked"> 允许会中外呼</label>

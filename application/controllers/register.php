@@ -94,8 +94,10 @@ class Register extends Web_Controller {
 		
 		// 调用辅助函数生成验证码
 		$vals = array(
-				'word_length' 	=> 	4,		//字符长度
-				'img_width'   	=> 	'78'	//宽度
+				'word_length' 	=> 	4,		//长度
+				'img_width'   	=> 	'80',	//宽度
+				'img_height'   	=> 	'33',	//宽度
+                                'font_path'     => './system/fonts/3d.ttf'
 		);
 		$code = create_captcha($vals);
 		
@@ -165,9 +167,9 @@ class Register extends Web_Controller {
                 return_json(1, '图片验证码不正确');
             }
             
-            $title = '【'.COMPANY_MSG_SEND_NAME.'】给您发送的注册验证码';
+            $title = '【'.UC_SENDER_NAME.'】给您发送的注册验证码';
             $randCode = rand(100000,999999);
-            $content = '您好，感谢您体验【'.COMPANY_NAME.'】的产品。<br />您的验证码为【<font color=red><strong>'.$randCode.'</strong></font>】，有效期为五分钟。';
+            $content = '您好，感谢您体验【'.UC_NAME_EN.'】的产品。<br />您的验证码为【<font color=red><strong>'.$randCode.'</strong></font>】，有效期为五分钟。';
             $code = $this->sendEmail($to,$title,$content);
             if($code==1)
             {
@@ -242,7 +244,7 @@ class Register extends Web_Controller {
                 
                 // 验证$siteId 判断是否为空或返回的字符是否为数字
 		if(bn_is_empty($siteId) || preg_match('/^\d+$/i',$siteId) != true){
-			form_json_msg(COMMON_FAILURE, '', '创建站点失败',$siteId);
+			//form_json_msg(COMMON_FAILURE, '', '创建站点失败',$siteId);
 		}
                 log_message('debug',__FUNCTION__.'---'.__LINE__.'---input->\n'.var_export($siteId,true));
                 //==========================创建站点结束===========================

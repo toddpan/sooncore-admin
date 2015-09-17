@@ -337,6 +337,20 @@ class Staff extends Admin_Controller {
 	
         /**
 	 * 判断用户是否存在
+	 */
+        public function exist_user(){
+            $loginName = $this->input->post("login_name");
+            $result = $this->_existUser($loginName);
+            log_message('info', __FUNCTION__." input->\n".var_export(array('loginName'=> $loginName,'result' => $result), true));
+            if(!$result){
+                form_json_msg('0','', '恭喜！此用户名可用');
+            }  else {
+                form_json_msg('1','', '用户已存在',$result);
+            }
+        }
+        
+        /**
+	 * 判断用户是否存在
 	 * @param unknown $login_names
 	 */
 	public function _existUser($login_name){
@@ -431,11 +445,13 @@ class Staff extends Admin_Controller {
                 }
             }
                 
-            
-            $res_user_product = $this->ums->setUserProduct($this->p_site_id, $res_user_id, UC_PRODUCT_ID, UC_PRODUCT_OPEN_STATUS);//开通用户产品
-            if(!$res_user_product){//开通失败
-                log_message('error', __FUNCTION__.'添加员工失败');
-                form_json_msg(COMMON_FAILURE,'','添加员工失败！',array('user_id' => $res_user_id));//返回信息json格式
+            $isopen = $tags_tmp['isopen'];
+            if($isopen==1){
+                $res_user_product = $this->ums->setUserProduct($this->p_site_id, $res_user_id, UC_PRODUCT_ID, UC_PRODUCT_OPEN_STATUS);//开通用户产品
+                if(!$res_user_product){//开通失败
+                    log_message('error', __FUNCTION__.'添加员工失败');
+                    form_json_msg(COMMON_FAILURE,'','添加员工失败！',array('user_id' => $res_user_id));//返回信息json格式
+                }
             }
             //返回成功提示和被添加员工的部门ID
 	    form_json_msg('0','', 'successfully!',$org_tag['id']);
@@ -890,7 +906,7 @@ class Staff extends Admin_Controller {
 	/**
 	 * @abstract 生态企业企业信息页面
 	 * @details
-	 * -# 关闭云企账号
+	 * -# 关闭sooncore平台账号
 	 */
 	public function closeAccount(){
 		$this->load->library('StaffLib','','StaffLib');

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云企管理中心</title>
+<title>sooncore平台管理中心</title>
 </head>
 <body>
 <!--组织与员工_员工信息.html-->
@@ -140,13 +140,13 @@
 			</div>
 			<!-- end tabToolBar -->
 			 <h3 class="setTitle">IM设置</h3>
-                    <label class="checkbox checked"><input type="checkbox" checked="checked" /> 可使用全时云企 IM 互传文档</label>
+                    <label class="checkbox checked"><input type="checkbox" checked="checked" /> 可使用全时sooncore平台 IM 互传文档</label>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 服务器保存聊天记录</label>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 允许连接外部 IM</label>
                     <h3 class="setTitle">通话设置</h3>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 允许用户设置接听策略</label>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 允许用户设定接听策略到海外电话</label>
-                    <label class="checkbox checked"><input type="checkbox" checked="checked"  /> 允许使用全时云企拨打电话</label>
+                    <label class="checkbox checked"><input type="checkbox" checked="checked"  /> 允许使用全时sooncore平台拨打电话</label>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 允许拨打海外电话</label>
                     <h3 class="setTitle">电话会议设置</h3>
                     <label class="checkbox checked"><input type="checkbox" checked="checked" /> 允许自我外呼</label>
