@@ -150,9 +150,9 @@ body {
 }
 .headerInner .logo .logoText{
     float: left;
-    padding-top: 24px;
-    color: #FF9000;
-    font-size: 20px;
+    padding-top: 20px;
+    color: #B3DF26;
+    font-size: 28px;
     
 }
 
@@ -377,13 +377,13 @@ span.errorMsg {
 	line-height: 40px;
 	font-size: 18px;
 	color: #fff;
-        background: #FF9000;
+        background: #B3DF26;
 	margin-top: 0px;
 	border: none;
 }
 .loginBtn:hover {
 	text-decoration: none;
-        background: #FFAE00;
+        background: #CAF347;
 }
 .loginBtn.false{
     background: #DEDEDE;

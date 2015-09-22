@@ -150,6 +150,7 @@ class Login extends Web_Controller {
 		$user_id 		= isset($ucc_user_arr['user_id'])?$ucc_user_arr['user_id']:'';
 		$site_id 		= isset($ucc_user_arr['site_id'])?$ucc_user_arr['site_id']:'';
 		$ucc_session_id = isset($ucc_user_arr['session_id'])?$ucc_user_arr['session_id']:'';
+		$dislay_name 		= isset($ucc_user_arr['profile']['dislay_name'])?$ucc_user_arr['profile']['dislay_name']:$ucc_user_arr['profile']['first_name'];
 		//如果上次登录时间为0，表示该账号没有登陆过。赋值给$has_login，0表示该账户曾经登陆过，1表示该账户从来没有登陆过
 		$has_login		= $ucc_user_arr['profile']['last_login_time'] == 0 ? 0 : 1 ;
 		
@@ -276,6 +277,7 @@ class Login extends Web_Controller {
 		// 将相关信息存入缓存中
 		$value = array(
 				'userid' 				=> $user_id,
+                                'dislay_name'                           => $dislay_name,
 				'account' 				=> $user_name,
 				'admin_type' 			=> $uc_type,
 				'site_id' 				=> $site_id,

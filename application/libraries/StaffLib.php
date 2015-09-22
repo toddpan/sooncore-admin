@@ -863,24 +863,24 @@ class StaffLib{
 	/**
 	 * @abstract 	开通/关闭单个用户：
 	 * @param 		array 		$in_array 		传入数组信息[二维数组，可以批量操作]
-	 *	 						$in_array = array(
-	 *	 							array(
-	 *	 								'user_id' => ,//当前用户id
-	 *	 								'sys' => array(
-	 *	 								'customerCode' 		=> $this->p_customer_code,	// 客户编码
-	 *	 								'siteID' 			=> $this->p_site_id,		// 站点id
-	 *	 								'site_name' 		=> $this->p_site_name,		// 站点名称
-	 *	 								'accountId'			=>$this->p_account_id,		// 分帐id ；注意：如果有用户，则是用户自己的
-	 *	 								'siteURL' 			=> $this->p_stie_domain,	// 地址
-	 *	 								'contractId' 		=> $this->p_contract_id,	// 合同id
-	 *	 								'operator_id' 		=> $this->p_user_id,		// 操作发起人用户ID
-	 *	 								'client_ip' 		=> $this->p_client_ip,		// 客户端ip
-	 *	 								'server_ip' 		=> $this->p_server_ip,		// 服务端ip
-	 *	 								'oper_account' 		=> $this->p_account,		// 操作帐号
-	 *	 								'oper_display_name' => $this->p_display_name,	// 操作姓名
-	 *	 								'orgID' 			=> $this->p_org_id,			// 所属站点，分公司，生态企业组织id[各种管理员新加时，必填]
-	 *	 							),
-	 *	 						)
+        *	 						$in_array = array(
+        *	 							array(
+        *	 								'user_id' => ,//当前用户id
+        *	 								'sys' => array(
+        *	 								'customerCode' 		=> $this->p_customer_code,	// 客户编码
+        *	 								'siteID' 			=> $this->p_site_id,		// 站点id
+        *	 								'site_name' 		=> $this->p_site_name,		// 站点名称
+        *	 								'accountId'			=>$this->p_account_id,		// 分帐id ；注意：如果有用户，则是用户自己的
+        *	 								'siteURL' 			=> $this->p_stie_domain,	// 地址
+        *	 								'contractId' 		=> $this->p_contract_id,	// 合同id
+        *	 								'operator_id' 		=> $this->p_user_id,		// 操作发起人用户ID
+        *	 								'client_ip' 		=> $this->p_client_ip,		// 客户端ip
+        *	 								'server_ip' 		=> $this->p_server_ip,		// 服务端ip
+        *	 								'oper_account' 		=> $this->p_account,		// 操作帐号
+        *	 								'oper_display_name' => $this->p_display_name,	// 操作姓名
+        *	 								'orgID' 			=> $this->p_org_id,			// 所属站点，分公司，生态企业组织id[各种管理员新加时，必填]
+        *	 							),
+        *	 						)
 	 * @param 		int 		$operate_type 操作类型 0关闭1开通2删除
 	 * @return 		boolean 	true成功 false失败
 	 *
@@ -955,6 +955,7 @@ class StaffLib{
 							$is_operate = 1;//是否需要操作0不需要1需要
 							$operate_txt = 'delete';
 							$user_operate = 4;//4删除流程[以前开启，现在删除]
+							$is_del_ums = 1;//是否调用ums删除0不调用1调用
 							break;
 						case 2://2：禁用/删除（开通过;这里说的是禁用，只是删除及发送离职消息
 							$is_del_ums = 1;//是否调用ums删除0不调用1调用
@@ -970,6 +971,7 @@ class StaffLib{
 						}else{
 							log_message('debug', 'UMS API rs/users/' . $user_id . '/delete success.');
 						}
+                                            
 					}
 
 					//删除管理者，及对user、useradmin表进行操作
@@ -996,10 +998,10 @@ class StaffLib{
 			if($is_operate == 1){
 				//保存线程
 				$user_arr = array(
-                            'user_id' => $user_id,
-                            'operate_txt' => $operate_txt,
-                            'user_operate' => $user_operate,
-                            'sys' => $sys_arr,
+                                    'user_id' => $user_id,
+                                    'operate_txt' => $operate_txt,
+                                    'user_operate' => $user_operate,
+                                    'sys' => $sys_arr,
 				);
 				$user_arrs[$u_k] = $user_arr;
 			}

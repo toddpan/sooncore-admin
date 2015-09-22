@@ -14,7 +14,7 @@ class UC_Controller extends CI_Controller {
 	public $p_url_host;		// 当前域的host，如localhost或test.quanshi.com
 	public $session_id;		// UCCServer分配的session_id
 	public $p_account;		// 账号
-	public $p_display_name; // 姓名
+	public $p_display_name; // 管理员姓名
 	public $p_site_id;		// 站点id
 	public $p_stie_domain;	// 站点域名domain
 	public $p_company_type; // 企业类型：0、单一企业；1、集中管理；2、分散管理
@@ -59,6 +59,7 @@ class UC_Controller extends CI_Controller {
 		// 初始化各个系统变量
 		$this->p_account 		= $this->session->userdata('account');		// 账号
 		$this->p_site_id 		= $this->session->userdata('site_id');		// 站点id
+		$this->p_display_name 		= $this->session->userdata('dislay_name');	// 管理员名字
 		$this->p_stie_domain 	= $this->session->userdata('domain');		// 站点域名domain
 		$this->p_company_type 	= $this->session->userdata('companyType');	// 企业类型：0、单一企业；1、集中管理；2、分散管理
 		$this->p_org_id 		= $this->session->userdata('org_id');		// 组织id

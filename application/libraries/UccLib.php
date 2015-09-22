@@ -123,7 +123,6 @@ class UccLib{
         
 	/**
 	 * 获取组织机构列表
-         * @author LongWei
 	 * @param int    $user_id 用户id （必选）
 	 * @param string $session_id 用户session（必选）
 	 * @param string $org_id 组织机构id,填0表示获取根节点信息,大于0表示部门信息（必选）
@@ -135,6 +134,22 @@ class UccLib{
 		$param 	= array();
 		$ret = httpCurl($url, $param, $method);
 		log_message('info',"ucc api url --> ".$url."param --> ".var_export($param, true)." result -->".var_export($ret, true));
+		
+		return $ret['code'] == 0 ? json_decode($ret['http_info']['http_body'],true) : false;
+	}
+        
+	/**
+	 * 组织机构删除
+	 * @param int    $user_id 用户id （必选）
+	 * @param string $org_id 组织机构id（必选）
+	 * @param string $session_id 用户session（必选）
+	 */
+	public function delOrg($user_id, $org_id, $session_id){
+		$method = 'POST';
+		$url  	= $this->apiurl.'/org/delete?user_id='.$user_id.'&session_id='.$session_id. '&org_id='.$org_id;
+		$param 	= array();
+		$ret = httpCurl($url, $param, $method);
+		log_message('info',__FUNCTION__.":POST:--ucc api url --> ".$url."param --> ".var_export($param, true)." result -->".var_export($ret, true));
 		
 		return $ret['code'] == 0 ? json_decode($ret['http_info']['http_body'],true) : false;
 	}

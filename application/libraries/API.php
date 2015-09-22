@@ -772,7 +772,7 @@ class API{
 					$apiurl .= UC_DOMAIN_DIR. '/api/account/saveOpenThread';
 					break;
 				case 2: //批量导入帐号时保存UC线程专用 code 0 成功[1、2功能作用相同，只是拼接的地址不同]
-					$apiurl .=  '/api/account/saveOpenThread';
+					$apiurl .=  'api/account/saveOpenThread';
 					break;
 				case 3: //通地当前域的ip地址，返回当前域的url等信息[del]
 					$apiurl .= UC_DOMAIN_DIR. '/api/domain/get_cluster_arr';
