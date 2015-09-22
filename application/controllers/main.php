@@ -52,7 +52,8 @@ class Main extends Admin_Controller{
 		);
 		$message_sum =  $this->uc_message_model->countMessage($message_where_arr);
 		$msg_sum = $task_sum + $message_sum + $notice_sum;
-		
+		//var_dump($this->session->userdata);
+                //echo $this->p_display_name;
 		$data['msg_sum']  = $msg_sum;
 		$data['displayName'] = $user_name;
 		$this->load->view('index.php', $data);

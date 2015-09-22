@@ -343,7 +343,7 @@ class Staff extends Admin_Controller {
             $result = $this->_existUser($loginName);
             log_message('info', __FUNCTION__." input->\n".var_export(array('loginName'=> $loginName,'result' => $result), true));
             if(!$result){
-                form_json_msg('0','', '恭喜！此用户名可用');
+                form_json_msg('0','', '恭喜！此用户名可用',$result);
             }  else {
                 form_json_msg('1','', '用户已存在',$result);
             }
@@ -386,7 +386,7 @@ class Staff extends Admin_Controller {
             //获取参数
             $tagValue = array();
             if(empty($user_json) OR is_null($tagValue = json_decode($user_json, true))){
-                    form_json_msg('1', '', 'The parammeter named user_json is null');
+                    form_json_msg('1', '', '【user_json】是空值');
             }
             
             //如果组织的数组数量小于2个 说明没有下级部门 则不能在根部门添加员工
@@ -444,13 +444,35 @@ class Staff extends Admin_Controller {
                     log_message('error', __FUNCTION__.'createUser'." input->\n".var_export($user_info,true).' org_id->'.$org_tag['id'].' site_id->'.$this->p_site_id.' customer code->'.$this->p_customer_code);
                 }
             }
-                
+            
+            // 载入uc_user模型
+            $this->load->model('uc_user_model');
+            $uc_userinfo = array(
+                'userID' => $res_user_id,
+                'siteId' => $this->p_site_id,
+                'customerCode' => $this->p_customer_code,
+                'Collect' => 'radisys',
+                'billingcode' => '', //用户记费码
+                'hostpasscode' => '',//主持人密码
+                'guestpasscode' => '',//参会人密码
+                'accountId' => $this->p_account_id,//分帐id
+                'status' => '1',//（0：未启用（一直未开通过）；1：已开通；2：禁用/删除（开通过））
+                'create_time' => date("Y-m-d H:i:s"),
+                'update_time' => date("Y-m-d H:i:s")
+            );
+            //向UC_USER创建用户 成功返回true 反之false
+            $ret_boolean = $this->uc_user_model->createUser($uc_userinfo);
+            if($ret_boolean==false){
+                    log_message('error', __FUNCTION__.'向uc_user添加员工失败');
+                    form_json_msg(COMMON_FAILURE,'','向uc_user添加员工失败！',array('user_id' => $res_user_id));//返回信息json格式
+            }
+            
             $isopen = $tags_tmp['isopen'];
             if($isopen==1){
                 $res_user_product = $this->ums->setUserProduct($this->p_site_id, $res_user_id, UC_PRODUCT_ID, UC_PRODUCT_OPEN_STATUS);//开通用户产品
                 if(!$res_user_product){//开通失败
-                    log_message('error', __FUNCTION__.'添加员工失败');
-                    form_json_msg(COMMON_FAILURE,'','添加员工失败！',array('user_id' => $res_user_id));//返回信息json格式
+                    log_message('error', __FUNCTION__.'开通员工产品失败');
+                    form_json_msg(COMMON_FAILURE,'','开通员工产品失败！',array('user_id' => $res_user_id));//返回信息json格式
                 }
             }
             //返回成功提示和被添加员工的部门ID
@@ -659,16 +681,19 @@ class Staff extends Admin_Controller {
 	 * @abstract 保存删除帐号
 	 */
 	public function save_delete_staff(){
-		//当前用户id
+		//当前用户id  同时删除多个用户可以将ID以逗号形式分隔如 12345,33333,55555
 		$user_id = $this->input->post('user_id', true);
 		// 如果当前用户id为空，则为其添加默认值0
 		$user_id = empty_to_value($user_id, 0);
 		
 		// 判断当前用户id是否为空
 		if(bn_is_empty($user_id)){
-			form_json_msg('1', '', 'Please choose the staff who you want to delete. ');
+			form_json_msg('1', '', '请选择要删除的员工 ');
 		}
 		
+                
+                
+                
 		// 载入员工类库
 		$this->load->library('StaffLib', '', 'StaffLib');
 		
@@ -676,9 +701,9 @@ class Staff extends Admin_Controller {
 
 		$re_boolean = $this->StaffLib->del_staff($user_id, $sys_arr);
 		if($re_boolean){
-			form_json_msg('0', '', 'Delete staff successfully!');
+			form_json_msg('0', '', '删除员工成功');
 		}else{
-			form_json_msg('11', '', 'Delete staff failed!');
+			form_json_msg('1', '', '删除员工失败');
 		}
 	}
 
@@ -936,12 +961,6 @@ class Staff extends Admin_Controller {
 			form_json_msg(COMMON_PARAM_ERROR,'','system manager can not be closed',array('user_id' => $user_id));//返回信息json格式
 		}
 		
-		//从ums获取用户所在的组织
-		$this->load->library('UmsLib', '', 'ums');
-		$org_info = $this->ums->getOrgInfoByUserId($user_id);
-		if(count($org_info) <= 0){
-			form_json_msg(COMMON_PARAM_ERROR,'','can not get org info from ums',array('user_id' => $user_id));//返回信息json格式
-		}
 		
                 $res_user_product = $this->ums->setUserProduct($this->p_site_id, $user_id, UC_PRODUCT_ID, 0);//禁用用户产品
                 if(!$res_user_product){//禁用失败
@@ -953,6 +972,14 @@ class Staff extends Admin_Controller {
 		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
                 
                 /*这是原来的
+                
+//		//从ums获取用户所在的组织
+//		$this->load->library('UmsLib', '', 'ums');
+//		$org_info = $this->ums->getOrgInfoByUserId($user_id);
+//		if(count($org_info) <= 0){
+//			form_json_msg(COMMON_PARAM_ERROR,'','can not get org info from ums',array('user_id' => $user_id));//返回信息json格式
+//		}
+                 * 
 		//写任务
 		$data = array(
 			'customer_code'=>$this->p_customer_code,
@@ -962,6 +989,8 @@ class Staff extends Admin_Controller {
 		);
 		$this->load->model('account_upload_task_model', 'upload_task');
 		$this->upload_task->saveTask(ACCOUNT_DISABLE_UPLOAD, json_encode($data));
+		//返回成功信息
+		form_json_msg(COMMON_SUCCESS,'','success',array('user_id' => $user_id));//返回信息json格式
 		*/
 		
 		/*
@@ -975,8 +1004,8 @@ class Staff extends Admin_Controller {
 		$site_id = empty_to_value($site_id,0);//517
 		$this->load->library('StaffLib','','StaffLib');
 		$in_array = array(
-            'user_id' => $user_id,            
-            'sys' => $this->p_sys_arr
+                    'user_id' => $user_id,            
+                    'sys' => $this->p_sys_arr
 		);
 		//true成功 FALSE 失败
 		$re_boolean = $this->StaffLib->open_close_user(array($in_array), 0);

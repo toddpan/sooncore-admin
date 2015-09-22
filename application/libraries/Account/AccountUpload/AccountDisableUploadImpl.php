@@ -41,11 +41,11 @@ class AccountDisableUploadImpl extends AccountUploadInterface{
 		
 		//TODO:搜索路径用户-组织-站点，根据站点，分组发送
 		//获取用户的templateUUID
-		$templateUUID 	= 	'';
-		$components 	= 	$this->ci->power_model->getOrgPower($uc['site_id'], $node_code, $templateUUID);
-		if(empty($templateUUID)){
-			throw new Exception('error', 'not found templateUUId');
-		}	
+		//$templateUUID 	= 	'';
+		//$components 	= 	$this->ci->power_model->getOrgPower($uc['site_id'], $node_code, $templateUUID);
+		//if(empty($templateUUID)){
+		//	throw new Exception('error', 'not found templateUUId');
+		//}	
 		
 		//向boss发送请求
 		//$this->sendBossRequest($uc['customer_code'], $uc['site_id'], $uc['user_ids'], 'disable', $templateUUID);

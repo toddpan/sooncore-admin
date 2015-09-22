@@ -87,7 +87,7 @@ class AccountCreateUploadImpl extends AccountUploadInterface{
 			//--组织部门名称。接口支持部门层级，以'/'分隔。如："产品部/设计组/UI"
 			$ums_param_name = '';
 			for($i=1;$i<=$dept_level;$i++){
-				if(!empty($user['department'.$i])){// 选择部门要手选因为目前没有验证 否则department为空会导致失败 lwbbn
+				if(!empty($user['department'.$i])){
 					$ums_param_name 				.= 	trim($user['department'.$i]).'/';
 					$create_users[$k]['org_name'] 	 = 	$user['department'.$i];//该用户所属组织名称
 				}else{
@@ -228,8 +228,8 @@ class AccountCreateUploadImpl extends AccountUploadInterface{
 		return false;
 	}
 	
-	public function _getTemplateUUID(){
-		
-	}
+//	public function _getTemplateUUID(){
+//		
+//	}
 	
 }

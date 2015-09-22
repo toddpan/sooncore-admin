@@ -2,7 +2,7 @@
 //环境配置  |生产环境on ;开发环境 dev;测试环境 test
 define('UC_ENVIRONMENT','dev');
 //base url,区分AB环境，如果是A环境：devyt.xiezuoyun.cn 如果是B环境 devcloudb.quanshi.com
-define('UC_DOMAIN_URL','117.121.25.135');
+define('UC_DOMAIN_URL','127.0.0.1');
 
 //api调用head配置
 define('POST_HEAD','Content-type: application/x-www-form-urlencoded;charset:UTF-8');//接口post head

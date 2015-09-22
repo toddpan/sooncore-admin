@@ -445,7 +445,7 @@ class Register extends Web_Controller {
 			'user_id' => $user_id,
 			'role_id' => SYSTEM_MANAGER,//角色
 			'state' => ADMIN_OPEN,//状态
-                        'create_time' => '2015-08-29 23:38:22'
+                        'create_time' => date('Y-m-d H:i:s')
 		);
 		$result = $this->Uc_User_Admin_Role_Model->saveManager($admin_role_info);
 		if(!$result){

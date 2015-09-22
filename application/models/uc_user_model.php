@@ -126,13 +126,27 @@ class UC_User_Model extends MY_Model{
         }
     }
     /**
-     * 获取用户信息
+     * 获取已开通的用户信息
      * @author hongliang.cao@quanshi.com
      * @param int $user_id
      * return array
      */
     public function getUserInfo($user_id){
         $query = $this->db->get_where(self::TBL, array('userID'=>$user_id, 'status' => UC_USER_STATUS_ENABLE));
+        if($query->num_rows() > 0){
+            return $query->row_array();
+        }
+        return array(); 
+    }
+    
+     /**
+     * 获取用户信息
+     * @author longw@sooncore.com
+     * @param int $user_id
+     * return array
+     */
+    public function getUserInfoFull($user_id){
+        $query = $this->db->get_where(self::TBL, array('userID'=>$user_id));
         if($query->num_rows() > 0){
             return $query->row_array();
         }

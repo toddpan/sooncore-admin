@@ -567,7 +567,36 @@ class Organize extends Admin_Controller {
 	 *  判断是否有1下级组织，2是否自己有员工3成功删除4删除失败
 	 */
 	public function delOrg() {
-		$this->load->library('OrganizeLib','','OrganizeLib');
+                $this->load->library('UccLib','','ucc');
+                $user_id = $this->p_user_id;
+                $session_id = $this->p_session_id;
+		$org_id = strtolower($this->input->post('id' , true));
+                $result = $this->ucc->delOrg($user_id,$org_id,$session_id);
+                if($result['code'] == 0){
+                    //日志
+                    $this->load->library('LogLib','','LogLib');
+                    $log_in_arr = $this->p_sys_arr;
+                    $re_id = $this->LogLib ->set_log(array('5','2'),$log_in_arr);
+                    
+                    form_json_msg('0','', '操作成功',$result);
+                }elseif($result['code'] == 10315){
+                    form_json_msg('1','', '组织中有员工不能删除');
+                }elseif($result['code'] == 10314){
+                    form_json_msg('1','', '组织机构有子部门不能删除');
+                }elseif($result['code'] == 10307){
+                    form_json_msg('1','', '删除组织失败，请确保组织下没有员工及子部门');
+                }elseif($result['code'] == 10306){
+                    form_json_msg('1','', '组织机构id不存在');
+                }elseif($result['code'] == 10305){
+                    form_json_msg('1','', '你没有权限操作组织机构');
+                }elseif($result['code'] == 10304){
+                    form_json_msg('1','', '组织id为空');
+                }else{
+                    form_json_msg('1','', '删除失败，请重试');
+                }
+                //下面是原来的
+		/*
+                $this->load->library('OrganizeLib','','OrganizeLib');
 		$org_id = strtolower($this->input->post('id' , true));
 		$org_id = empty_to_value($org_id,0);
 		$is_sure_del = strtolower($this->input->post('is_sure_del' , true));
@@ -647,6 +676,8 @@ class Organize extends Admin_Controller {
 		}else{
 			form_json_msg('0','', '当前组织可以进行删除',array('state' => 5));//返回信息json格式
 		}
+                 * 
+                 */
 	}
 
 // 	/**

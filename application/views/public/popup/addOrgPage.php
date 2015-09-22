@@ -60,8 +60,14 @@
     </dd>
 </dl>
 <script type="text/javascript">
-    //var selectNode = getSelectNode("#ztree");
-    //$("#inputVal2 #organizationId").val(selectNode.name); 
+$(document).ready(function() {
+    var selectNode = getSelectNode("#ztree");
+    $("#inputVal2 #organizationId").val(selectNode.name);
+    if (!$("#departmentTree").text()) {
+        var oldTreeDOM = $("#ztree").html();
+        $("#departmentTree").html(oldTreeDOM);
+    }
+});
     
     function showTreeList(event) {
         if(!$("#departmentTree").text()){

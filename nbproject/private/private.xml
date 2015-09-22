@@ -3,18 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/organize/organizepart/orgpart1.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/libraries/UmsLib.php</file>
             <file>file:/E:/phpStudy/WWW/sooncore-admin/application/controllers/staff.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/public/css/common.css</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/organize/organizeStaff.php</file>
             <file>file:/E:/phpStudy/WWW/sooncore-admin/application/controllers/organize.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/public/popup/editOrgPage.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/organize/organizepart/orgpart2.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/public/js/part_js/orgpartinit.js</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/public/popup/addstaff.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/public/js/part_js/orgpart.js</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/public/popup/addOrgPage.php</file>
-            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/libraries/API.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/logs/log-2015-09-21.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/libraries/LogLib.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/models/uc_user_model.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/controllers/main.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/libraries/public/Log_class.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/views/organize/organizepart/orgpart3.php</file>
+            <file>file:/E:/phpStudy/WWW/sooncore-admin/application/libraries/StaffLib.php</file>
         </group>
     </open-files>
 </project-private>

@@ -4,7 +4,7 @@ class Log_class {
    private $log_arr = array(//类型数组
          array(
             'id' => 1,//id
-            'name' => '启用全时工作圈',//
+            'name' => '启用快核工作圈',//
             'isopen' => 1,//是否开启
             'item' => array(
                 array(

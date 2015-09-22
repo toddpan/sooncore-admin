@@ -162,155 +162,91 @@ $(function()
         });
 
     });
-    //选中员工，点击删除员工
-    $('.btnDeleUser').click(function() {
-		//alert(1)
-		if($(this).hasClass("false"))
-		{
-			return;
-		}
-		$(this).addClass("false");
-		var _this=$(this);
-        showDialog("staff/deleteStaff");
-		_this.removeClass("false");
-	$('#dialog .dialogBottom  #deleteStaff').die('click');
-        $('#dialog .dialogBottom  #deleteStaff').live('click', function() {
-			/*if($(this).hasClass("false"))
+    
+//选中员工，点击删除员工
+$('.btnDeleUser').click(function() {
+    //alert(1)
+    if ($(this).hasClass("false")) {
+        return;
+    }
+    $(this).addClass("false");
+    var _this = $(this);
+    showDialog("staff/deleteStaff");
+    _this.removeClass("false");
+    $('#dialog .dialogBottom  #deleteStaff').die('click');
+    $('#dialog .dialogBottom  #deleteStaff').live('click', function() {
+        /*if($(this).hasClass("false"))
 			{
 				return;
 			}
 			$(this).addClass("false");*/
-			var _t=$(this);
-			var user_id='';
-                        //alert(user_id.length)
-	   		var  treeNode = getSelectNode("#ztree");
-			if(treeNode.oid!=null)
-                        {
-                         var orgid=treeNode.oid;
-                         var parent_orgid=treeNode.pid;
-                        }
-    	 $('#part01 table tbody label').each(function()
-		 {
-	   //alert(3);
-	  		 if($(this).hasClass("checked"))
-	  		 {
-	    		var value=$(this).find('input').val();
-	      		user_id=user_id +value+',';
-	  		 }
-		}) 
-	 	 var lastIndex =user_id.lastIndexOf(',');
-      	 if (lastIndex > -1) {
-            user_id = user_id.substring(0,lastIndex) + user_id.substring(lastIndex + 1,user_id.length);
-           }
-	 	var staff={
-	 	//"parent_orgid":parent_orgid,
-		//"orgid": orgid,
-       // "org_code":org_code,
-		"user_id":user_id
-		 };
-		 //alert(parent_orgid)
-		 var All_delete=0;
-		 if(_checked.length == $('#part01 .table:first tbody tr').length){
-			//$("#novalueTable").show().prev("table").hide();
-			//$('#part01 .table:first tbody tr').show();
-			//alert("ddddd: "+ dG)
-			All_delete=1;
-			/*if(dG==1){
+        alert(45);
+        var _t = $(this);
+        var user_id = '';
+        //alert(user_id.length)
+        var treeNode = getSelectNode("#ztree");
+        if (treeNode.oid != null) {
+            var orgid = treeNode.oid;
+            var parent_orgid = treeNode.pid;
+        }
+        $('#part01 table tbody label').each(function() {
+            //alert(3);
+            if ($(this).hasClass("checked")) {
+                var value = $(this).find('input').val();
+                user_id = user_id + value + ',';
+            }
+        })
+        var lastIndex = user_id.lastIndexOf(',');
+        if (lastIndex > -1) {
+            user_id = user_id.substring(0, lastIndex) + user_id.substring(lastIndex + 1, user_id.length);
+        }
+        var staff = {
+            //"parent_orgid":parent_orgid,
+            //"orgid": orgid,
+            // "org_code":org_code,
+            "user_id": user_id
+        };
+        //alert(parent_orgid)
+        var All_delete = 0;
+        var _checked = $('#part01 .table:first tbody .checked');
+        if (_checked.length == $('#part01 .table:first tbody tr').length) {
+            //$("#novalueTable").show().prev("table").hide();
+            //$('#part01 .table:first tbody tr').show();
+            //alert("ddddd: "+ dG)
+            All_delete = 1;
+            /*if(dG==1){
 				//alert("eeeee: "+ dG)
 				
 			}*/
-		}
-			//_checked.parent().parent().hide();
-		var path_delete_staff ="staff/save_delete_staff";
-		$.post(path_delete_staff,staff,function(data)
-  		{
-	 			//alert(data);
-			 	var json=$.parseJSON(data);
-				if(json.code==0)
-					{
-						/*var obj={
+        }
+        //_checked.parent().parent().hide();
+        var path_delete_staff = "staff/save_delete_staff";
+        $.post(path_delete_staff, staff, function(data) {
+            //alert(data);
+            var json = $.parseJSON(data);
+            if (json.code == 0) {
+                /*var obj={
 						"parent_orgid":parent_orgid,
 						"org_id":orgid
 							}
 							load_staff(obj,path_user,path_mag);*/
-							org_del_staff();
-							hideDialog();
-							if(All_delete==1 && dG==1)
-							{
-							   showDialog("organize/sure_del_org2");
-							}
-					 }else
-						{
-							
-							alert(json.prmopt_text);
-									
-							hideDialog();
-						}
-			
-			_t.removeClass("false");
-		});
-		
-		 //返回code是否成功，如果成功：重新加载当前组织帐号列表。
-	});
- });
+                org_del_staff();
+                hideDialog();
+                if (All_delete == 1 && dG == 1) {
+                    showDialog("organize/sure_del_org2");
+                }
+            } else {
+                alert(json.prmopt_text);
+                hideDialog();
+            }
+            _t.removeClass("false");
+        });
+        //返回code是否成功，如果成功：重新加载当前组织帐号列表。
+    });
+});
    
 
-    //删除组织
-    $('#deleteZuzhi').click(function() {
-        // alert(43324)
-		if($(this).hasClass("disabled") || $(this).hasClass("false"))
-		{
-			return;
-		}
-		$(this).addClass("false");
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        nodes = zTree.getSelectedNodes();
-        treeNode = nodes[0];
-        if (treeNode != null) {
-            var treenode = {
-                "id": treeNode.id,
-                "pId": treeNode.pId,
-                "name": treeNode.name,
-                "is_sure_del": 0 //0去判断可以不可以删除[返回1\2\5]，1满足条件就可以真的删除[都可能返回]
-            };
-			var _this=$(this);
-            //alert(treenode.id)
-            //alert(treenode.pId)
-            // alert(treenode.name)
-            //删除组织：判断是否有1下级组织，2是否自己有员工3成功删除5当前组织可以进行删除4 删除失败
-            var path_2 ="organize/delOrg";
-            $.post(path_2, treenode, function(data) {
-                //alert(data);
-                var json = $.parseJSON(data);
-                if (json.code == 0) {
-
-                    if (json.other_msg.state == 1) {
-                        dG = 1;
-
-                        $(".poptip3").fadeIn();
-                        //alert(dG)
-                    } else if (json.other_msg.state == 2) {
-                        dG = 1;
-                        $(".poptip3").fadeIn();
-                    } else if (json.other_msg.state == 5) {
-                        //$(".poptip3").fadeIn();
-
-                        showDialog("organize/sure_del_org");
-                    } else {
-                        alert("删除失败");
-						_this.removeClass('false');
-                    }
-					
-                }
-				else
-				{
-					alert("操作失败")
-					_this.removeClass('false');
-				}
-				
-            })
-        }
-    });
+    
     //alert(2)
     $('#part01 table td a.btnOn').die("click");
     //关闭员工账号
